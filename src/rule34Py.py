@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 class rule34Py(Exception):
     """rule34.xxx API wraper
     """
+
     def __init__(self):
 
         self.__init = True
@@ -159,7 +160,8 @@ class rule34Py(Exception):
         if str(post_id).isdigit() or type(post_id) == int:
 
             url = self.__urls['get_post'].replace('#POST_ID#', str(post_id))
-            req = requests.get(self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+            req = requests.get(
+                self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
 
             xml_string = req.content.decode()
             xml_string = xml_string.replace(':<', '')
@@ -174,7 +176,8 @@ class rule34Py(Exception):
                 post_rating = elt.get('rating')
                 creator_id = elt.get('creator_id')
                 created_at = elt.get('created_at')
-                source = None if elt.get('source') == None else elt.get('source'),
+                source = None if elt.get(
+                    'source') == None else elt.get('source'),
                 has_notes = elt.get('has_notes')
                 has_comments = elt.get('has_comments')
                 img_sample_url = elt.get('sample_url')
@@ -194,27 +197,29 @@ class rule34Py(Exception):
                     "img_file_url": img_file_url,
                     "img_preview_url": img_preview_url
                 }
-            
+
             return post
 
         else:
             raise Exception('id must be digits only!')
             return
 
-    def getFavorites(self, id):
+    def getFavorites(self, user_id, id_only=False):
         """Get Favorites from a user
 
         Args:
-            id (int): User id
+            user_id (int): User ID
+            id_only (bool, optional): Specifies whether only Post IDs(True) or Post objects(False) are returned (faster if set to true). Defaults to False.
 
         Returns:
-            list: Favorites list
+            [type]: [description]
         """
 
-        if str(id).isdigit() or type(id) == int:
+        if str(user_id).isdigit() or type(user_id) == int:
 
-            url = self.__urls['user_favorites'].replace('#USR_ID#', str(id))
-            req = requests.get(self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+            url = self.__urls['user_favorites'].replace('#USR_ID#', str(user_id))
+            req = requests.get(
+                self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
             html_string = req.content.decode()
 
             soup = BeautifulSoup(html_string, 'html.parser')
@@ -227,8 +232,11 @@ class rule34Py(Exception):
 
                 a = span_tag.select('a')[0]
                 post_id = a['id'][1:]
-                
-                favorites.append(self.getPost(post_id))
+
+                if id_only:
+                    favorites.append(post_id)
+                elif not id_only:
+                    favorites.append(self.getPost(post_id))
 
             return favorites
 

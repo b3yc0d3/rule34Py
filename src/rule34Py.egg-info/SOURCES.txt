@@ -1,4 +1,5 @@
 LICENSE.txt
+README.md
 setup.py
 src/rule34Py.py
 src/rule34Py.egg-info/PKG-INFO

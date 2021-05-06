@@ -1,9 +1,0 @@
-LICENSE.txt
-README.md
-setup.py
-src/rule34Py.py
-src/rule34Py.egg-info/PKG-INFO
-src/rule34Py.egg-info/SOURCES.txt
-src/rule34Py.egg-info/dependency_links.txt
-src/rule34Py.egg-info/requires.txt
-src/rule34Py.egg-info/top_level.txt

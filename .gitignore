@@ -1,4 +1,5 @@
 build.sh
+install.sh
 debug.py
 __pycache__
 

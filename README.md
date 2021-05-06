@@ -1,5 +1,5 @@
 # rule34Py
-![](https://img.shields.io/github/license/NikiNikOfficially/rule34Py)\
+![](https://img.shields.io/github/license/NikiNikOfficially/rule34Py) ![](https://img.shields.io/github/languages/code-size/NikiNikOfficially/rule34Py)\
 This is a Simple rule34.xxx API wraper.
 
 ## Installation

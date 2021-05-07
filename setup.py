@@ -9,7 +9,7 @@ setup(
     description='API wraper for rule34.xxx',
     url="https://github.com/NikiNikOfficially/rule34Py",
     author="b3yc0d3",
-    author_email="mc25.studio[at]gmail.com",
+    author_email="mc25.studio@gmail.com",
     long_description=long_description,
     long_description_content_type="text/markdown",
     py_modules=['rule34Py'],

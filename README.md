@@ -1,5 +1,5 @@
 # rule34Py
-![](https://img.shields.io/pypi/status/rule34Py) ![](https://img.shields.io/pypi/format/rule34Py) ![](https://img.shields.io/pypi/v/rule34Py) ![](https://img.shields.io/github/license/NikiNikOfficially/rule34Py) ![](https://img.shields.io/github/languages/code-size/NikiNikOfficially/rule34Py)\
+![](https://img.shields.io/pypi/status/rule34Py) ![](https://img.shields.io/pypi/format/rule34Py) ![](https://img.shields.io/pypi/v/rule34Py) ![](https://img.shields.io/github/license/b3yc0d3/rule34Py) ![](https://img.shields.io/github/languages/code-size/b3yc0d3/rule34Py)\
 This is a Simple rule34.xxx API wraper.
 
 ## Installation
@@ -24,7 +24,7 @@ print(favs)
     - [getCommanets(<post_id>)](#getcommanets)
     - [getFavorites(<user_id>, <?id_only>)](#getfavorites)
     - [getPost(<post_id>)](#getpost)
-    - [search(<tags>, <?limit>)](#search)
+    - [search(\[\<tags>\], <?limit>)](#search)
 
 ## rule34Py
 Syntax: `r34Py = rule34Py()`
@@ -54,10 +54,7 @@ Syntax: `<rule34Py>.getPost(<post_id>)`
 Gets Post by ID.
 
 ## search
-Syntax: `<rule34Py>.search(<tags>, <?limit>)`
-- `tags` \<str_list>
+Syntax: `<rule34Py>.search([<tags>], <?limit>)`
+- `tags` \<list> ([Tag Cheatsheet](https://rule34.xxx/index.php?page=tags&s=list))
 - `limit` \<int> (Optional, Defaults is 100 and max limit is 100)
 - returns: \<dictionary>
-
-Searches for Posts by Tag\
-[Tag Cheatsheet](https://rule34.xxx/index.php?page=tags&s=list)

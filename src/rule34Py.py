@@ -30,6 +30,9 @@ class rule34Py(Exception):
             list: Posts result list
         """
 
+        if type(tags) != list:
+            raise ValueError('Parameter "tags" must be of type "list"!')
+
         url = self.__urls['search'].replace(
             '#LIMIT#', str(100 if limit > 100 else limit))
         url = url.replace('#TAGS#', '+'.join(tags))
@@ -45,6 +48,7 @@ class rule34Py(Exception):
 
         e = ET.ElementTree(ET.fromstring(xml_string))
         for elt in e.iter():
+
             post_id = elt.get('id')
             post_score = elt.get('score')
             post_tags = elt.get('tags')

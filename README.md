@@ -12,7 +12,11 @@ from rule34Py import rule34Py
 
 r34Py = rule34Py()
 
+results = r34Py.search(['neko'], 10)
 favs = r34Py.getFavorites(118538, true)
+comments = r34Py.getComments(4485507)
+post = r34Py.getPost(4485507)
+
 
 print(favs)
 ```
@@ -21,7 +25,7 @@ print(favs)
 
 ## Usage
 - [Class: rule34Py](#rule34Py)
-    - [getCommanets(<post_id>)](#getcommanets)
+    - [getComments(<post_id>)](#getcomments)
     - [getFavorites(<user_id>, <?id_only>)](#getfavorites)
     - [getPost(<post_id>)](#getpost)
     - [search(\[\<tags>\], <?limit>)](#search)
@@ -31,7 +35,7 @@ Syntax: `r34Py = rule34Py()`
 
 Creates a new rule34Py instance.
 
-## getCommanets
+## getComments
 Syntax: `<rule34Py>.getCommanets(<post_id>)`
 - `post_id` \<int>
 - returns: \<list>

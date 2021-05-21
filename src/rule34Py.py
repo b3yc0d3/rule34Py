@@ -1,5 +1,4 @@
 import requests
-import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 
 
@@ -46,21 +45,27 @@ class rule34Py(Exception):
 
         posts = []
 
-        e = ET.ElementTree(ET.fromstring(xml_string))
-        for elt in e.iter():
+        bfsPosts = BeautifulSoup(xml_string, features="xml")
+        xmlPosts = bfsPosts.posts.findAll('post')
 
-            post_id = elt.get('id')
-            post_score = elt.get('score')
-            post_tags = elt.get('tags')
-            post_rating = elt.get('rating')
-            creator_id = elt.get('creator_id')
-            created_at = elt.get('created_at')
-            source = elt.get('source'),
-            has_notes = elt.get('has_notes')
-            has_comments = elt.get('has_comments')
-            img_sample_url = elt.get('sample_url')
-            img_file_url = elt.get('file_url')
-            img_preview_url = elt.get('preview_url')
+        if int(len(xmlPosts) <= 0 or bfsPosts.posts.attrs['count']) <= 0:
+            return []
+
+        for post in xmlPosts:
+            post_atrr = dict(post.attrs)
+
+            post_id = post_atrr[u'id']
+            post_score = post_atrr[u'score']
+            post_tags = post_atrr[u'tags']
+            post_rating = post_atrr[u'rating']
+            creator_id = post_atrr[u'creator_id']
+            created_at = post_atrr[u'created_at']
+            source = post_atrr[u'source']
+            has_notes = post_atrr[u'has_notes']
+            has_comments = post_atrr[u'has_comments']
+            img_sample_url = post_atrr[u'sample_url']
+            img_file_url = post_atrr[u'file_url']
+            img_preview_url = post_atrr[u'preview_url']
 
             post = {
                 "id": post_id,
@@ -90,7 +95,7 @@ class rule34Py(Exception):
             list: Comment resulst list
         """
 
-        url = self.__urls['comments'].replace('#POST_ID#', post_id)
+        url = self.__urls['comments'].replace('#POST_ID#', str(post_id))
         req = requests.get(
             self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
 
@@ -100,14 +105,21 @@ class rule34Py(Exception):
 
         comments = []
 
-        e = ET.ElementTree(ET.fromstring(xml_string))
-        for elt in e.iter():
-            comment_id = elt.get('id')
-            creator_id = elt.get('creator_id')
-            created_at = elt.get('created_at')
-            creator_name = elt.get('creator')
-            creator_id = elt.get('creator_id')
-            content = elt.get('body')
+        bfsComments = BeautifulSoup(xml_string, features="xml")
+        xmlComments = bfsComments.comments.findAll('comment')
+
+        if int(len(xmlComments)) <= 0:
+            return []
+
+        for comment in xmlComments:
+            comment_attr = dict(comment.attrs)
+
+            comment_id = comment_attr['id']
+            creator_id = comment_attr['creator_id']
+            created_at = comment_attr['created_at']
+            creator_name = comment_attr['creator']
+            creator_id = comment_attr['creator_id']
+            content = comment_attr['body']
 
             comment = {
                 "id": comment_id,
@@ -161,52 +173,62 @@ class rule34Py(Exception):
             dict: Post Object
         """
 
-        if str(post_id).isdigit() or type(post_id) == int:
-
-            url = self.__urls['get_post'].replace('#POST_ID#', str(post_id))
-            req = requests.get(
-                self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
-
-            xml_string = req.content.decode()
-            xml_string = xml_string.replace(':<', '')
-            xml_string = xml_string.strip()
-
-            e = ET.ElementTree(ET.fromstring(xml_string))
-            post = {}
-            for elt in e.iter():
-                #post_id = elt.get('id')
-                post_score = elt.get('score')
-                post_tags = elt.get('tags')
-                post_rating = elt.get('rating')
-                creator_id = elt.get('creator_id')
-                created_at = elt.get('created_at')
-                source = None if elt.get(
-                    'source') == None else elt.get('source'),
-                has_notes = elt.get('has_notes')
-                has_comments = elt.get('has_comments')
-                img_sample_url = elt.get('sample_url')
-                img_file_url = elt.get('file_url')
-                img_preview_url = elt.get('preview_url')
-
-                post = {
-                    "id": post_id,
-                    "score": post_score,
-                    "rating": post_rating,
-                    "creator_id": creator_id,
-                    "created_at": created_at,
-                    "source": source,
-                    "has_notes": has_notes,
-                    "tags": post_tags,
-                    "img_sample_url": img_sample_url,
-                    "img_file_url": img_file_url,
-                    "img_preview_url": img_preview_url
-                }
-
-            return post
-
-        else:
-            raise Exception('id must be digits only!')
+        if not str(post_id).isdigit() or type(post_id) != int:
+            raise Exception('Parameter "ID" can only be Digit! (int or str)')
             return
+
+        url = self.__urls['get_post'].replace('#POST_ID#', str(post_id))
+        req = requests.get(self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+
+        xml_string = req.content.decode()
+        xml_string = xml_string.replace(':<', '')
+        xml_string = xml_string.strip()
+
+        post_ = []
+
+        bfsPosts = BeautifulSoup(xml_string, features="xml")
+        xmlPosts = bfsPosts.posts.findAll('post')
+
+        if int(len(xmlPosts) <= 0 or bfsPosts.posts.attrs['count']) <= 0:
+            return []
+
+        for post in xmlPosts:
+            post_atrr = dict(post.attrs)
+
+            post_id = post_atrr[u'id']
+            post_score =post_atrr[u'score']
+            post_tags = post_atrr[u'tags']
+            post_rating = post_atrr[u'rating']
+            has_children = True if post_atrr[u'has_children'] == 'true' else False
+            parent_id = post_atrr[u'parent_id']
+            creator_id = post_atrr[u'creator_id']
+            created_at = post_atrr[u'created_at']
+            source = post_atrr[u'source']
+            has_notes = post_atrr[u'has_notes']
+            has_comments = post_atrr[u'has_comments']
+            img_sample_url = post_atrr[u'sample_url']
+            img_file_url = post_atrr[u'file_url']
+            img_preview_url = post_atrr[u'preview_url']
+
+            _post = {
+                "id": post_id,
+                "score": post_score,
+                "rating": post_rating,
+                "creator_id": creator_id,
+                "created_at": created_at,
+                "source": source,
+                "has_notes": has_notes,
+                "tags": post_tags,
+                "img_sample_url": img_sample_url,
+                "img_file_url": img_file_url,
+                "img_preview_url": img_preview_url,
+                "has_children": has_children,
+                "parent_id": parent_id
+            }
+
+            post_.append(_post)
+
+        return post_
 
     def getFavorites(self, user_id, id_only=False):
         """Get Favorites from a user

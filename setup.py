@@ -5,7 +5,7 @@ with open('README.md', 'r') as rmdf:
 
 setup(
     name='rule34Py',
-    version='1.1.10',
+    version='1.2.10',
     description='API wraper for rule34.xxx',
     url="https://github.com/b3yc0d3/rule34Py",
     author="b3yc0d3",
@@ -15,6 +15,7 @@ setup(
     py_modules=['rule34Py'],
     package_dir={'': 'src'},
     classifiers=[
+        "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",

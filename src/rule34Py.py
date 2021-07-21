@@ -9,35 +9,41 @@ class rule34Py(Exception):
     def __init__(self):
 
         self.__init = True
-        self.__base_url = "https://rule34.xxx/index.php"
+        self.__base_url = "https://rule34.xxx/"
         self.__urls = {
-            'search': '?page=dapi&s=post&q=index&limit=#LIMIT#&tags=#TAGS#',
-            'comments': '?page=dapi&s=comment&q=index&post_id=#POST_ID#',
-            'user_search': '?page=account&s=profile',  # &uname=#USERNAME# &id=#USERID#
-            'user_favorites': '?page=favorites&s=view&id=#USR_ID#',
-            'get_post': '?page=dapi&s=post&q=index&id=#POST_ID#'
+            'search': 'index.php?page=dapi&s=post&q=index&limit=#LIMIT#&tags=#TAGS#',
+            'comments': 'index.php?page=dapi&s=comment&q=index&post_id=#POST_ID#',
+            'user_search': 'index.php?page=account&s=profile',  # &uname=#USERNAME# &id=#USERID#
+            'user_favorites': 'index.php?page=favorites&s=view&id=#USR_ID#',
+            'get_post': 'index.php?page=dapi&s=post&q=index&id=#POST_ID#',
+            'icameout': 'icameout.php'
+        }
+        self._headers = {
+            "User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"
         }
 
-    def search(self, tags, limit=100):
+    def search(self, tags: list, page_id: int = None, limit: int =100):
         """Search for posts
 
         Args:
-            tags (list): Search tags (cheatsheet: https://rule34.xxx/index.php?page=tags&s=list)
+            tags (list): Search tags
+            pid (int, optional): Page ID
             limit (int, optional): Limit for Posts. Max 100.
 
         Returns:
             list: Posts result list
-        """
 
-        if type(tags) != list:
-            raise ValueError('Parameter "tags" must be of type "list"!')
+        Tags Cheatsheet: https://rule34.xxx/index.php?page=tags&s=list
+        """
 
         url = self.__urls['search'].replace(
             '#LIMIT#', str(100 if limit > 100 else limit))
         url = url.replace('#TAGS#', '+'.join(tags))
+        if page_id != None:
+            url += "&pid=" + str(page_id) 
 
         req = requests.get(
-            self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+            self.__base_url + url, headers=self._headers)
 
         xml_string = req.content.decode()
         xml_string = xml_string.replace(':<', '')
@@ -47,6 +53,8 @@ class rule34Py(Exception):
 
         bfsPosts = BeautifulSoup(xml_string, features="xml")
         xmlPosts = bfsPosts.posts.findAll('post')
+        postCount = bfsPosts.posts['count']
+        posts.append(int(postCount))
 
         if int(len(xmlPosts) <= 0 or bfsPosts.posts.attrs['count']) <= 0:
             return []
@@ -54,14 +62,14 @@ class rule34Py(Exception):
         for post in xmlPosts:
             post_atrr = dict(post.attrs)
 
-            post_id = post_atrr[u'id']
-            post_score = post_atrr[u'score']
-            post_tags = post_atrr[u'tags']
+            post_id = int(post_atrr[u'id'])
+            post_score = int(post_atrr[u'score'])
+            post_tags = post_atrr[u'tags'].strip().split(" ")
             post_rating = post_atrr[u'rating']
-            creator_id = post_atrr[u'creator_id']
+            creator_id = int(post_atrr[u'creator_id'])
             created_at = post_atrr[u'created_at']
             source = post_atrr[u'source']
-            has_notes = post_atrr[u'has_notes']
+            has_notes = True if post_atrr[u'has_notes'] == "true" else False
             has_comments = post_atrr[u'has_comments']
             img_sample_url = post_atrr[u'sample_url']
             img_file_url = post_atrr[u'file_url']
@@ -85,7 +93,7 @@ class rule34Py(Exception):
 
         return posts
 
-    def getComments(self, post_id):
+    def getComments(self, post_id: int):
         """Get Comments from a Post
 
         Args:
@@ -97,7 +105,7 @@ class rule34Py(Exception):
 
         url = self.__urls['comments'].replace('#POST_ID#', str(post_id))
         req = requests.get(
-            self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+            self.__base_url + url, headers=self._headers)
 
         xml_string = req.content.decode()
         xml_string = xml_string.replace(':<', '')
@@ -114,11 +122,10 @@ class rule34Py(Exception):
         for comment in xmlComments:
             comment_attr = dict(comment.attrs)
 
-            comment_id = comment_attr['id']
-            creator_id = comment_attr['creator_id']
+            comment_id = int(comment_attr['id'])
+            creator_id = int(comment_attr['creator_id'])
             created_at = comment_attr['created_at']
             creator_name = comment_attr['creator']
-            creator_id = comment_attr['creator_id']
             content = comment_attr['body']
 
             comment = {
@@ -136,7 +143,7 @@ class rule34Py(Exception):
 
         return comments
 
-    def getAccount(self, identifier):
+    def __getAccount(self, identifier):
         search_type = ""
 
         raise Exception('under construction!')
@@ -150,7 +157,7 @@ class rule34Py(Exception):
 
         url = self.__urls['user_search'] + search_type
         req = requests.get(
-            self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+            self.__base_url + url, headers=self._headers)
 
         html_string = req.content.decode()
 
@@ -163,7 +170,7 @@ class rule34Py(Exception):
 
         return search_type
 
-    def getPost(self, post_id):
+    def getPost(self, post_id: int):
         """Get Post by Id
 
         Args:
@@ -173,64 +180,57 @@ class rule34Py(Exception):
             dict: Post Object
         """
 
-        if not str(post_id).isdigit() or type(post_id) != int:
-            raise Exception('Parameter "ID" can only be Digit! (int or str)')
-            return
-
         url = self.__urls['get_post'].replace('#POST_ID#', str(post_id))
-        req = requests.get(self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
+        req = requests.get(self.__base_url + url, headers=self._headers)
 
         xml_string = req.content.decode()
         xml_string = xml_string.replace(':<', '')
         xml_string = xml_string.strip()
 
-        post_ = []
-
         bfsPosts = BeautifulSoup(xml_string, features="xml")
         xmlPosts = bfsPosts.posts.findAll('post')
 
-        if int(len(xmlPosts) <= 0 or bfsPosts.posts.attrs['count']) <= 0:
-            return []
 
-        for post in xmlPosts:
-            post_atrr = dict(post.attrs)
+        post = xmlPosts[0]
 
-            post_id = post_atrr[u'id']
-            post_score =post_atrr[u'score']
-            post_tags = post_atrr[u'tags']
-            post_rating = post_atrr[u'rating']
-            has_children = True if post_atrr[u'has_children'] == 'true' else False
-            parent_id = post_atrr[u'parent_id']
-            creator_id = post_atrr[u'creator_id']
-            created_at = post_atrr[u'created_at']
-            source = post_atrr[u'source']
-            has_notes = post_atrr[u'has_notes']
-            has_comments = post_atrr[u'has_comments']
-            img_sample_url = post_atrr[u'sample_url']
-            img_file_url = post_atrr[u'file_url']
-            img_preview_url = post_atrr[u'preview_url']
+        post_atrr = dict(post.attrs)
+        post_id = int(post_atrr[u'id'])
+        post_score = int(post_atrr[u'score'])
+        post_tags = post_atrr[u'tags'].strip()
+        post_rating = post_atrr[u'rating']
+        has_children = True if post_atrr[u'has_children'] == 'true' else False
+        parent_id = None if post_atrr[u'parent_id'] == "" else int(post_atrr[u'parent_id'])
+        creator_id = int(post_atrr[u'creator_id'])
+        created_at = post_atrr[u'created_at']
+        source = post_atrr[u'source']
+        has_notes = True if post_atrr[u'has_notes'] == "true" else False
+        has_comments = True if post_atrr[u'has_comments'] == "true" else False
+        img_sample_url = post_atrr[u'sample_url']
+        img_file_url = post_atrr[u'file_url']
+        img_preview_url = post_atrr[u'preview_url']
+        post_tags = post_tags.replace("\"", "\\\"")
+        post_tags = post_tags.split(" ")
 
-            _post = {
-                "id": post_id,
-                "score": post_score,
-                "rating": post_rating,
-                "creator_id": creator_id,
-                "created_at": created_at,
-                "source": source,
-                "has_notes": has_notes,
-                "tags": post_tags,
-                "img_sample_url": img_sample_url,
-                "img_file_url": img_file_url,
-                "img_preview_url": img_preview_url,
-                "has_children": has_children,
-                "parent_id": parent_id
-            }
+        _post = {
+            "id": post_id,
+            "score": post_score,
+            "rating": post_rating,
+            "creator_id": creator_id,
+            "created_at": created_at,
+            "source": source,
+            "has_notes": has_notes,
+            "tags": post_tags,
+            "img_sample_url": img_sample_url,
+            "img_file_url": img_file_url,
+            "img_preview_url": img_preview_url,
+            "has_children": has_children,
+            "parent_id": parent_id,
+            "has_comments": has_comments
+        }
 
-            post_.append(_post)
+        return _post
 
-        return post_
-
-    def getFavorites(self, user_id, id_only=False):
+    def getFavorites(self, user_id: int, id_only: bool =False):
         """Get Favorites from a user
 
         Args:
@@ -241,31 +241,52 @@ class rule34Py(Exception):
             [type]: [description]
         """
 
-        if str(user_id).isdigit() or type(user_id) == int:
+        url = self.__urls['user_favorites'].replace('#USR_ID#', str(user_id))
+        req = requests.get(self.__base_url + url, headers=self._headers)
+        html_string = req.content.decode()
 
-            url = self.__urls['user_favorites'].replace('#USR_ID#', str(user_id))
-            req = requests.get(
-                self.__base_url + url, headers={"User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"})
-            html_string = req.content.decode()
+        soup = BeautifulSoup(html_string, 'html.parser')
 
-            soup = BeautifulSoup(html_string, 'html.parser')
+        favorites = []
 
-            favorites = []
+        for span_tag in soup.select('span[class*="thumb"]'):
+            if span_tag['class'][0] != "thumb":
+                continue
 
-            for span_tag in soup.select('span[class*="thumb"]'):
-                if span_tag['class'][0] != "thumb":
-                    continue
+            a = span_tag.select('a')[0]
+            post_id = int(a['id'][1:])
 
-                a = span_tag.select('a')[0]
-                post_id = a['id'][1:]
+            if id_only:
+                favorites.append(post_id)
+            elif not id_only:
+                favorites.append(self.getPost(post_id))
 
-                if id_only:
-                    favorites.append(post_id)
-                elif not id_only:
-                    favorites.append(self.getPost(post_id))
+        return favorites
 
-            return favorites
+    def iCameList(self):
+        """Gets Top 100 came-on characters
+        """
 
-        else:
-            raise Exception('id must be digits only!')
-            return
+        req = requests.get(self.__base_url + self.__urls['icameout'], headers=self._headers)
+        html_string = req.content.decode()
+
+        soup = BeautifulSoup(html_string, 'html.parser')
+        soup.unicode
+        rows = soup.find("table", border=1).find("tbody").find_all("tr")
+
+        came_on_characters = []
+
+        for row in rows:
+            if row == None:
+                continue
+
+            a = row.select('td > a', href = True)[0] #.get_text(strip=True)
+            count = row.select('td')[1].get_text(strip=True)
+
+            came_on_characters.append({
+                "tag": a.get_text(strip=True),
+                "icame_count": int(count),
+                "tag_url": a["href"]
+            })
+
+        return came_on_characters

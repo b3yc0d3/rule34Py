@@ -1,5 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+import urllib.parse as urlparse
+from urllib.parse import parse_qs
+import random
 
 
 class rule34Py(Exception):
@@ -13,21 +16,23 @@ class rule34Py(Exception):
         self.__urls = {
             'search': 'index.php?page=dapi&s=post&q=index&limit=#LIMIT#&tags=#TAGS#',
             'comments': 'index.php?page=dapi&s=comment&q=index&post_id=#POST_ID#',
-            'user_search': 'index.php?page=account&s=profile',  # &uname=#USERNAME# &id=#USERID#
+            # &uname=#USERNAME# &id=#USERID#
+            'user_search': 'index.php?page=account&s=profile',
             'user_favorites': 'index.php?page=favorites&s=view&id=#USR_ID#',
             'get_post': 'index.php?page=dapi&s=post&q=index&id=#POST_ID#',
-            'icameout': 'icameout.php'
+            'icameout': 'icameout.php',
+            'random': 'index.php?page=post&s=random'
         }
         self._headers = {
             "User-Agent": f"Mozilla/5.0 (compatible; rule34Py/1.0)"
         }
 
-    def search(self, tags: list, page_id: int = None, limit: int =100):
+    def search(self, tags: list, page_id: int = None, limit: int = 100):
         """Search for posts
 
         Args:
             tags (list): Search tags
-            pid (int, optional): Page ID
+            page_id (int, optional): Page ID
             limit (int, optional): Limit for Posts. Max 100.
 
         Returns:
@@ -40,7 +45,7 @@ class rule34Py(Exception):
             '#LIMIT#', str(100 if limit > 100 else limit))
         url = url.replace('#TAGS#', '+'.join(tags))
         if page_id != None:
-            url += "&pid=" + str(page_id) 
+            url += "&pid=" + str(page_id)
 
         req = requests.get(
             self.__base_url + url, headers=self._headers)
@@ -190,7 +195,6 @@ class rule34Py(Exception):
         bfsPosts = BeautifulSoup(xml_string, features="xml")
         xmlPosts = bfsPosts.posts.findAll('post')
 
-
         post = xmlPosts[0]
 
         post_atrr = dict(post.attrs)
@@ -199,7 +203,8 @@ class rule34Py(Exception):
         post_tags = post_atrr[u'tags'].strip()
         post_rating = post_atrr[u'rating']
         has_children = True if post_atrr[u'has_children'] == 'true' else False
-        parent_id = None if post_atrr[u'parent_id'] == "" else int(post_atrr[u'parent_id'])
+        parent_id = None if post_atrr[u'parent_id'] == "" else int(
+            post_atrr[u'parent_id'])
         creator_id = int(post_atrr[u'creator_id'])
         created_at = post_atrr[u'created_at']
         source = post_atrr[u'source']
@@ -230,7 +235,7 @@ class rule34Py(Exception):
 
         return _post
 
-    def getFavorites(self, user_id: int, id_only: bool =False):
+    def getFavorites(self, user_id: int, id_only: bool = False):
         """Get Favorites from a user
 
         Args:
@@ -267,7 +272,8 @@ class rule34Py(Exception):
         """Gets Top 100 came-on characters
         """
 
-        req = requests.get(self.__base_url + self.__urls['icameout'], headers=self._headers)
+        req = requests.get(self.__base_url +
+                           self.__urls['icameout'], headers=self._headers)
         html_string = req.content.decode()
 
         soup = BeautifulSoup(html_string, 'html.parser')
@@ -280,7 +286,7 @@ class rule34Py(Exception):
             if row == None:
                 continue
 
-            a = row.select('td > a', href = True)[0] #.get_text(strip=True)
+            a = row.select('td > a', href=True)[0]  # .get_text(strip=True)
             count = row.select('td')[1].get_text(strip=True)
 
             came_on_characters.append({
@@ -290,3 +296,25 @@ class rule34Py(Exception):
             })
 
         return came_on_characters
+
+    def random(self, tags: list = None):
+        """Gets a random Post
+
+        Args:
+            tags (list, optional): Tag list
+
+        Returns:
+            dict: Returns a Post object
+        """
+
+        if tags != None:
+            rand_num = random.randint(1, self.search(tags, 0, 0)[0])
+            return self.search(tags, rand_num, 1)[1]
+        else:
+            response = requests.get(self.__base_url + self.__urls['random'])
+            parsed = urlparse.urlparse(response.url)
+            random_post_id = parse_qs(parsed.query)['id'][0]
+
+            return self.getPost(random_post_id)
+
+

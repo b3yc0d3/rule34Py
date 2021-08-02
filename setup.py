@@ -5,7 +5,7 @@ with open('README.md', 'r') as rmdf:
 
 setup(
     name='rule34Py',
-    version='1.2.10',
+    version='1.3.20',
     description='API wraper for rule34.xxx',
     url="https://github.com/b3yc0d3/rule34Py",
     author="b3yc0d3",

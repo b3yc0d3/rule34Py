@@ -12,11 +12,13 @@ from rule34Py import rule34Py
 
 r34Py = rule34Py()
 
-results = r34Py.search(['neko'], 10)
+results = r34Py.search(['neko'], 5, 10)
 favs = r34Py.getFavorites(118538, true)
 comments = r34Py.getComments(4485507)
 post = r34Py.getPost(4485507)
 icameList = r34Py.iCameList()
+random_0 = r34Py.random() # Complete Random
+random_1 = r34Py.random(['neko', 'creampie']) # complete Random but tags oriented
 
 
 print(results)
@@ -24,6 +26,8 @@ print(favs)
 print(comments)
 print(post)
 print(icameList)
+print(random_0)
+print(random_1)
 ```
 
 ---
@@ -33,8 +37,9 @@ print(icameList)
     - [getComments(<post_id>)](#getcomments)
     - [getFavorites(<user_id>, <?id_only>)](#getfavorites)
     - [getPost(<post_id>)](#getpost)
-    - [search([\<tags>], <?page_id>, <?limit>](#search)
+    - [search([\<tags>], <?page_id>, <?limit>)](#search)
     - [iCameList()](#icamelist)
+    - [rabdom([\<?tags>])](#random)
 
 ## rule34Py
 Syntax: `r34Py = rule34Py()`
@@ -79,3 +84,10 @@ Syntax: `<rule34Py>.search([<tags>], <?page_id>, <?limit>)`
 Syntax: `<rule34Py>.iCameList()`
 - returns: \<list>[\<dictionary>]
     - `dictionary`> `{"tag": <STR>, "icame_count": <INT>, "tag_url": <STR>}`
+
+
+## random
+Syntax: `<rule34Py>.random([<?tags>])`
+- `tags` \<list> ([Tag Cheatsheet](https://rule34.xxx/index.php?page=tags&s=list))
+- returns: \<dict>
+    - `dictionary`> `{"id": <INT>, "score": <INT>, "rating": <STR>, "creator_id": <INT>, "created_at": <STR>, "source": <STR>, "has_notes": <BOOL>, "tags": <LIST>[<STR>], "img_sample_url": <STR>, "img_file_url": <STR>, "img_preview_url": <STR>, "has_children": <BOOL>, "parent_id": <INT>, "has_comments": <BOOL>}`

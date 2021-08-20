@@ -41,6 +41,13 @@ class rule34Py(Exception):
         Tags Cheatsheet: https://rule34.xxx/index.php?page=tags&s=list
         """
 
+        if(limit < 0):
+            raise Exception('the minimum value for "limit" is 0')
+            return
+        elif(limit > 100):
+            raise Exception('the maximium value for "limit" is 100')
+            return
+
         url = self.__urls['search'].replace(
             '#LIMIT#', str(100 if limit > 100 else limit))
         url = url.replace('#TAGS#', '+'.join(tags))
@@ -59,7 +66,12 @@ class rule34Py(Exception):
         bfsPosts = BeautifulSoup(xml_string, features="xml")
         xmlPosts = bfsPosts.posts.findAll('post')
         postCount = bfsPosts.posts['count']
-        posts.append(int(postCount))
+        
+        # Add post result count to array (first item)
+        if(limit < int(postCount)):
+            posts.append(int(limit))
+        else:
+            posts.append(int(postCount))
 
         if int(len(xmlPosts) <= 0 or bfsPosts.posts.attrs['count']) <= 0:
             return []
@@ -308,8 +320,14 @@ class rule34Py(Exception):
         """
 
         if tags != None:
-            rand_num = random.randint(1, self.search(tags, 0, 0)[0])
-            return self.search(tags, rand_num, 1)[1]
+            search_raw = self.search(tags)
+            rand_num = random.randint(0, search_raw[0])
+
+            while(rand_num == 0):
+                rand_num = random.randint(0, search_raw[0])
+            else:
+                return self.getPost(search_raw[rand_num]['id'])
+        
         else:
             response = requests.get(self.__base_url + self.__urls['random'])
             parsed = urlparse.urlparse(response.url)

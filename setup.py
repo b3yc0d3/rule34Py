@@ -5,7 +5,7 @@ with open('README.md', 'r') as rmdf:
 
 setup(
     name='rule34Py',
-    version='1.3.20',
+    version='1.3.38',
     description='API wraper for rule34.xxx',
     url="https://github.com/b3yc0d3/rule34Py",
     author="b3yc0d3",
@@ -27,5 +27,8 @@ setup(
     install_requires = [
         "beautifulsoup4 ~= 4.9.3",
         "requests ~= 2.25.1"
-    ]
+    ],
+    project_urls={
+        "Issue tracker": "https://github.com/b3yc0d3/rule34Py/issues"
+    }
 )

@@ -1,5 +1,7 @@
 *.sh
 debug*
+_*
+!rule34Py/_*.py
 __pycache__
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

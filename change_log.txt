@@ -1,0 +1,36 @@
+## [1.4.0] - ??-??-2021 ??:?? MESZ
+### Added
+- "search" Function
+- "get_comments" Functon
+- "get_post" Functon
+- "random_post" Functon
+- docs for every Object (an old doc for 1.3.38 and below)
+
+### Changed
+- updated README
+
+## [1.3.20] - 20-08-2021 14:57 MESZ
+### Changed
+- fixed [bug](https://github.com/b3yc0d3/rule34Py/issues/2)
+- "src/rule34Py.py"
+
+## [1.3.20] - 02-08-2021 20:06 MESZ
+### Changed
+- "random" Functon
+- "README.md" upated documentation
+
+## [0.0.1] - 06-05-2021 - 22:32 MESZ
+### Added
+- "search" Function
+- "getCommets" Function
+- "getAccount" Function
+- "getPost" Function
+- "getFavorites" Function
+- LINCENSE.txt
+- setup.py
+- src/rule34Py.py
+- src/test.xml
+- src/http_client.py
+- src/test.xml
+- debug.py
+- setup.py

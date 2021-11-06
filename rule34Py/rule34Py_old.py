@@ -4,6 +4,8 @@ import urllib.parse as urlparse
 from urllib.parse import parse_qs
 import random
 
+#&json=1
+
 
 class rule34Py(Exception):
     """rule34.xxx API wraper
@@ -16,7 +18,6 @@ class rule34Py(Exception):
         self.__urls = {
             'search': 'index.php?page=dapi&s=post&q=index&limit=#LIMIT#&tags=#TAGS#',
             'comments': 'index.php?page=dapi&s=comment&q=index&post_id=#POST_ID#',
-            # &uname=#USERNAME# &id=#USERID#
             'user_search': 'index.php?page=account&s=profile',
             'user_favorites': 'index.php?page=favorites&s=view&id=#USR_ID#',
             'get_post': 'index.php?page=dapi&s=post&q=index&id=#POST_ID#',
@@ -66,7 +67,7 @@ class rule34Py(Exception):
         bfsPosts = BeautifulSoup(xml_string, features="xml")
         xmlPosts = bfsPosts.posts.findAll('post')
         postCount = bfsPosts.posts['count']
-        
+
         # Add post result count to array (first item)
         if(limit < int(postCount)):
             posts.append(int(limit))
@@ -327,12 +328,10 @@ class rule34Py(Exception):
                 rand_num = random.randint(0, search_raw[0])
             else:
                 return self.getPost(search_raw[rand_num]['id'])
-        
+
         else:
             response = requests.get(self.__base_url + self.__urls['random'])
             parsed = urlparse.urlparse(response.url)
             random_post_id = parse_qs(parsed.query)['id'][0]
 
             return self.getPost(random_post_id)
-
-

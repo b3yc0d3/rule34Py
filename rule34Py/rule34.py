@@ -10,9 +10,13 @@ from rule34Py.api_urls import API_URLS
 from rule34Py.__vars__ import __headers__, __version__
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
+from rule34Py.icame import ICame
 
 
 class rule34Py(Exception):
+    """rule34.xxx API wraper
+    """
+
     def __init__(self):
         """rule34.xxx API wraper
         """
@@ -118,7 +122,7 @@ class rule34Py(Exception):
         params = [
             ["POST_ID", str(post_id)]
         ]
-        formatted_url = self._parseUrlParams(API_URLS.GET_POST, params)
+        formatted_url = self._parseUrlParams(API_URLS.GET_POST.value, params)
         response = requests.get(formatted_url, headers=__headers__)
 
         res_status = response.status_code
@@ -141,6 +145,42 @@ class rule34Py(Exception):
 
         return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
 
+    def icame(self, limit: int = 100) -> list:
+        """Gets a list of the top 100 "came-on characters"
+
+        Args:
+            limit (int): Limit of returned items (default 100)
+
+        Returns:
+            list: Returns list of ICame Objects
+        """
+
+        response = requests.get(API_URLS.ICAME.value)
+
+        res_status = response.status_code
+        res_len = len(response.content)
+        ret_topchart = []
+
+        if res_status != 200 or res_len <= 0:
+            return ret_topchart
+
+        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
+        rows = bfs_raw.find("table", border=1).find("tbody").find_all("tr")
+
+        for row in rows:
+            if row == None:
+                continue
+
+            character_name = row.select('td > a', href=True)[0].get_text(strip=True)
+            count = row.select('td')[1].get_text(strip=True)
+
+            ret_topchart.append(ICame(character_name, count))
+
+
+        return ret_topchart
+
+
+
     def random_post(self, tags: list = None):
         """Get random Post
         Args:
@@ -161,7 +201,6 @@ class rule34Py(Exception):
 
         else:
             return self.get_post(self._random_post_id())
-
 
 
     def _random_post_id(self) -> str:

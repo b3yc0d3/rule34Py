@@ -27,8 +27,8 @@ setup(
     ],
     install_requires = [
         "beautifulsoup4 ~= 4.9.3",
-        "requests ~= 2.25.1"
-        "lxml"
+        "requests ~= 2.25.1",
+        "lxml ~= 4.6.4"
     ],
     project_urls={
         "Issue tracker": "https://github.com/b3yc0d3/rule34Py/issues"

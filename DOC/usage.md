@@ -2,6 +2,7 @@
 - [Class rule34Py](#rule34py)
     - [get_comments(\<post_id>)](#get_post)
     - [get_post(\<post_id>)](#get_post)
+    - [icame()](#icame)
     - [random_post([?tags])](#random_post)
     - [search([tags], \<?page_id>, \<?limit>)](#search)
     - [version](#version)
@@ -32,6 +33,12 @@ Returns:\
 &ensp;&ensp;&ensp;__[Post]__ Single [Post](./page.md)
 
 Get Post by Id
+
+## icame
+Type: `function`\
+Syntax: `<rule34Py>.icame()`\
+Returns:\
+&ensp;&ensp;&ensp;__[list(ICame)]__ List of [ICame](#./icame.md) Objects
 
 ## random_post
 Type: `function`\

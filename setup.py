@@ -1,5 +1,5 @@
 from setuptools import setup
-from rule34Py.__vars__ import __version__, __authors__, __emails__
+from rule34Py.__vars__ import __version__, __author__, __email__
 
 with open('README.md', 'r') as rmdf:
     long_description = rmdf.read()
@@ -9,8 +9,8 @@ setup(
     version=__version__,
     description='API wraper for rule34.xxx',
     url="https://github.com/b3yc0d3/rule34Py",
-    author=__authors__,
-    author_email=__emails__,
+    author=__author__,
+    author_email=__email__,
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=['rule34Py'],

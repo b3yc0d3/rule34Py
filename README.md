@@ -1,7 +1,12 @@
 # rule34Py
 [![Downloads](https://pepy.tech/badge/rule34py)](https://pepy.tech/project/rule34py) ![](https://img.shields.io/pypi/format/rule34Py) [![](https://img.shields.io/pypi/v/rule34Py)](https://pypi.org/project/rule34Py/) ![](https://img.shields.io/github/license/b3yc0d3/rule34Py) ![](https://img.shields.io/github/languages/code-size/b3yc0d3/rule34Py)\
 This is a Simple rule34.xxx API wraper.\
-You can finde the Changelog [_here_](./change_log.txt).
+Read the [Documentation](#documentation)
+
+## Whats new?
+I've rewritten and cleaned the code up. My goal is to ceep the code as clean as posible. I've also added new Object types, such as the "[Post](./DOC/post.md)" Object.
+The new Versions (_above 1.4.0_) are __not__ competible with older versions, do to masive changes.\
+_You can finde the Changelog [<u>here</u>](./change_log.txt)._
 
 ## Ideas
 + [ ] User search

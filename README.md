@@ -27,11 +27,15 @@ from rule34Py import rule34Py
 
 r34Py = rule34Py()
 
+print(r34Py.version)
+
 result_comments = r34Py.get_comments(4153825)
 result_post = r34Py.get_post(4931536)
 result_icame = r34Py.icame()
 result_search = r34Py.search(['neko'], page_id=2, limit=50)
 result_random = r34Py.random("neko") # or r34Py.random()
+result_search = r34Py.search(["neko"], page_id=2, limit=50)
+result_random = r34Py.random_post(["neko"]) # or r34Py.random_post()
 
 print(result_random.id)
 print(result_random.image)

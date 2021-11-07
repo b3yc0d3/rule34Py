@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from enum import Enum
 from urllib.parse import parse_qs
 # From this module
-from rule34Py.api_urls import API_URLS
+from rule34Py.api_urls import API_URLS, __base_url__
 from rule34Py.__vars__ import __headers__, __version__
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
@@ -61,7 +61,7 @@ class rule34Py(Exception):
         ret_posts = []
 
         if res_status != 200 or res_len <= 0:
-            return []
+            return ret_posts
 
         for post in response.json():
             pFileUrl = post["file_url"]
@@ -109,6 +109,40 @@ class rule34Py(Exception):
 
         return ret_comments
 
+    # TODO: solve the hcaptcher on login page
+    # def get_favorites(self, user_id: int, fast: bool = False):
+    #     """Get favorites from users
+    #
+    #     Args:
+    #         user_id (int): Id of user
+    #         fast (bool): If set to true, only Ids of the posts are returned
+    #
+    #     Returns:
+    #         list: List of Posts (List of ids if "fast" true)
+    #     """
+    #
+    #     return
+    #
+    #     params = [
+    #         ["USER_ID", str(user_id)],
+    #     ]
+    #
+    #     formatted_url = self._parseUrlParams(API_URLS.USER_PAGE.value, params)
+    #     response = requests.get(formatted_url, headers=__headers__) # Sending get request
+    #
+    #     res_status = response.status_code
+    #     res_len = len(response.content)
+    #     html_string = response.content.decode("utf-8")
+    #     ret_favorites = []
+    #
+    #     if res_status != 200 or res_len <= 0:
+    #         return ret_favorites
+    #
+    #     soup = BeautifulSoup(html_string, "html.parser")
+    #     for span in soup.find_all('span', {'class' : 'thumb'}):
+    #         print(span["id"][1:])
+
+
     def get_post(self, post_id: int) -> Post:
         """Get Post by Id
 
@@ -155,7 +189,7 @@ class rule34Py(Exception):
             list: Returns list of ICame Objects
         """
 
-        response = requests.get(API_URLS.ICAME.value)
+        response = requests.get(API_URLS.ICAME.value, headers=__headers__)
 
         res_status = response.status_code
         res_len = len(response.content)
@@ -179,8 +213,6 @@ class rule34Py(Exception):
 
         return ret_topchart
 
-
-
     def random_post(self, tags: list = None):
         """Get random Post
         Args:
@@ -189,6 +221,8 @@ class rule34Py(Exception):
         Returns:
             Post: Post Object
         """
+
+        ## Fixed bug: https://github.com/b3yc0d3/rule34Py/issues/2#issuecomment-902728779
 
         if tags != None:
             search_raw = self.search(tags)

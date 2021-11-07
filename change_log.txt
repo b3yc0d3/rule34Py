@@ -6,6 +6,7 @@
 - "icame" Functon (and docs for it)
 - "random_post" Functon
 - docs for every Object (an old doc for 1.3.38 and below)
+- new code snippet/example
 
 ### Changed
 - updated README

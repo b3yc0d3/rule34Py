@@ -8,3 +8,4 @@ class API_URLS(str, Enum):
     GET_POST = f"{__base_url__}index.php?page=dapi&s=post&q=index&id={{POST_ID}}&json=1" # returns: JSON
     ICAME = f"{__base_url__}icameout.php" # returns: HTML
     RANDOM_POST = f"{__base_url__}index.php?page=post&s=random" #  returns: HTML
+    USER_PAGE = f"{__base_url__}index.php?page=account&s=profile&id={{USER_ID}}" # returns: HTML

@@ -5,6 +5,7 @@ You can finde the Changelog [_here_](./change_log.txt).
 
 ## Ideas
 + [ ] User search
+    - [ ] Get user by its id (*or maybe username*)
 
 *Feel free to submit ideas*
 
@@ -16,7 +17,7 @@ You can finde the Changelog [_here_](./change_log.txt).
 New [Documentation](./DOC/usage.md) for current version\
 Old [Documentation](./DOC/old.md) (*for version <u>1.3.38</u> and below!*)
 
-## Code Snipped
+## Code Snippet
 ```py
 from rule34Py import rule34Py
 

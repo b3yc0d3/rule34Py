@@ -1,6 +1,7 @@
 # Usage
 - [Class rule34Py](#rule34py)
     - [get_comments(\<post_id>)](#get_post)
+    - [get_pool(\<pool_id>, \<?fast>)](#get_pool)
     - [get_post(\<post_id>)](#get_post)
     - [icame()](#icame)
     - [random_post([?tags])](#random_post)
@@ -19,9 +20,22 @@ Args:\
 &ensp;&ensp;&ensp;`post_id` __[int]__ Id of post
 
 Returns:\
-&ensp;&ensp;&ensp;__[list(PostComment)]__ List of [PostComment](./post_comment.md)
+&ensp;&ensp;&ensp;__[list(PostComment)]__ List of [PostComment](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post_comment.md)
 
 Get comments of given Post
+
+## get_pool
+Type: `function`\
+Syntax: `<rule34Py>.get_pool(<pool_id>, <?fast>)`\
+Args:\
+&ensp;&ensp;&ensp;`pool_id` __[int]__ Id of pool\
+&ensp;&ensp;&ensp;`fast` __[bool]__ If false returns [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) list, if true returns Id list (*Optional*)
+
+Returns:\
+&ensp;&ensp;&ensp;__[list(Post|str)]__ List of [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) Objects or List of Id string
+
+Get Pool by Id
+*Be aware that if "fast" is set to False, it takes extreme long.*
 
 ## get_post
 Type: `function`\
@@ -30,7 +44,7 @@ Args:\
 &ensp;&ensp;&ensp;`post_id` __[int]__ Id of post
 
 Returns:\
-&ensp;&ensp;&ensp;__[Post]__ Single [Post](./page.md)
+&ensp;&ensp;&ensp;__[Post]__ Single [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)
 
 Get Post by Id
 
@@ -38,7 +52,9 @@ Get Post by Id
 Type: `function`\
 Syntax: `<rule34Py>.icame()`\
 Returns:\
-&ensp;&ensp;&ensp;__[list(ICame)]__ List of [ICame](#./icame.md) Objects
+&ensp;&ensp;&ensp;__[list(ICame)]__ List of [ICame](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/icame.md) Objects
+
+Gets a list of the top 100 "came-on characters"
 
 ## random_post
 Type: `function`\
@@ -49,6 +65,8 @@ Args:\
 Returns:\
 &ensp;&ensp;&ensp; __[Post]__ Post Object
 
+Get a random Post
+
 ## search
 Type: `function`\
 Syntax: `<rule34Py>.search([tags], <?page_id>, <?limit>)`\
@@ -58,7 +76,7 @@ Args:\
 &ensp;&ensp;&ensp;`limit` __[int(1-100)]__ Limit of posts returnt. Default is 100 (*Optional*)
 
 Returns:\
-&ensp;&ensp;&ensp;__[list(Post)]__ List of [Posts](./page.md)
+&ensp;&ensp;&ensp;__[list(Post)]__ List of [Posts](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)
 
 Search for posts by tags. _Wilde card supported_ ([Cheatsheet](https://rule34.xxx/index.php?page=help&topic=cheatsheet) and [Tags](https://rule34.xxx/index.php?page=tags&s=list))
 
@@ -67,3 +85,5 @@ Type: `proerty`\
 Syntax: `<rule34Py>.version`\
 Returns:\
 &ensp;&ensp;&ensp; __[str]__ Version string
+
+Get current version of module (*eg. 1.4.1*)

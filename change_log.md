@@ -1,3 +1,10 @@
+## [1.4.1] - 10-11-2021
+### Added
+- "get_pool" Function (and docs for it)
+
+### Changed
+- relative links to absolute links in all readme files
+
 ## [1.4.0] - 07-11-2021
 ### Added
 - "search" Function

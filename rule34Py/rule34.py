@@ -142,6 +142,42 @@ class rule34Py(Exception):
     #     for span in soup.find_all('span', {'class' : 'thumb'}):
     #         print(span["id"][1:])
 
+    def get_pool(self, pool_id: int, fast: bool = True) -> list:
+        """Get Pool by Id
+        Be aware that if "fast" is set to False, it takes extreme long.
+
+        Args:
+            pool_id (int): Id of pool
+            fast (bool, optional): If true, returns only post ids
+
+        Returns:
+            list: List of Post Objects/id Strings
+        """
+
+        params = [
+            ["POOL_ID", str(pool_id)]
+        ]
+        response = requests.get(self._parseUrlParams(API_URLS.POOL.value, params), headers=__headers__)
+
+        res_status = response.status_code
+        res_len = len(response.content)
+        ret_posts = []
+
+        if res_status != 200 or res_len <= 0:
+            return ret_posts
+
+        soup = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
+
+        for div in soup.find_all("span", class_="thumb"):
+            a = div.find("a")
+            id = div["id"][1:]
+
+            if fast == True:
+                ret_posts.append(id)
+            else:
+                ret_posts.append(self.get_post(id))
+
+        return ret_posts
 
     def get_post(self, post_id: int) -> Post:
         """Get Post by Id

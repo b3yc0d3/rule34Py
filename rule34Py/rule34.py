@@ -272,6 +272,44 @@ class rule34Py(Exception):
         else:
             return self.get_post(self._random_post_id())
 
+    def tagmap(self) -> list:
+        """Get TagMap (Top 100 Tags searched)
+        Returns:
+            list: List of dicts
+        """
+
+        response = requests.get(API_URLS.TOPMAP.value, headers=__headers__)
+
+        res_status = response.status_code
+        res_len = len(response.content)
+        ret_topchart = []
+
+        if res_status != 200 or res_len <= 0:
+            return []
+
+        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
+        rows = bfs_raw.find("table", class_="server-assigns").find_all("tr")
+
+        rows.pop(0)
+        rows.pop(0)
+
+        retData = []
+
+        for row in rows:
+            tags = row.find_all("td")
+
+            rank = tags[0].string[1:]
+            tagname = tags[1].string
+            percentage = tags[2].string[:-1]
+
+            retData.append({
+                "rank": int(rank),
+                "tagname": tagname,
+                "percentage": float(percentage.strip())
+            })
+
+        return retData
+
 
     def _random_post_id(self) -> str:
         res = requests.get(API_URLS.RANDOM_POST.value, headers=__headers__)

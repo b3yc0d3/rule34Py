@@ -1,3 +1,10 @@
+## [1.4.2] - 18-11-2021
+### Added
+- "tagmap" function (and docs for it)
+
+### Changed
+- updated code snippet
+
 ## [1.4.1] - 10-11-2021
 ### Added
 - "get_pool" Function (and docs for it)

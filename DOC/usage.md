@@ -6,6 +6,7 @@
     - [icame()](#icame)
     - [random_post([?tags])](#random_post)
     - [search([tags], \<?page_id>, \<?limit>)](#search)
+    - [tagmap()](#tagmap)
     - [version](#version)
 
 ## rule34Py
@@ -79,6 +80,14 @@ Returns:\
 &ensp;&ensp;&ensp;__[list(Post)]__ List of [Posts](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)
 
 Search for posts by tags. _Wilde card supported_ ([Cheatsheet](https://rule34.xxx/index.php?page=help&topic=cheatsheet) and [Tags](https://rule34.xxx/index.php?page=tags&s=list))
+
+## tagmap
+Type: `function`\
+Syntax: `<rule34Py>.tagmap()`\
+Returns:\
+&ensp;&ensp;&ensp; __[list(dict)]__ List of dicts (eg. : `[{"rank": <int>, "tagname": <str>, "percentage": <float>}]`)
+
+Get TagMap (Top 100 Tags searched)
 
 ## version
 Type: `proerty`\

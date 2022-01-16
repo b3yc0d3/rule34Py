@@ -1,3 +1,7 @@
+## [1.4.3] - 16-01-2022
+### Changed
+- setuppy min versions
+
 ## [1.4.2] - 18-11-2021
 ### Added
 - "tagmap" function (and docs for it)

@@ -1,9 +1,8 @@
-__version__tuple__ = ("1", "4", "3")
+__version__tuple__ = ("1", "4", "4")
 __author__ = ("b3yc0d3")
-__email__ = ("mc25.studio@gmail.com")
+__email__ = ("b3yc0d3@gmail.com")
 
 __version__ = ".".join(__version__tuple__) # xx.xx.xx
-__version_short__ = f"{__version__tuple__[0]}.{__version__tuple__[1]}" # xx.xx
 
 
 # Variables

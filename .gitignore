@@ -1,5 +1,5 @@
-*.sh
-debug*
+publish.sh
+debug.json
 _*
 !rule34Py/_*.py
 __pycache__

@@ -1,3 +1,9 @@
+## [1.4.4] - 2022/04/11
+### Changed
+- search function, added new parameter "ignore_max_limit"
+- updated Docs
+- author email
+
 ## [1.4.3] - 16-01-2022
 ### Changed
 - setuppy min versions

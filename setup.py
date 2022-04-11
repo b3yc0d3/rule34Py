@@ -27,7 +27,7 @@ setup(
     ],
     install_requires = [
         "beautifulsoup4 >= 4.9.3",
-        "requests >= 2.25.1",
+        "requests >= 2.27.1",
         "lxml >= 4.6.4"
     ],
     project_urls={

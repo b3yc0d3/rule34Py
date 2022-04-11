@@ -22,23 +22,25 @@ class rule34Py(Exception):
         """
         self.__isInit__ = False
 
-    def search(self, tags: list, page_id: int = None, limit: int = 100) -> list:
+    def search(self, tags: list, page_id: int = None, ignore_max_limit: bool = False, limit: int = 500) -> list:
         """Search for posts
 
         Args:
             tags (list[str]): Search tags
             page_num (int, optional): Page ID
-            limit (int, optional): Limit for Posts. Max 100.
+            ignore_max_limit (bool, optional): If max value should be ignored
+            limit (int, optional): Limit for Posts. Max 1000.
 
         Returns:
             list: Posts result list
 
+        API Docs: https://rule34.xxx/index.php?page=help&topic=dapi
         Tags Cheatsheet: https://rule34.xxx/index.php?page=tags&s=list
         """
 
-        # Check if "limit" is in between 1 and 100
-        if limit > 100 or limit <= 0:
-            raise Exception("invalid value for \"limit\"\n  valid valius: 1-100")
+        # Check if "limit" is in between 1 and 1000
+        if not ignore_max_limit and limit > 1000 or limit <= 0:
+            raise Exception("invalid value for \"limit\"\n  value must be between 1 and 1000\n  see for more info:\n  https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md#search")
             return
 
         params = [

@@ -5,7 +5,7 @@
     - [get_post(\<post_id>)](#get_post)
     - [icame()](#icame)
     - [random_post([?tags])](#random_post)
-    - [search([tags], \<?page_id>, \<?limit>)](#search)
+    - [search([tags], \<?page_id>, \<?ignore_max_limit>, \<?limit>)](#search)
     - [tagmap()](#tagmap)
     - [version](#version)
 
@@ -70,10 +70,11 @@ Get a random Post
 
 ## search
 Type: `function`\
-Syntax: `<rule34Py>.search([tags], <?page_id>, <?limit>)`\
+Syntax: `<rule34Py>.search([tags], <?page_id>, <?ignore_max_limit>, <?limit>)`\
 Args:\
 &ensp;&ensp;&ensp;`tags` __[list(str)]__ String ist of tags\
 &ensp;&ensp;&ensp;`page_id` __[int]__ Page id (*Optional*)\
+&ensp;&ensp;&ensp;`ignore_max_limit` __[bool]__ If max value should be ignored (*Optional* default Flase)\
 &ensp;&ensp;&ensp;`limit` __[int(1-100)]__ Limit of posts returnt. Default is 100 (*Optional*)
 
 Returns:\

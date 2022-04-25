@@ -1,3 +1,9 @@
+## [1.4.5] - 2022/04/25
+### Changed
+- added to function `search` additional error handling
+- updated DOCS
+- updated rule34.xxx api url
+
 ## [1.4.4] - 2022/04/11
 ### Changed
 - search function, added new parameter "ignore_max_limit"

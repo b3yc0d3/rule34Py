@@ -21,7 +21,7 @@ Args:\
 &ensp;&ensp;&ensp;`post_id` __[int]__ Id of post
 
 Returns:\
-&ensp;&ensp;&ensp;__[list(PostComment)]__ List of [PostComment](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post_comment.md)
+&ensp;&ensp;&ensp;__[list(PostComment)]__ List of [PostComment](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post_comment.md) (*empty if error occurs*)
 
 Get comments of given Post
 
@@ -33,7 +33,7 @@ Args:\
 &ensp;&ensp;&ensp;`fast` __[bool]__ If false returns [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) list, if true returns Id list (*Optional*)
 
 Returns:\
-&ensp;&ensp;&ensp;__[list(Post|str)]__ List of [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) Objects or List of Id string
+&ensp;&ensp;&ensp;__[list(Post|str)]__ List of [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) Objects or List of Id string (*empty if error occurs*)
 
 Get Pool by Id
 *Be aware that if "fast" is set to False, it takes extreme long.*
@@ -45,7 +45,7 @@ Args:\
 &ensp;&ensp;&ensp;`post_id` __[int]__ Id of post
 
 Returns:\
-&ensp;&ensp;&ensp;__[Post]__ Single [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)
+&ensp;&ensp;&ensp;__[Post]__ Single [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) (*empty if error occurs*)
 
 Get Post by Id
 
@@ -64,7 +64,7 @@ Args:\
 &ensp;&ensp;&ensp;`tags` __[list(str)]__ String list of tags (*Optional*)
 
 Returns:\
-&ensp;&ensp;&ensp; __[Post]__ Post Object
+&ensp;&ensp;&ensp; __[Post]__ Post Object  (*empty if error occurs*)
 
 Get a random Post
 
@@ -78,7 +78,7 @@ Args:\
 &ensp;&ensp;&ensp;`limit` __[int(1-100)]__ Limit of posts returnt. Default is 100 (*Optional*)
 
 Returns:\
-&ensp;&ensp;&ensp;__[list(Post)]__ List of [Posts](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)
+&ensp;&ensp;&ensp;__[list(Post)]__ List of [Posts](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)  (*empty if error occurs*)
 
 Search for posts by tags. _Wilde card supported_ ([Cheatsheet](https://rule34.xxx/index.php?page=help&topic=cheatsheet) and [Tags](https://rule34.xxx/index.php?page=tags&s=list))
 
@@ -86,7 +86,7 @@ Search for posts by tags. _Wilde card supported_ ([Cheatsheet](https://rule34.xx
 Type: `function`\
 Syntax: `<rule34Py>.tagmap()`\
 Returns:\
-&ensp;&ensp;&ensp; __[list(dict)]__ List of dicts (eg. : `[{"rank": <int>, "tagname": <str>, "percentage": <float>}]`)
+&ensp;&ensp;&ensp; __[list(dict)]__ List of dicts (eg. : `[{"rank": <int>, "tagname": <str>, "percentage": <float>}]`)  (*empty if error occurs*)
 
 Get TagMap (Top 100 Tags searched)
 

@@ -32,7 +32,7 @@ class rule34Py(Exception):
             limit (int, optional): Limit for Posts. Max 1000.
 
         Returns:
-            list: Posts result list
+            list: Posts result list [empty if error occurs]
 
         API Docs: https://rule34.xxx/index.php?page=help&topic=dapi
         Tags Cheatsheet: https://rule34.xxx/index.php?page=tags&s=list
@@ -57,11 +57,14 @@ class rule34Py(Exception):
 
         formatted_url = self._parseUrlParams(url, params)
         response = requests.get(formatted_url, headers=__headers__)
-
         res_status = response.status_code
         res_len = len(response.content)
         ret_posts = []
 
+        # checking if status code is not 200
+        # (it's useless currently, becouse rule34.xxx returns always 200 OK regardless of an error)
+        # and checking if content lenths is 0 or smaller
+        # (curetly the only way to check for a error response)
         if res_status != 200 or res_len <= 0:
             return ret_posts
 
@@ -85,7 +88,7 @@ class rule34Py(Exception):
             post_id (int): Post id
 
         Returns:
-            list: List of PostComment
+            list: List of PostComment [empty if error occurs]
         """
 
         params = [
@@ -99,7 +102,7 @@ class rule34Py(Exception):
         ret_comments = []
 
         if res_status != 200 or res_len <= 0:
-            return None
+            return ret_comments
 
         bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="xml")
         res_xml = bfs_raw.comments.findAll('comment')
@@ -153,7 +156,7 @@ class rule34Py(Exception):
             fast (bool, optional): If true, returns only post ids
 
         Returns:
-            list: List of Post Objects/id Strings
+            list: List of Post Objects/id Strings [empty if error occurs]
         """
 
         params = [
@@ -188,7 +191,7 @@ class rule34Py(Exception):
             id (int): Id of post
 
         Returns:
-            post: Post Object (of None if post not found)
+            post: Post Object [empty if error occurs]
         """
 
         params = [
@@ -202,7 +205,7 @@ class rule34Py(Exception):
         ret_posts = []
 
         if res_status != 200 or res_len <= 0:
-            return None
+            return ret_posts
 
         for post in response.json():
             pFileUrl = post["file_url"]
@@ -224,7 +227,7 @@ class rule34Py(Exception):
             limit (int): Limit of returned items (default 100)
 
         Returns:
-            list: Returns list of ICame Objects
+            list: Returns list of ICame Objects [empty if error occurs]
         """
 
         response = requests.get(API_URLS.ICAME.value, headers=__headers__)
@@ -257,13 +260,16 @@ class rule34Py(Exception):
             tags (list, optional): Tag list
 
         Returns:
-            Post: Post Object
+            Post: Post Object [empty if error occurs]
         """
 
         ## Fixed bug: https://github.com/b3yc0d3/rule34Py/issues/2#issuecomment-902728779
-
         if tags != None:
-            search_raw = self.search(tags)
+
+            search_raw = self.search(tags, limit=1000)
+            if search_raw == []:
+                return []
+
             randnum = random.randint(0, len(search_raw))
 
             while len(search_raw) <= 0:
@@ -277,7 +283,7 @@ class rule34Py(Exception):
     def tagmap(self) -> list:
         """Get TagMap (Top 100 Tags searched)
         Returns:
-            list: List of dicts
+            list: List of dicts [empty if error occurs]
         """
 
         response = requests.get(API_URLS.TOPMAP.value, headers=__headers__)

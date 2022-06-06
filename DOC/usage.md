@@ -1,5 +1,6 @@
 # Usage
 - [Class rule34Py](#rule34py)
+    - [stats](#stats)
     - [get_comments(\<post_id>)](#get_post)
     - [get_pool(\<pool_id>, \<?fast>)](#get_pool)
     - [get_post(\<post_id>)](#get_post)
@@ -13,6 +14,12 @@
 Type: `class`\
 Syntax: `r34Py = rule34Py()`\
 Creates a new rule34Py instance.
+
+## stats
+type: `proerty`<br>
+Syntax: `<rule34Py>.stats`<br>
+
+Instance of [Stats](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/stats.md)
 
 ## get_comments
 Type: `function`\

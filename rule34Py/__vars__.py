@@ -1,4 +1,4 @@
-__version__tuple__ = ("1", "4", "5")
+__version__tuple__ = ("1", "4", "6")
 __author__ = ("b3yc0d3")
 __email__ = ("b3yc0d3@gmail.com")
 

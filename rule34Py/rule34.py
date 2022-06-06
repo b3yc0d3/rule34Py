@@ -11,8 +11,94 @@ from rule34Py.__vars__ import __headers__, __version__
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
+from rule34Py.stats import Stat
 
+class Stats:
+    def __get_top(self, name):
+        """Get Top Taggers
+        Args:
+            name: Top 10 taggers | Top 10 commenters | Top 10 forum posters
+                  Top 10 image posters | Top 10 note editors | Top 10 favoriters
+        Returns:
+            list: List of Stat Class
+        """
+        retList = []
+        response = requests.get(API_URLS.STATS.value, headers=__headers__)
 
+        res_status = response.status_code
+        res_len = len(response.content)
+        ret_topchart = []
+
+        if res_status != 200 or res_len <= 0:
+            return []
+
+        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
+        tables = bfs_raw.select(".toptencont > table")
+
+        for table in tables:
+            title = table.select("thead > tr")[0].get_text(strip=True)
+
+            if title == name:
+                trs = table.find("tbody").find_all("tr")
+
+                for tr in trs:
+                    tds = tr.find_all("td")
+                    # 1 = Place
+                    # 2 = Count
+                    # 3 = Username
+                    retList.append(Stat(tds[0].get_text(strip=True), tds[1].get_text(strip=True), tds[2].get_text(strip=True)))
+                    #print(f"{tds[0].get_text(strip=True)} - {tds[1].get_text(strip=True)} - {tds[2].get_text(strip=True)}")
+        return retList
+
+    def top_taggers(self):
+        """Get the top 10 Taggers of the Day
+
+        Returns:
+            list: List of Stat Class
+        """
+        return self.__get_top("Top 10 taggers")
+
+    def top_commenters(self):
+        """Get the top 10 Commenters of the Day
+
+        Returns:
+            list: List of Stat Class
+        """
+        return self.__get_top("Top 10 commenters")
+
+    def top_forum_posters(self):
+        """Get the top 10 Forum Posters of the Day
+
+        Returns:
+            list: List of Stat Class
+        """
+        return self.__get_top("Top 10 forum posters")
+
+    def top_image_posters(self):
+        """Get the top 10 Image Posters of the Day
+
+        Returns:
+            list: List of Stat Class
+        """
+        return self.__get_top("Top 10 image posters")
+
+    def top_note_editors(self):
+        """Get the top 10 Note Editors of the Day
+
+        Returns:
+            list: List of Stat Class
+        """
+        return self.__get_top("Top 10 note editors")
+
+    def top_favorites(self):
+        """Get the top 10 Favorites of the Day
+
+        Returns:
+            list: List of Stat Class
+        """
+        return self.__get_top("Top 10 favoriters")
+
+# Main Class
 class rule34Py(Exception):
     """rule34.xxx API wraper
     """
@@ -21,6 +107,7 @@ class rule34Py(Exception):
         """rule34.xxx API wraper
         """
         self.__isInit__ = False
+        self.stats = Stats()
 
     def search(self, tags: list, page_id: int = None, ignore_max_limit: bool = False, limit: int = 500) -> list:
         """Search for posts

@@ -1,3 +1,7 @@
+## [1.4.7] - 2022/09/22
+### Changed
+- `RANDOM_POST` URI now used '**&#95;&#95;base&#95;url&#95;&#95;**' instead of '**&#95;&#95;api&#95;url&#95;&#95;**' ( by talbaskin.business@gmail.com )
+
 ## [1.4.5] - 2022/04/25
 ### Changed
 - added to function `search` additional error handling

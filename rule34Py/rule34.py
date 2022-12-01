@@ -357,7 +357,7 @@ class rule34Py(Exception):
             if search_raw == []:
                 return []
 
-            randnum = random.randint(0, len(search_raw))
+            randnum = random.randint(0, len(search_raw)-1)
 
             while len(search_raw) <= 0:
                 search_raw = self.search(tags)

@@ -16,7 +16,7 @@ Syntax: `r34Py = rule34Py()`\
 Creates a new rule34Py instance.
 
 ## stats
-type: `proerty`<br>
+type: `property`<br>
 Syntax: `<rule34Py>.stats`<br>
 
 Instance of [Stats](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/stats.md)
@@ -71,7 +71,7 @@ Args:\
 &ensp;&ensp;&ensp;`tags` __[list(str)]__ String list of tags (*Optional*)
 
 Returns:\
-&ensp;&ensp;&ensp; __[Post]__ Post Object  (*empty if error occurs*)
+&ensp;&ensp;&ensp; __[Post]__ Single [Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md) object  (*empty if error occurs*)
 
 Get a random Post
 
@@ -82,7 +82,7 @@ Args:\
 &ensp;&ensp;&ensp;`tags` __[list(str)]__ String ist of tags\
 &ensp;&ensp;&ensp;`page_id` __[int]__ Page id (*Optional*)\
 &ensp;&ensp;&ensp;`ignore_max_limit` __[bool]__ If max value should be ignored (*Optional* default Flase)\
-&ensp;&ensp;&ensp;`limit` __[int(1-100)]__ Limit of posts returnt. Default is 100 (*Optional*)
+&ensp;&ensp;&ensp;`limit` __[int(1-100)]__ Limit of posts returnt. Default is 1000 (*Optional*)
 
 Returns:\
 &ensp;&ensp;&ensp;__[list(Post)]__ List of [Posts](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)  (*empty if error occurs*)
@@ -93,12 +93,12 @@ Search for posts by tags. _Wilde card supported_ ([Cheatsheet](https://rule34.xx
 Type: `function`\
 Syntax: `<rule34Py>.tagmap()`\
 Returns:\
-&ensp;&ensp;&ensp; __[list(dict)]__ List of dicts (eg. : `[{"rank": <int>, "tagname": <str>, "percentage": <float>}]`)  (*empty if error occurs*)
+&ensp;&ensp;&ensp; __[list([TopTag](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/toptag.md))]__ List of [TopTag](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/toptag.md) (*empty if error occurs*)
 
 Get TagMap (Top 100 Tags searched)
 
 ## version
-Type: `proerty`\
+Type: `property`\
 Syntax: `<rule34Py>.version`\
 Returns:\
 &ensp;&ensp;&ensp; __[str]__ Version string

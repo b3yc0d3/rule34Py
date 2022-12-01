@@ -1,25 +1,24 @@
 ## rule34Py [![Downloads](https://pepy.tech/badge/rule34py)](https://pepy.tech/project/rule34py) ![](https://img.shields.io/pypi/format/rule34Py) [![](https://img.shields.io/pypi/v/rule34Py)](https://pypi.org/project/rule34Py/) ![](https://img.shields.io/github/license/b3yc0d3/rule34Py) ![](https://img.shields.io/github/languages/code-size/b3yc0d3/rule34Py)
-This is a Simple rule34.xxx API wraper.\
+This is a Simple rule34.xxx API wraper.<br>
 Read the [Documentation](#documentation)
 
+
 ## Whats new?
-I've rewritten and cleaned the code up. My goal is to ceep the code as clean as posible. I've also added new Object types, such as the "[Post](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/post.md)" Object.
-The new Versions (_above 1.4.0_) is __not__ competible with older versions, do to masive changes.\
-_You can finde the Changelog [<u>here</u>](https://github.com/b3yc0d3/rule34Py/blob/master/change_log.md)._
+See [Changelog](https://github.com/b3yc0d3/rule34Py/blob/master/CHANGELOG.md) for more informations.
+
+
+## Documentation
+New [Documentation](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md) for current version<br>
+Old [Documentation](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/old.md) (*for version <u>1.3.38</u> and below!*)
+
 
 ## Ideas
-+ [ ] User search
-    - [ ] Get user by its id (*or maybe username*)
-
-*Feel free to submit ideas*
+Moved to [TODO.md](https://github.com/b3yc0d3/rule34Py/blob/master/TODO.md) or/and see Issues.
 
 
 ## Installation
 `pip install rule34Py`
 
-## Documentation
-New [Documentation](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md) for current version\
-Old [Documentation](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/old.md) (*for version <u>1.3.38</u> and below!*)
 
 ## Code Snippet
 ```py
@@ -51,4 +50,17 @@ print(result_random.image)
 print(result_icame[0].character_name) # returns the character name of the first item
 
 print(result_tagmap[0].tagname)
+```
+
+## Build it your self
+```console
+foo@bar:~$ git clone git@github.com:b3yc0d3/rule34Py.git
+foo@bar:~$ cd rule34Py
+
+(on linux just run; ./build.sh)
+foo@bar:~$ python setup.py bdist_wheel
+foo@bar:~$ python setup.py sdist
+foo@bar:~$ python setup.py bdist_wheel sdist
+
+foo@bar:~$ pip install -e .
 ```

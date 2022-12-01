@@ -11,7 +11,7 @@
 
 ### Post
 Type: `class`\
-Symtax: `post = Post(<id>, <hash>, [size], <size>, <image>, <owner>, [<tags>])`\
+Symtax: `post = Post(<id>, <hash>, <score>, <size>, <image>, <owner>, [<tags>])`\
 Args:\
 &ensp;&ensp;&ensp;`id` __[int]__ Id of post\
 &ensp;&ensp;&ensp;`hash` __[str]__ Post hash\
@@ -44,7 +44,7 @@ Get hash of post
 Type: `property`\
 Syntax: `<Post>.score`\
 Returns:\
-&ensp;&ensp;&ensp; __[int]__ Score of post ([read more]())
+&ensp;&ensp;&ensp; __[int]__ Score of post
 
 Get score of post
 

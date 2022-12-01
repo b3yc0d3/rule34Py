@@ -12,6 +12,7 @@ from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.stats import Stat
+from rule34Py.toptag import TopTag
 
 class Stats:
     def __get_top(self, name):
@@ -109,7 +110,7 @@ class rule34Py(Exception):
         self.__isInit__ = False
         self.stats = Stats()
 
-    def search(self, tags: list, page_id: int = None, ignore_max_limit: bool = False, limit: int = 500) -> list:
+    def search(self, tags: list, page_id: int = None, limit: int = 500, deleted: bool = False,ignore_max_limit: bool = False) -> list:
         """Search for posts
 
         Args:
@@ -141,9 +142,14 @@ class rule34Py(Exception):
         url = API_URLS.SEARCH.value
         if page_id != None:
             url += "&pid={{PAGE_ID}}"
+        
+        if deleted:
+            raise Exception("To include deleted images is not Implemented yet!")
+            #url += "&deleted=show"
 
         formatted_url = self._parseUrlParams(url, params)
         response = requests.get(formatted_url, headers=__headers__)
+        
         res_status = response.status_code
         res_len = len(response.content)
         ret_posts = []
@@ -397,11 +403,13 @@ class rule34Py(Exception):
             tagname = tags[1].string
             percentage = tags[2].string[:-1]
 
-            retData.append({
-                "rank": int(rank),
-                "tagname": tagname,
-                "percentage": float(percentage.strip())
-            })
+            retData.append(TopTag(rank=rank, tagname=tagname, percentage=percentage))
+
+            #retData.append({
+            #    "rank": int(rank),
+            #    "tagname": tagname,
+            #    "percentage": float(percentage.strip())
+            #})
 
         return retData
 

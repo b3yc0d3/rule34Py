@@ -1,6 +1,21 @@
+## [1.4.8] - 2022/12/01
+### Added
+- new class for TopMap
+
+### Changed
+- made [README.md](https://github.com/b3yc0d3/rule34Py#readme) look nicer
+- updated code snippet
+- updated documentation
+- `rule34Py.tagmap()` now retuns list of *TopTag*s
+
+### Fixed
+- fixed bug where random number could exceed array length of Random
+- typos in some markdown files
+
+
 ## [1.4.7] - 2022/09/22
 ### Changed
-- `RANDOM_POST` URI now used '**&#95;&#95;base&#95;url&#95;&#95;**' instead of '**&#95;&#95;api&#95;url&#95;&#95;**' ( by talbaskin.business@gmail.com )
+- `RANDOM_POST` URI now uses '**&#95;&#95;base&#95;url&#95;&#95;**' instead of '**&#95;&#95;api&#95;url&#95;&#95;**' ( by talbaskin.business@gmail.com )
 
 ## [1.4.5] - 2022/04/25
 ### Changed

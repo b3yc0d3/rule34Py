@@ -110,7 +110,7 @@ class rule34Py(Exception):
         self.__isInit__ = False
         self.stats = Stats()
 
-    def search(self, tags: list, page_id: int = None, limit: int = 500, deleted: bool = False,ignore_max_limit: bool = False) -> list:
+    def search(self, tags: list, page_id: int = None, limit: int = 1000, deleted: bool = False,ignore_max_limit: bool = False) -> list:
         """Search for posts
 
         Args:
@@ -135,13 +135,12 @@ class rule34Py(Exception):
             ["TAGS", "+".join(tags)],
             ["LIMIT", str(limit)],
         ]
+        url = API_URLS.SEARCH.value
         # Add "page_id"
         if page_id != None:
+            url += f"&pid={{PAGE_ID}}"
             params.append(["PAGE_ID", str(page_id)])
 
-        url = API_URLS.SEARCH.value
-        if page_id != None:
-            url += "&pid={{PAGE_ID}}"
         
         if deleted:
             raise Exception("To include deleted images is not Implemented yet!")

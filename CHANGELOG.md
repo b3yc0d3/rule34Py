@@ -1,3 +1,24 @@
+## [1.4.10] - 2023/02/22
+### Added
+- `from_json` to Post class
+- `preview` field to Post class
+- `thumbnail` field to Post class
+- `sample` field to Post class
+- `video` field to Post class
+- `directory` field to Post class
+- `change` field to Post class
+- `content_type` field to Post class
+- example files
+
+### Changed
+- changed how `search` and `get_post` are creating post objects
+
+
+## [1.4.9] - 2022/12/26
+### Fixed
+- Fixed bug where 'search' function didn't used value parameter of 'page_id'
+
+
 ## [1.4.8] - 2022/12/01
 ### Added
 - new class for TopMap

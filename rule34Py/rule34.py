@@ -161,15 +161,7 @@ class rule34Py(Exception):
             return ret_posts
 
         for post in response.json():
-            pFileUrl = post["file_url"]
-            pHash = post["hash"]
-            pId = post["id"]
-            pScore = post["score"]
-            pSize = [post["width"], post["height"]]
-            pOwner = post["owner"]
-            pTags = post["tags"].split(" ")
-
-            ret_posts.append(Post(pId, pHash, pScore, pSize, pFileUrl, pOwner, pTags))
+            ret_posts.append(Post.from_json(post))
 
         return ret_posts
 
@@ -206,38 +198,6 @@ class rule34Py(Exception):
 
         return ret_comments
 
-    # TODO: solve the hcaptcher on login page
-    # def get_favorites(self, user_id: int, fast: bool = False):
-    #     """Get favorites from users
-    #
-    #     Args:
-    #         user_id (int): Id of user
-    #         fast (bool): If set to true, only Ids of the posts are returned
-    #
-    #     Returns:
-    #         list: List of Posts (List of ids if "fast" true)
-    #     """
-    #
-    #     return
-    #
-    #     params = [
-    #         ["USER_ID", str(user_id)],
-    #     ]
-    #
-    #     formatted_url = self._parseUrlParams(API_URLS.USER_PAGE.value, params)
-    #     response = requests.get(formatted_url, headers=__headers__) # Sending get request
-    #
-    #     res_status = response.status_code
-    #     res_len = len(response.content)
-    #     html_string = response.content.decode("utf-8")
-    #     ret_favorites = []
-    #
-    #     if res_status != 200 or res_len <= 0:
-    #         return ret_favorites
-    #
-    #     soup = BeautifulSoup(html_string, "html.parser")
-    #     for span in soup.find_all('span', {'class' : 'thumb'}):
-    #         print(span["id"][1:])
 
     def get_pool(self, pool_id: int, fast: bool = True) -> list:
         """Get Pool by Id
@@ -300,15 +260,7 @@ class rule34Py(Exception):
             return ret_posts
 
         for post in response.json():
-            pFileUrl = post["file_url"]
-            pHash = post["hash"]
-            pId = post["id"]
-            pScore = post["score"]
-            pSize = [post["width"], post["height"]]
-            pOwner = post["owner"]
-            pTags = post["tags"].split(" ")
-
-            ret_posts.append(Post(pId, pHash, pScore, pSize, pFileUrl, pOwner, pTags))
+            ret_posts.append(Post.from_json(post))
 
         return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
 

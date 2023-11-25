@@ -22,13 +22,14 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent"
     ],
     install_requires = [
-        "beautifulsoup4 >= 4.9.3",
-        "requests >= 2.27.1",
-        "lxml >= 4.6.4"
+        "beautifulsoup4>=4.9.3",
+        "requests>=2.27.1",
+        "lxml>=4.6.4"
     ],
     project_urls={
         "Issue tracker": "https://github.com/b3yc0d3/rule34Py/issues"

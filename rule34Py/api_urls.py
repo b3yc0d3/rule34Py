@@ -2,6 +2,12 @@ from enum import Enum
 from rule34Py.__vars__ import __base_url__, __api_url__
 
 class API_URLS(str, Enum):
+    """
+    Api Urls
+
+    Internal class used to change easily urls, if they should ever change.
+    """
+
     SEARCH = f"{__api_url__}index.php?page=dapi&s=post&q=index&limit={{LIMIT}}&tags={{TAGS}}&json=1" # returns: JSON
     COMMENTS = f"{__api_url__}index.php?page=dapi&s=comment&q=index&post_id={{POST_ID}}" # returns: XML
     USER_FAVORITES = f"{__api_url__}index.php?page=favorites&s=view&id={{USR_ID}}" # returns: HTML

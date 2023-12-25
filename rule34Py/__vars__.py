@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__tuple__ = ("1", "4", "10")
+__version__tuple__ = ("1", "4", "11")
 __author__ = ("b3yc0d3")
 __email__ = ("b3yc0d3@gmail.com")
 

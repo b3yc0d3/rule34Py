@@ -23,7 +23,7 @@ pip install -e .
 ```
 
 ## Documentation
-You can find the documentation [here](https://github.com/b3yc0d3/rule34Py/tree/master/doc).
+You can find the documentation [here](https://github.com/b3yc0d3/rule34Py/tree/master/docs).
 
 > [!NOTE]
 > The documentation might move in the future.

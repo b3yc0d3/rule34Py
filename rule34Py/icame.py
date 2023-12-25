@@ -1,13 +1,37 @@
+""""""
+"""
+rule34Py - Python api wrapper for rule34.xxx
+
+Copyright (C) 2022-2023 b3yc0d3 <b3yc0d3@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 class ICame:
-    """ICame chart item
+    """
+    ICame chart item
     """
 
     def __init__(self, character_name: str, count: int):
-        """ICame chart item
+        """
+        iCame chart item.
 
-        Args:
-            character_name (str): Name of Character
-            count (int): Came on character count
+        :param character_name: Name of the character.
+        :type character_name: str
+
+        :param count: Count of how often people came on the character.
+        :type count: int
         """
 
         self._character_name = character_name
@@ -16,30 +40,33 @@ class ICame:
 
     @property
     def character_name(self) -> str:
-        """Get name of character
+        """
+        Get name of character.
 
-        Returns:
-            str: Name of character
+        :return: Name of character.
+        :rtype: str
         """
 
         return self._character_name
 
     @property
     def tag_url(self) -> str:
-        """Get tag url
+        """
+        Get url of tag.
 
-        Returns:
-            str: Tag url
+        :return: Url of tag.
+        :rtype: str
         """
 
         return self._tag_url
 
     @property
     def count(self) -> int:
-        """Get came count
+        """
+        Get count of how often people came on the character.
 
-        Returns:
-            int: Cum count
+        :return: Cum count.
+        :rtype: int
         """
 
         return self._count

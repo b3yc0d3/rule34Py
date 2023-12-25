@@ -1,66 +1,113 @@
-## rule34Py [![Downloads](https://pepy.tech/badge/rule34py)](https://pepy.tech/project/rule34py) ![](https://img.shields.io/pypi/format/rule34Py) [![](https://img.shields.io/pypi/v/rule34Py)](https://pypi.org/project/rule34Py/) ![](https://img.shields.io/github/license/b3yc0d3/rule34Py) ![](https://img.shields.io/github/languages/code-size/b3yc0d3/rule34Py)
-This is a Simple rule34.xxx API wraper.<br>
-Read the [Documentation](#documentation)
+<div align="center">
 
+# rule34py
 
-## Whats new?
-See [Changelog](https://github.com/b3yc0d3/rule34Py/blob/master/CHANGELOG.md) for more informations.
+![GPL-3.0](https://img.shields.io/github/license/b3yc0d3/rule34Py) [![](https://img.shields.io/pypi/v/rule34Py)](https://pypi.org/project/rule34Py/) [![](https://img.shields.io/pypi/dm/rule34py?color=blue)](https://pypi.org/project/rule34Py/)
 
+Python api wrapper for [rule34.xxx](https://rule34.xxx/).
+</div>
+
+## Getting Started
+
+#### Install it using pip
+```
+pip install rule34py
+```
+
+#### Install it from Source
+```
+git clone https://github.com/b3yc0d3/rule34Py.git
+cd rule34Py
+python setup.py sdist
+pip install -e .
+```
 
 ## Documentation
-New [Documentation](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md) for current version<br>
-Old [Documentation](https://github.com/b3yc0d3/rule34Py/blob/master/DOC/old.md) (*for version <u>1.3.38</u> and below!*)
+You can find the documentation [here](https://github.com/b3yc0d3/rule34Py/tree/master/docs).
 
-
-## Ideas
-Moved to [TODO.md](https://github.com/b3yc0d3/rule34Py/blob/master/TODO.md) or/and see Issues.
-
-
-## Installation
-`pip install rule34Py`
-
+> [!NOTE]
+> The documentation might move in the future.
 
 ## Code Snippet
 ```py
 from rule34Py import rule34Py
-
 r34Py = rule34Py()
 
-print(r34Py.version)
+# get comments of an post
+r34Py.get_comments(4153825)
 
-result_comments = r34Py.get_comments(4153825)
-result_post = r34Py.get_post(4931536)
-result_icame = r34Py.icame()
-result_search = r34Py.search(["neko"], page_id=2, limit=50)
-result_pool = r34Py.get_pool(17509) # or r34Py.get_pool(17509, false)
-result_random = r34Py.random_post(["neko"]) # or r34Py.random_post()
-result_tagmap = r34Py.tagmap()
+# get post by its id
+r34Py.get_post(4153825)
 
-# Stats
-result_topTaggers = r34Py.stats.top_taggers()
-result_topCommenters = r34Py.stats.top_commenters()
-result_topForumPosters = r34Py.stats.top_forum_posters()
-result_topImagePosters = r34Py.stats.top_image_posters()
-result_topNoteEditors = r34Py.stats.top_note_editors()
-result_topFavorites = r34Py.stats.top_favorites()
+# get top 100 icame
+r34Py.icame()
 
-print(result_random.id)
-print(result_random.image)
+# search for posts by tag(s)
+r34Py.search(["neko"], page_id=2, limit=50)
 
-print(result_icame[0].character_name) # returns the character name of the first item
+# get pool by id
+r34Py.get_pool(17509)
 
-print(result_tagmap[0].tagname)
+# get a random post (in this case with tag(s))
+random = r34Py.random_post(["neko"])
+
+# get general site stats
+r34Py.stats.top_taggers()
+r34Py.stats.top_commenters()
+r34Py.stats.top_forum_posters()
+r34Py.stats.top_image_posters()
+r34Py.stats.top_note_editors()
+r34Py.stats.top_favorites()
 ```
 
-## Build it your self
-```console
-foo@bar:~$ git clone git@github.com:b3yc0d3/rule34Py.git
-foo@bar:~$ cd rule34Py
+## Development
+Follow these steps to setup everything needed to develop on rule34Py.
 
-(on linux just run; ./build.sh)
-foo@bar:~$ python setup.py bdist_wheel
-foo@bar:~$ python setup.py sdist
-foo@bar:~$ python setup.py bdist_wheel sdist
+Currently this setup guide only shows how it is done on unix-like systems.
 
-foo@bar:~$ pip install -e .
+### Clone This Repository
 ```
+git clone https://github.com/b3yc0d3/rule34Py.git
+
+cd rule34Py
+
+git checkout develop
+```
+
+### Setting Up Virtual Python Environment
+```
+python -m venv venv
+
+source venv/bin/activate
+```
+
+To deactivate the virtual environment type the following in your terminal
+```
+deactivate
+```
+
+### Install and Build rule34Py in the Virtual Environment
+```
+python3 -m build -s -w -n
+
+pip install -e .
+```
+
+### Committing your Changes
+- Branch name should be prefixed with
+    - `fix-` when fixing an bug/error
+    - `feat-` when a feature got added
+    - `chore-` everything else that doesn't fall in the above categories
+- The title must be descriptive, what your pull request changes/does.
+- Write a breve description of what the pull request does/solves in the commit.
+- If your pull request fixes an issue, please mention that issue in the commit title.
+
+Example structure of a commit message
+```
+here goes the title of the commit
+
+Here goes the description
+```
+
+The title shall not be longer then 50 characters.
+**Select the `develop` branch for pull requests.**

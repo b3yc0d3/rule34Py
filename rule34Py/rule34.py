@@ -1,4 +1,24 @@
-#!/usr/bin/python3
+""""""
+"""
+rule34Py - Python api wrapper for rule34.xxx
+
+Copyright (C) 2022 MiningXL <miningxl@gmail.com>
+Copyright (C) 2022-2023 b3yc0d3 <b3yc0d3@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import requests
 import random
 import urllib.parse as urlparse
@@ -14,14 +34,27 @@ from rule34Py.icame import ICame
 from rule34Py.stats import Stat
 from rule34Py.toptag import TopTag
 
+"""
+TODO: fix typos
+"""
+
 class Stats:
     def __get_top(self, name):
-        """Get Top Taggers
-        Args:
-            name: Top 10 taggers | Top 10 commenters | Top 10 forum posters
-                  Top 10 image posters | Top 10 note editors | Top 10 favoriters
-        Returns:
-            list: List of Stat Class
+        """
+        Get Top Taggers
+
+        :param name: Name of a top 10 list.
+                    Values may be:
+                        - Top 10 taggers
+                        - Top 10 commenter
+                        - Top 10 forum posters
+                        - Top 10 image posters
+                        - Top 10 note editors
+                        - Top 10 favorites
+        :type name: str
+
+        :return: List of stats.
+        :rtype: list[Stat]
         """
         retList = []
         response = requests.get(API_URLS.STATS.value, headers=__headers__)
@@ -52,78 +85,100 @@ class Stats:
         return retList
 
     def top_taggers(self):
-        """Get the top 10 Taggers of the Day
+        """
+        Get the top 10 Taggers of the Day.
 
-        Returns:
-            list: List of Stat Class
+        :return: List of todays top 10 taggers.
+        :rtype: list[Stat]
         """
         return self.__get_top("Top 10 taggers")
 
     def top_commenters(self):
-        """Get the top 10 Commenters of the Day
+        """
+        Get the top 10 Commentators of the Day.
 
-        Returns:
-            list: List of Stat Class
+        :return: List of todays top 10 commentators.
+        :rtype: list[Stat]
         """
         return self.__get_top("Top 10 commenters")
 
     def top_forum_posters(self):
-        """Get the top 10 Forum Posters of the Day
+        """
+        Get the top 10 Forum Posters of the Day.
 
-        Returns:
-            list: List of Stat Class
+        :return: List of todays top 10 (forum) posters.
+        :rtype: list[Stat]
         """
         return self.__get_top("Top 10 forum posters")
 
     def top_image_posters(self):
-        """Get the top 10 Image Posters of the Day
+        """
+        Get the top 10 Image Posters of the Day.
 
-        Returns:
-            list: List of Stat Class
+        :return: List of todays top 10 image posters.
+        :rtype: list[Stat]
         """
         return self.__get_top("Top 10 image posters")
 
     def top_note_editors(self):
-        """Get the top 10 Note Editors of the Day
+        """
+        Get the top 10 Note Editors of the Day.
 
-        Returns:
-            list: List of Stat Class
+        :return: List of todays top 10 note editors.
+        :rtype: list[Stat]
         """
         return self.__get_top("Top 10 note editors")
 
     def top_favorites(self):
-        """Get the top 10 Favorites of the Day
+        """
+        Get the top 10 Favorites of the Day.
 
-        Returns:
-            list: List of Stat Class
+        :return: List of todays top 10 favorites.
+        :rtype: list[Stat]
         """
         return self.__get_top("Top 10 favoriters")
 
 # Main Class
 class rule34Py(Exception):
-    """rule34.xxx API wraper
+    """
+    rule34.xxx API wrapper
     """
 
     def __init__(self):
-        """rule34.xxx API wraper
+        """
+        rule34.xxx API wrapper
         """
         self.__isInit__ = False
-        self.stats = Stats()
+        self._stats = Stats()
 
-    def search(self, tags: list, page_id: int = None, limit: int = 1000, deleted: bool = False,ignore_max_limit: bool = False) -> list:
-        """Search for posts
+    def search(self,
+        tags: list,
+        page_id: int = None,
+        limit: int = 1000,
+        deleted: bool = False,
+        ignore_max_limit: bool = False) -> list:
+        """
+        Search for posts.
 
-        Args:
-            tags (list[str]): Search tags
-            page_num (int, optional): Page ID
-            ignore_max_limit (bool, optional): If max value should be ignored
-            limit (int, optional): Limit for Posts. Max 1000.
+        :param tags: List of tags.
+        :type tags: list[str]
 
-        Returns:
-            list: Posts result list [empty if error occurs]
+        :param page_id: Page number/id.
+        :type page_id: int
 
-        API Docs: https://rule34.xxx/index.php?page=help&topic=dapi
-        Tags Cheatsheet: https://rule34.xxx/index.php?page=tags&s=list
+        :param limit: Limit for posts returned per page (max. 1000).
+        :type limit: int
+
+        :param ignore_max_limit: If limit of 1000 should be ignored.
+        :type ignore_max_limit: bool
+
+        :return: List of Post objects for matching posts.
+        :rtype: list[Post]
+
+        For more information, see:
+
+            - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
+            - `Tags cheat sheet <https://rule34.xxx/index.php?page=tags&s=list>`_
         """
 
         # Check if "limit" is in between 1 and 1000
@@ -166,19 +221,20 @@ class rule34Py(Exception):
         return ret_posts
 
     def get_comments(self, post_id: int) -> list:
-        """Get comments of given Post
+        """
+        Retrieve comments of post by its id.
 
-        Args:
-            post_id (int): Post id
+        :param post_id: Posts id.
+        :type post_id: int
 
-        Returns:
-            list: List of PostComment [empty if error occurs]
+        :return: List of comments.
+        :rtype: list[PostComment]
         """
 
         params = [
             ["POST_ID", str(post_id)]
         ]
-        formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params) # Replaceing placeholders
+        formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params) # Replacing placeholders
         response = requests.get(formatted_url, headers=__headers__)
 
         res_status = response.status_code
@@ -200,15 +256,20 @@ class rule34Py(Exception):
 
 
     def get_pool(self, pool_id: int, fast: bool = True) -> list:
-        """Get Pool by Id
-        Be aware that if "fast" is set to False, it takes extreme long.
+        """
+        Retrieve pool by its id.
 
-        Args:
-            pool_id (int): Id of pool
-            fast (bool, optional): If true, returns only post ids
+        **Be aware that if "fast" is set to False, it may takes longer.**
 
-        Returns:
-            list: List of Post Objects/id Strings [empty if error occurs]
+        :param pool_id: Pools id.
+        :type pool_id: int
+        
+        :param fast: Fast "mode", if set to true only a list of post ids
+            will be returned.
+        :type fast: bool
+
+        :return: List of post objects (or post ids if fast is set to true).
+        :rtype: list[Post|int]
         """
 
         params = [
@@ -237,13 +298,14 @@ class rule34Py(Exception):
         return ret_posts
 
     def get_post(self, post_id: int) -> Post:
-        """Get Post by Id
+        """
+        Get post by its id.
 
-        Args:
-            id (int): Id of post
+        :param post_id: Id of post.
+        :type post_id: int
 
-        Returns:
-            post: Post Object [empty if error occurs]
+        :return: Post object.
+        :rtype: Post
         """
 
         params = [
@@ -265,13 +327,15 @@ class rule34Py(Exception):
         return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
 
     def icame(self, limit: int = 100) -> list:
-        """Gets a list of the top 100 "came-on characters"
+        """
+        Retrieve list of top 100 iCame list.
 
-        Args:
-            limit (int): Limit of returned items (default 100)
+        :param limit: Limit of returned items.
+                        (Default: ``'100'``)
+        :type limit: int
 
-        Returns:
-            list: Returns list of ICame Objects [empty if error occurs]
+        :return: List of iCame objects.
+        :rtype: list[ICame]
         """
 
         response = requests.get(API_URLS.ICAME.value, headers=__headers__)
@@ -299,12 +363,15 @@ class rule34Py(Exception):
         return ret_topchart
 
     def random_post(self, tags: list = None):
-        """Get random Post
-        Args:
-            tags (list, optional): Tag list
+        """
+        Get a random post.
 
-        Returns:
-            Post: Post Object [empty if error occurs]
+        :param tags: Tag list to search. If none, post will be used regardless
+                    of it tags.
+        :type tags: list[str]
+
+        :return: Post object.
+        :rtype: Post
         """
 
         ## Fixed bug: https://github.com/b3yc0d3/rule34Py/issues/2#issuecomment-902728779
@@ -325,9 +392,11 @@ class rule34Py(Exception):
             return self.get_post(self._random_post_id())
 
     def tagmap(self) -> list:
-        """Get TagMap (Top 100 Tags searched)
-        Returns:
-            list: List of dicts [empty if error occurs]
+        """
+        Retrieve list of top 100 global tags.
+
+        :return: List of top 100 tags, globally.
+        :rtype: list[TopTag]
         """
 
         response = requests.get(API_URLS.TOPMAP.value, headers=__headers__)
@@ -366,12 +435,33 @@ class rule34Py(Exception):
 
 
     def _random_post_id(self) -> str:
+        """
+        Get a random posts id.
+
+        **This function is only used internally.**
+
+        :return: Random post id
+        :rtype: str
+        """
+
         res = requests.get(API_URLS.RANDOM_POST.value, headers=__headers__)
         parsed = urlparse.urlparse(res.url)
 
         return parse_qs(parsed.query)['id'][0]
 
     def _parseUrlParams(self, url: str, params: list) -> str:
+        """
+        Parse url parameters.
+
+        **This function is only used internally.**
+
+        :return: Url filed with filled in placeholders.
+        :rtype: str
+
+        :Example:
+            self._parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
+        """
+
         # Usage: _parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
         retURL = url
 
@@ -384,10 +474,21 @@ class rule34Py(Exception):
         return retURL
 
     @property
-    def version(self) -> str:
-        """Get version of module
+    def stats(self) -> Stats:
+        """
+        Global Stats.
 
-        Returns:
-            str: Version string (eg. xx.xx.xx)
+        :return: Stats class instance.
+        :rtype: Stats
+        """
+        return self._stats
+
+    @property
+    def version(self) -> str:
+        """
+        Rule34Py version.
+
+        :return: Version of rule34py.
+        :rtype: str
         """
         return __version__

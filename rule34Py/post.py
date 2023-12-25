@@ -1,3 +1,4 @@
+""""""
 """
 rule34Py - Python api wrapper for rule34.xxx
 
@@ -79,7 +80,7 @@ class Post:
         """
         Obtain the unique hash of post.
 
-        :return: The has associated with the post.
+        :return: The hash associated with the post.
         :rtype: str
         """
         return self._hash
@@ -164,9 +165,9 @@ class Post:
     @property
     def owner(self) -> str:
         """
-        Get username of post creator
+        Get username of post creator.
             
-        :return: Username of post creator
+        :return: Username of post creator.
         :rtype: str
         """
 
@@ -175,7 +176,7 @@ class Post:
     @property
     def tags(self) -> list:
         """
-        Get tags of post
+        Get tags of post.
 
         :return: List of posts tags
         :rtype: list[str]
@@ -204,6 +205,8 @@ class Post:
     @property
     def change(self) -> int:
         """
+        Post last update time
+
         Retrieve the timestamp indicating the last update/change of
         the post, as unix time epoch.
 

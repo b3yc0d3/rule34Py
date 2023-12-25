@@ -1,3 +1,4 @@
+""""""
 """
 rule34Py - Python api wrapper for rule34.xxx
 
@@ -69,7 +70,7 @@ class PostComment:
         """
         Id of the comments author.
 
-        :return: Id of comments author.
+        :return: Id of comment author.
         :rtype: int
         """
 

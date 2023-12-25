@@ -20,7 +20,7 @@ def download(url, file_name):
             # response to that file
             shutil.copyfileobj(res.raw, f)
             
-        print('Image sucessfully Downloaded: ',file_name)
+        print('Image successfully Downloaded: ',file_name)
     else:
         print('Image Couldn\'t be retrieved')
 

@@ -23,7 +23,7 @@ pip install -e .
 ```
 
 ## Documentation
-You can find the documentation [here](https://github.com/b3yc0d3/rule34Py/tree/master/DOC).
+You can find the documentation [here](https://github.com/b3yc0d3/rule34Py/tree/master/doc).
 
 > [!NOTE]
 > The documentation might move in the future.
@@ -59,3 +59,55 @@ r34Py.stats.top_image_posters()
 r34Py.stats.top_note_editors()
 r34Py.stats.top_favorites()
 ```
+
+## Development
+Follow these steps to setup everything needed to develop on rule34Py.
+
+Currently this setup guide only shows how it is done on unix-like systems.
+
+### Clone This Repository
+```
+git clone https://github.com/b3yc0d3/rule34Py.git
+
+cd rule34Py
+
+git checkout develop
+```
+
+### Setting Up Virtual Python Environment
+```
+python -m venv venv
+
+source venv/bin/activate
+```
+
+To deactivate the virtual environment type the following in your terminal
+```
+deactivate
+```
+
+### Install and Build rule34Py in the Virtual Environment
+```
+python3 -m build -s -w -n
+
+pip install -e .
+```
+
+### Committing your Changes
+- Branch name should be prefixed with
+    - `fix-` when fixing an bug/error
+    - `feat-` when a feature got added
+    - `chore-` everything else that doesn't fall in the above categories
+- The title must be descriptive, what your pull request changes/does.
+- Write a breve description of what the pull request does/solves in the commit.
+- If your pull request fixes an issue, please mention that issue in the commit title.
+
+Example structure of a commit message
+```
+here goes the title of the commit
+
+Here goes the description
+```
+
+The title shall not be longer then 50 characters.
+**Select the `develop` branch for pull requests.**

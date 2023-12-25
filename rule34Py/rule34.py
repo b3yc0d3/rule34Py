@@ -1,3 +1,4 @@
+""""""
 """
 rule34Py - Python api wrapper for rule34.xxx
 
@@ -148,7 +149,7 @@ class rule34Py(Exception):
         rule34.xxx API wrapper
         """
         self.__isInit__ = False
-        self.stats = Stats()
+        self._stats = Stats()
 
     def search(self,
         tags: list,
@@ -157,7 +158,7 @@ class rule34Py(Exception):
         deleted: bool = False,
         ignore_max_limit: bool = False) -> list:
         """
-        Search for post.
+        Search for posts.
 
         :param tags: List of tags.
         :type tags: list[str]
@@ -227,7 +228,7 @@ class rule34Py(Exception):
         :type post_id: int
 
         :return: List of comments.
-        :rtype: list(PostComment)
+        :rtype: list[PostComment]
         """
 
         params = [
@@ -263,12 +264,12 @@ class rule34Py(Exception):
         :param pool_id: Pools id.
         :type pool_id: int
         
-        :param fast: Fast "mode", if set to true only a list of post ids.
+        :param fast: Fast "mode", if set to true only a list of post ids
             will be returned.
         :type fast: bool
 
         :return: List of post objects (or post ids if fast is set to true).
-        :rtype: list[Post] or list[int]
+        :rtype: list[Post|int]
         """
 
         params = [
@@ -300,8 +301,8 @@ class rule34Py(Exception):
         """
         Get post by its id.
 
-        :param id: Id of post.
-        :type id: int
+        :param post_id: Id of post.
+        :type post_id: int
 
         :return: Post object.
         :rtype: Post
@@ -471,6 +472,16 @@ class rule34Py(Exception):
             retURL = retURL.replace("{" + key + "}", value)
 
         return retURL
+
+    @property
+    def stats(self) -> Stats:
+        """
+        Global Stats.
+
+        :return: Stats class instance.
+        :rtype: Stats
+        """
+        return self._stats
 
     @property
     def version(self) -> str:

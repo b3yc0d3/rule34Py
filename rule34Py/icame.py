@@ -1,3 +1,4 @@
+""""""
 """
 rule34Py - Python api wrapper for rule34.xxx
 
@@ -64,7 +65,7 @@ class ICame:
         """
         Get count of how often people came on the character.
 
-        :return: Cum count
+        :return: Cum count.
         :rtype: int
         """
 

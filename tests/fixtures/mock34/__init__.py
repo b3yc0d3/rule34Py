@@ -24,7 +24,6 @@ class Mock34():
         # behavior.
         self.requests_mock.assert_all_requests_are_fired = False
         self._registry = self.requests_mock._registry
-        
 
     @property
     def is_recorder(self):
@@ -35,7 +34,8 @@ class Mock34():
     
     def start(self):
         self.requests_mock.start()
-        self.requests_mock._add_from_file(REGISTRY_FILE)
+        if REGISTRY_FILE.exists():
+            self.requests_mock._add_from_file(REGISTRY_FILE)
 
     def stop(self):
         if self.is_recorder:

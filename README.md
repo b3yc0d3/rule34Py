@@ -46,7 +46,7 @@ r34Py.icame()
 r34Py.search(["neko"], page_id=2, limit=50)
 
 # get pool by id
-r34Py.get_pool(17509)
+r34Py.get_pool(28)
 
 # get a random post (in this case with tag(s))
 random = r34Py.random_post(["neko"])

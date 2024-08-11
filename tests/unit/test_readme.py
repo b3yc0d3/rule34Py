@@ -10,7 +10,7 @@ from rule34Py.post_comment import PostComment
 
 # used in the README.md
 EXAMPLE_POST = 4153825
-EXAMPLE_POOL = 17509
+EXAMPLE_POOL = 28
 
 
 def test_module_import():
@@ -49,6 +49,7 @@ def test_search(rule34):
 def test_get_pool(rule34):
     """The client can get the example pool by id."""
     pool = rule34.get_pool(EXAMPLE_POOL)
+    assert isinstance(pool, list)
     assert len(pool) > 0  # there should be posts here
 
 def test_random_post(rule34):

@@ -93,6 +93,14 @@ python3 -m build -s -w -n
 pip install -e .
 ```
 
+
+### Running the Test Suite
+
+This project is tested by an organic `pytest` suite, stored under the `:tests/` directory.
+
+See the [`tests/README.md`](./tests/README.md) file for instructions on how to run the test suite.
+
+
 ### Committing your Changes
 - Branch name should be prefixed with
     - `fix-` when fixing an bug/error

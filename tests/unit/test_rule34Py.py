@@ -5,6 +5,27 @@ import pytest
 from rule34Py import Post
 
 
+def test_rule34Py_get_pool(rule34):
+    """The client can get a post pool object."""
+    TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
+    TEST_NUM_POSTS = 14  # there are 14 posts in this pool
+    FIRST_POST_ID = 952001
+    post_ids = rule34.get_pool(pool_id=TEST_POOL_ID, fast=True)
+    # when Fast=True, return type is list[int]
+    assert isinstance(post_ids, list)
+    assert len(post_ids) == TEST_NUM_POSTS
+    assert isinstance(post_ids[0], int)
+    assert post_ids[0] == FIRST_POST_ID
+
+    # Test non-fast operation
+    posts = rule34.get_pool(pool_id=TEST_POOL_ID, fast=False)
+    # when Fast=False, return type is list[Post]
+    assert isinstance(posts, list)
+    assert len(posts) == TEST_NUM_POSTS
+    assert isinstance(posts[0], Post)
+    assert posts[0].id == FIRST_POST_ID
+
+
 def test_rule34Py_search(rule34):
     """The client can search for posts by tags, with pagination."""
     # search by single tag

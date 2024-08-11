@@ -54,7 +54,7 @@ def mock34():
     
     This fixture provides a passive context which intercepts 'requests' module HTTP requests and either (a) responds with recorded http content from the real rule34.xxx or (b) proxies the request to the real site and stores the response for later use.
     
-    Which behavior is followed is controlled by the value in the OS's `R34_RECORD_RESPONSES` variable. If python would evaluate that variable as True, then behavior (b) is followed. Otherwise, behavior (a) is used.
+    Which behavior is followed is controlled by the value in the OS's `R34_RECORD_RESPONSES` variable. If python would evaluate that variable as True, then requests are proxied and recorded; otherwise they are replayed.
     """
     record_responses = bool(os.environ.get("R34_RECORD_RESPONSES", 0))
     mock_service = Mock34(record_responses)

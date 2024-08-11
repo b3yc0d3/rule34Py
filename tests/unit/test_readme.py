@@ -15,7 +15,6 @@ EXAMPLE_POOL = 17509
 
 def test_module_import():
     """The rule34Py module contains a class called 'rule34Py'."""
-    
     members = inspect.getmembers(rule34Py, inspect.isclass)
     assert "rule34Py" in [m[0] for m in members]
 
@@ -35,7 +34,6 @@ def test_get_post(rule34):
 
 def test_icame(rule34):
     """The client can get the top 100 icame."""
-
     icames = rule34.icame()
     assert len(icames) > 0  # should have something in it
     for icame in icames:

@@ -15,14 +15,6 @@ result_pool = r34Py.get_pool(17509) # or r34Py.get_pool(17509, false)
 result_random = r34Py.random_post(["neko"]) # or r34Py.random_post()
 result_tagmap = r34Py.tagmap()
 
-# Stats
-result_topTaggers = r34Py.stats.top_taggers()
-result_topCommenters = r34Py.stats.top_commenters()
-result_topForumPosters = r34Py.stats.top_forum_posters()
-result_topImagePosters = r34Py.stats.top_image_posters()
-result_topNoteEditors = r34Py.stats.top_note_editors()
-result_topFavorites = r34Py.stats.top_favorites()
-
 print(result_random.id)
 print(result_random.image)
 

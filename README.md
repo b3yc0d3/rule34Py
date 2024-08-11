@@ -50,14 +50,6 @@ r34Py.get_pool(28)
 
 # get a random post (in this case with tag(s))
 random = r34Py.random_post(["neko"])
-
-# get general site stats
-r34Py.stats.top_taggers()
-r34Py.stats.top_commenters()
-r34Py.stats.top_forum_posters()
-r34Py.stats.top_image_posters()
-r34Py.stats.top_note_editors()
-r34Py.stats.top_favorites()
 ```
 
 ## Development

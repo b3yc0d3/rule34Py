@@ -57,17 +57,3 @@ def test_random_post(rule34):
     # This will actually be the same post, as the request passes through the mock server.
     post = rule34.random_post(["neko"])
     assert isinstance(post, Post)  # just check that it is a post
-
-def test_stats(rule34):
-    """The client can fetch various site statistics."""
-    for top_name in [
-        "top_taggers",
-        "top_commenters",
-        "top_forum_posters",
-        "top_image_posters",
-        "top_note_editors",
-        "top_favorites",
-    ]:
-        print(f"Testing {top_name}...")
-        results = getattr(rule34.stats, top_name)()
-        assert len(results) > 0

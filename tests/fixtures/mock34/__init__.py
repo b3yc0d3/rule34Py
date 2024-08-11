@@ -48,7 +48,7 @@ class Mock34():
 
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def mock34():
     """A fixture for mocking rule34.xxx HTTP requests.
     

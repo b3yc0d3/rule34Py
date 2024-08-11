@@ -291,7 +291,7 @@ class rule34Py(Exception):
             id = div["id"][1:]
 
             if fast == True:
-                ret_posts.append(id)
+                ret_posts.append(int(id))
             else:
                 ret_posts.append(self.get_post(id))
 

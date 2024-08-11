@@ -36,6 +36,6 @@ class API_URLS(str, Enum):
     ICAME = f"{__base_url__}index.php?page=icame" # returns: HTML
     RANDOM_POST = f"{__base_url__}index.php?page=post&s=random" #  returns: HTML
     USER_PAGE = f"{__api_url__}index.php?page=account&s=profile&id={{USER_ID}}" # returns: HTML
-    POOL = f"{__api_url__}index.php?page=pool&s=show&id={{POOL_ID}}" # returns: HTML
+    POOL = f"{__base_url__}index.php?page=pool&s=show&id={{POOL_ID}}" # returns: HTML
     TOPMAP = f"{__base_url__}index.php?page=toptags"
     STATS = f"{__base_url__}index.php?page=stats" # returns: HTML

@@ -1,37 +1,36 @@
-""""""
-"""
-rule34Py - Python api wrapper for rule34.xxx
+# rule34Py - Python api wrapper for rule34.xxx
+#
+# Copyright (C) 2022 MiningXL <miningxl@gmail.com>
+# Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
+# Copyright (c) 2024 ripariancommit <ripariancommit@protonmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Copyright (C) 2022 MiningXL <miningxl@gmail.com>
-Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
-Copyright (c) 2024 ripariancommit <ripariancommit@protonmail.com>
+"""This module contains the top-level Rule34 API client class."""
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-
-import requests
+from urllib.parse import parse_qs
 import random
 import urllib.parse as urlparse
+
 from bs4 import BeautifulSoup
-from enum import Enum
-from urllib.parse import parse_qs
-# From this module
-from rule34Py.api_urls import API_URLS, __base_url__
+import requests
+
 from rule34Py.__vars__ import __headers__, __version__
+from rule34Py.api_urls import API_URLS
+from rule34Py.icame import ICame
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
-from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
 
 """

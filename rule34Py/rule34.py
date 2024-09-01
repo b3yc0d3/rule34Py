@@ -302,7 +302,6 @@ class rule34Py():
         tags: list,
         page_id: int = None,
         limit: int = 1000,
-        deleted: bool = False,
         ignore_max_limit: bool = False,
     ) -> list:
         """
@@ -343,11 +342,6 @@ class rule34Py():
         if page_id != None:
             url += f"&pid={{PAGE_ID}}"
             params.append(["PAGE_ID", str(page_id)])
-
-        
-        if deleted:
-            raise Exception("To include deleted images is not Implemented yet!")
-            #url += "&deleted=show"
 
         formatted_url = self._parseUrlParams(url, params)
         response = requests.get(formatted_url, headers=__headers__)

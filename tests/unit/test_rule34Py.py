@@ -38,6 +38,15 @@ def test_rule34Py_get_pool(rule34):
     assert posts[0].id == FIRST_POST_ID
 
 
+def test_rule34Py_get_post(rule34):
+    """The client get_post() method fetches a single Post.
+    """
+    TEST_POST_ID = 3471384
+    post = rule34.get_post(TEST_POST_ID)
+    assert isinstance(post, Post)
+    assert post.id == TEST_POST_ID
+
+
 def test_rule34Py_search(rule34):
     """The client can search for posts by tags, with pagination."""
     # search by single tag

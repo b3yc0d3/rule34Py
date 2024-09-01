@@ -4,6 +4,7 @@ import pytest
 
 from rule34Py import Post
 from rule34Py.post_comment import PostComment
+from rule34Py.icame import ICame
 
 
 def test_rule34Py_get_comments(rule34):
@@ -45,6 +46,16 @@ def test_rule34Py_get_post(rule34):
     post = rule34.get_post(TEST_POST_ID)
     assert isinstance(post, Post)
     assert post.id == TEST_POST_ID
+
+
+def test_rule34Py_icame(rule34):
+    """The client icame() method fetches the icame leaderboard as a list.
+    """
+    icame = rule34.icame()
+    assert isinstance(icame, list)
+    assert len(icame) == 100  # the list length is 100 by default
+    assert isinstance(icame[0], ICame)
+    # TODO: test the `limit` parameter once, it is working.
 
 
 def test_rule34Py_search(rule34):

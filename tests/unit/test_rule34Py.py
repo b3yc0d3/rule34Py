@@ -5,6 +5,7 @@ import pytest
 from rule34Py import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
+from rule34Py.toptag import TopTag
 
 
 def test_rule34Py_get_comments(rule34):
@@ -58,6 +59,16 @@ def test_rule34Py_icame(rule34):
     # TODO: test the `limit` parameter once, it is working.
 
 
+def test_rule34Py_random_post(rule34):
+    """The client random_post() method fetches a random Post object.
+    """
+    post = rule34.random_post()
+    assert isinstance(post, Post)
+    # You can specify tags to limit the random search
+    post = rule34.random_post(tags=["neko"])
+    assert "neko" in post.tags
+
+
 def test_rule34Py_search(rule34):
     """The client can search for posts by tags, with pagination."""
     # search by single tag
@@ -84,12 +95,10 @@ def test_rule34Py_search(rule34):
     assert set(ids3).issubset(set(ids1))
 
 
-def test_rule34Py_get_comments(rule34):
-    """The get_comments() method should fetch a list of comments from a post.
+def test_rule34Py_tagmap(rule34):
+    """The client tagmap() method should return the 100 TopTags.
     """
-    # TEST_POST_ID is the oldest post from search `neko rating:safe` with multiple comments.
-    TEST_POST_ID = 3471384
-    comments = rule34.get_comments(TEST_POST_ID)
-    assert isinstance(comments, list)
-    assert len(comments) > 1
-    assert isinstance(comments[0], PostComment)
+    tagmap = rule34.tagmap()
+    assert isinstance(tagmap, list)
+    assert len(tagmap) == 100
+    assert isinstance(tagmap[0], TopTag)

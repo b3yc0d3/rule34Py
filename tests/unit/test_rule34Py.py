@@ -59,6 +59,31 @@ def test_rule34Py_icame(rule34):
     # TODO: test the `limit` parameter once, it is working.
 
 
+def test_rule34Py_iter_search(rule34):
+    """The iter_search() method will iterate over post search results.
+    """
+    # The method returns an iterator.
+    from collections.abc import Iterator
+    iter = rule34.iter_search()
+    assert isinstance(iter, Iterator)
+    # You can loop over that iterator and get Post objects.
+    for post in rule34.iter_search():
+        assert isinstance(post, Post)
+        break
+    # By default, it will iterate until the end of the search results.
+    # The "1938" tag is a pretty safe bet to have very few results.
+    results = list(rule34.iter_search(tags=["1938"]))
+    assert len(results) > 0
+    # But you can also specify a max_number of results.
+    # The "female" tag is basically guaranteed to have a bunch of results.
+    results = list(rule34.iter_search(["female"], max_results=17))
+    assert len(results) == 17
+    # If the max_results are greater than a single page, the iterator will
+    # transparently move to the next page.
+    results = list(rule34.iter_search(["female"], max_results=1002))
+    assert len(results) == 1002
+
+
 def test_rule34Py_random_post(rule34):
     """The client random_post() method fetches a random Post object.
     """

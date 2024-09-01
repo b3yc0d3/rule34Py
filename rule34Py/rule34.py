@@ -19,6 +19,7 @@
 
 """This module contains the top-level Rule34 API client class."""
 
+from collections.abc import Iterator
 from urllib.parse import parse_qs
 import random
 import urllib.parse as urlparse
@@ -61,7 +62,8 @@ class rule34Py():
         page_id: int = None,
         limit: int = 1000,
         deleted: bool = False,
-        ignore_max_limit: bool = False) -> list:
+        ignore_max_limit: bool = False,
+    ) -> list:
         """
         Search for posts.
 
@@ -264,8 +266,39 @@ class rule34Py():
 
             ret_topchart.append(ICame(character_name, count))
 
-
         return ret_topchart
+
+    def iter_search(
+        self,
+        tags: list[str] = [],
+        max_results: (int | None) = None,
+    ) -> Iterator[Post]:
+        """Iterate through Post search results, one element at a time.
+
+        This method transparently requests additional results pages until either max_results is reached, or there are no more results. It is possible that additional Posts may be added to the results between page calls, and so it is recommended that you deduplicate results if that is important to you.
+
+        :param tags: Tag list to search.
+        :type tags:  list[str]
+
+        :param max_results: The maximum number of results to return before ending the iteration. If 'None', then iteration will continue until the end of the results. Defaults to 'None'.
+        :type max_results: int|None
+
+        :return: Yields a Post Iterator.
+        :rtype:  Iterator[Post]
+        """
+        page_id = 0  # what page of the search results we're on
+        results_count = 0  # accumulator of how many results have been returned
+
+        while max_results is None or results_count < max_results:
+            results = self.search(tags, page_id=page_id)
+            if len(results) == 0:  # no results or end of search list
+                return
+            for result in results:
+                if max_results is not None and results_count >= max_results:
+                    return
+                yield result
+                results_count += 1
+            page_id += 1
 
     def random_post(self, tags: list = None):
         """

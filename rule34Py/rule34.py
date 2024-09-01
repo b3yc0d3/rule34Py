@@ -57,76 +57,6 @@ class rule34Py():
         """
         pass
 
-    def search(self,
-        tags: list,
-        page_id: int = None,
-        limit: int = 1000,
-        deleted: bool = False,
-        ignore_max_limit: bool = False,
-    ) -> list:
-        """
-        Search for posts.
-
-        :param tags: List of tags.
-        :type tags: list[str]
-
-        :param page_id: Page number/id.
-        :type page_id: int
-
-        :param limit: Limit for posts returned per page (max. 1000).
-        :type limit: int
-
-        :param ignore_max_limit: If limit of 1000 should be ignored.
-        :type ignore_max_limit: bool
-
-        :return: List of Post objects for matching posts.
-        :rtype: list[Post]
-
-        For more information, see:
-
-            - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
-            - `Tags cheat sheet <https://rule34.xxx/index.php?page=tags&s=list>`_
-        """
-
-        # Check if "limit" is in between 1 and 1000
-        if not ignore_max_limit and limit > 1000 or limit <= 0:
-            raise Exception("invalid value for \"limit\"\n  value must be between 1 and 1000\n  see for more info:\n  https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md#search")
-            return
-
-        params = [
-            ["TAGS", "+".join(tags)],
-            ["LIMIT", str(limit)],
-        ]
-        url = API_URLS.SEARCH.value
-        # Add "page_id"
-        if page_id != None:
-            url += f"&pid={{PAGE_ID}}"
-            params.append(["PAGE_ID", str(page_id)])
-
-        
-        if deleted:
-            raise Exception("To include deleted images is not Implemented yet!")
-            #url += "&deleted=show"
-
-        formatted_url = self._parseUrlParams(url, params)
-        response = requests.get(formatted_url, headers=__headers__)
-        
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
-
-        # checking if status code is not 200
-        # (it's useless currently, becouse rule34.xxx returns always 200 OK regardless of an error)
-        # and checking if content lenths is 0 or smaller
-        # (curetly the only way to check for a error response)
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
-
-        for post in response.json():
-            ret_posts.append(Post.from_json(post))
-
-        return ret_posts
-
     def get_comments(self, post_id: int) -> list:
         """
         Retrieve comments of post by its id.
@@ -300,6 +230,30 @@ class rule34Py():
                 results_count += 1
             page_id += 1
 
+    def _parseUrlParams(self, url: str, params: list) -> str:
+        """
+        Parse url parameters.
+
+        **This function is only used internally.**
+
+        :return: Url filed with filled in placeholders.
+        :rtype: str
+
+        :Example:
+            self._parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
+        """
+
+        # Usage: _parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
+        retURL = url
+
+        for g in params:
+            key = g[0]
+            value = g[1]
+
+            retURL = retURL.replace("{" + key + "}", value)
+
+        return retURL
+
     def random_post(self, tags: list = None):
         """
         Get a random post.
@@ -328,6 +282,91 @@ class rule34Py():
 
         else:
             return self.get_post(self._random_post_id())
+
+    def _random_post_id(self) -> str:
+        """
+        Get a random posts id.
+
+        **This function is only used internally.**
+
+        :return: Random post id
+        :rtype: str
+        """
+
+        res = requests.get(API_URLS.RANDOM_POST.value, headers=__headers__)
+        parsed = urlparse.urlparse(res.url)
+
+        return parse_qs(parsed.query)['id'][0]
+
+    def search(self,
+        tags: list,
+        page_id: int = None,
+        limit: int = 1000,
+        deleted: bool = False,
+        ignore_max_limit: bool = False,
+    ) -> list:
+        """
+        Search for posts.
+
+        :param tags: List of tags.
+        :type tags: list[str]
+
+        :param page_id: Page number/id.
+        :type page_id: int
+
+        :param limit: Limit for posts returned per page (max. 1000).
+        :type limit: int
+
+        :param ignore_max_limit: If limit of 1000 should be ignored.
+        :type ignore_max_limit: bool
+
+        :return: List of Post objects for matching posts.
+        :rtype: list[Post]
+
+        For more information, see:
+
+            - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
+            - `Tags cheat sheet <https://rule34.xxx/index.php?page=tags&s=list>`_
+        """
+
+        # Check if "limit" is in between 1 and 1000
+        if not ignore_max_limit and limit > 1000 or limit <= 0:
+            raise Exception("invalid value for \"limit\"\n  value must be between 1 and 1000\n  see for more info:\n  https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md#search")
+            return
+
+        params = [
+            ["TAGS", "+".join(tags)],
+            ["LIMIT", str(limit)],
+        ]
+        url = API_URLS.SEARCH.value
+        # Add "page_id"
+        if page_id != None:
+            url += f"&pid={{PAGE_ID}}"
+            params.append(["PAGE_ID", str(page_id)])
+
+        
+        if deleted:
+            raise Exception("To include deleted images is not Implemented yet!")
+            #url += "&deleted=show"
+
+        formatted_url = self._parseUrlParams(url, params)
+        response = requests.get(formatted_url, headers=__headers__)
+        
+        res_status = response.status_code
+        res_len = len(response.content)
+        ret_posts = []
+
+        # checking if status code is not 200
+        # (it's useless currently, becouse rule34.xxx returns always 200 OK regardless of an error)
+        # and checking if content lenths is 0 or smaller
+        # (curetly the only way to check for a error response)
+        if res_status != 200 or res_len <= 0:
+            return ret_posts
+
+        for post in response.json():
+            ret_posts.append(Post.from_json(post))
+
+        return ret_posts
 
     def tagmap(self) -> list:
         """
@@ -370,46 +409,6 @@ class rule34Py():
             #})
 
         return retData
-
-
-    def _random_post_id(self) -> str:
-        """
-        Get a random posts id.
-
-        **This function is only used internally.**
-
-        :return: Random post id
-        :rtype: str
-        """
-
-        res = requests.get(API_URLS.RANDOM_POST.value, headers=__headers__)
-        parsed = urlparse.urlparse(res.url)
-
-        return parse_qs(parsed.query)['id'][0]
-
-    def _parseUrlParams(self, url: str, params: list) -> str:
-        """
-        Parse url parameters.
-
-        **This function is only used internally.**
-
-        :return: Url filed with filled in placeholders.
-        :rtype: str
-
-        :Example:
-            self._parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
-        """
-
-        # Usage: _parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
-        retURL = url
-
-        for g in params:
-            key = g[0]
-            value = g[1]
-
-            retURL = retURL.replace("{" + key + "}", value)
-
-        return retURL
 
     @property
     def version(self) -> str:

@@ -3,6 +3,18 @@
 import pytest
 
 from rule34Py import Post
+from rule34Py.post_comment import PostComment
+
+
+def test_rule34Py_get_comments(rule34):
+    """The get_comments() method should fetch a list of comments from a post.
+    """
+    # TEST_POST_ID is the oldest post from search `neko rating:safe` with multiple comments.
+    TEST_POST_ID = 3471384
+    comments = rule34.get_comments(TEST_POST_ID)
+    assert isinstance(comments, list)
+    assert len(comments) > 1
+    assert isinstance(comments[0], PostComment)
 
 
 def test_rule34Py_get_pool(rule34):
@@ -50,3 +62,14 @@ def test_rule34Py_search(rule34):
     assert len(results3) == 20
     print(set(ids3) - set(ids1))
     assert set(ids3).issubset(set(ids1))
+
+
+def test_rule34Py_get_comments(rule34):
+    """The get_comments() method should fetch a list of comments from a post.
+    """
+    # TEST_POST_ID is the oldest post from search `neko rating:safe` with multiple comments.
+    TEST_POST_ID = 3471384
+    comments = rule34.get_comments(TEST_POST_ID)
+    assert isinstance(comments, list)
+    assert len(comments) > 1
+    assert isinstance(comments[0], PostComment)

@@ -38,17 +38,23 @@ TODO: fix typos
 """
 
 
-# Main Class
-class rule34Py(Exception):
-    """
-    rule34.xxx API wrapper
+class rule34Py():
+    """The rule34.xxx API client.
+
+    Usage:
+    ```python
+    client = rule34Py()
+    post = client.get_post(1234)
+    ```
     """
 
     def __init__(self):
+        """Initialize a new rule34 API client instance.
+
+        :return: A new rule34 API client instance.
+        :rtype: rule34Py
         """
-        rule34.xxx API wrapper
-        """
-        self.__isInit__ = False
+        pass
 
     def search(self,
         tags: list,

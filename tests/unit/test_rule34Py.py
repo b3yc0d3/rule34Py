@@ -3,7 +3,6 @@
 import pytest
 
 from rule34Py import Post
-from rule34Py.rule34 import Stats
 
 
 def test_rule34Py_get_pool(rule34):

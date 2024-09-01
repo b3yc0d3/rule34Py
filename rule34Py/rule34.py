@@ -38,6 +38,8 @@ from rule34Py.toptag import TopTag
 TODO: fix typos
 """
 
+SEARCH_RESULT_MAX = 1000  # API-defined maximum number of search results per request. <https://rule34.xxx/index.php?page=help&topic=dapi>
+
 
 class rule34Py():
     """The rule34.xxx API client.
@@ -301,8 +303,7 @@ class rule34Py():
     def search(self,
         tags: list,
         page_id: int = None,
-        limit: int = 1000,
-        ignore_max_limit: bool = False,
+        limit: int = SEARCH_RESULT_MAX,
     ) -> list:
         """
         Search for posts.
@@ -316,9 +317,6 @@ class rule34Py():
         :param limit: Limit for posts returned per page (max. 1000).
         :type limit: int
 
-        :param ignore_max_limit: If limit of 1000 should be ignored.
-        :type ignore_max_limit: bool
-
         :return: List of Post objects for matching posts.
         :rtype: list[Post]
 
@@ -329,9 +327,8 @@ class rule34Py():
         """
 
         # Check if "limit" is in between 1 and 1000
-        if not ignore_max_limit and limit > 1000 or limit <= 0:
-            raise Exception("invalid value for \"limit\"\n  value must be between 1 and 1000\n  see for more info:\n  https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md#search")
-            return
+        if limit < 0 or limit > SEARCH_RESULT_MAX:
+            raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
 
         params = [
             ["TAGS", "+".join(tags)],

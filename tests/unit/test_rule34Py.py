@@ -3,6 +3,7 @@
 import pytest
 
 from rule34Py import Post
+from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
@@ -102,7 +103,7 @@ def test_rule34Py_search(rule34):
     print(f"ids1={ids1[:10]}...")
     assert isinstance(results1, list)  # return type is list
     
-    assert len(results1) == 1000  # should return the maximum number of posts (1000)
+    assert len(results1) == SEARCH_RESULT_MAX
     assert isinstance(results1[0], Post)  # return list contains Post objects
 
     # get a second page of results
@@ -118,6 +119,12 @@ def test_rule34Py_search(rule34):
     assert len(results3) == 20
     print(set(ids3) - set(ids1))
     assert set(ids3).issubset(set(ids1))
+
+    # Invalid arguments - limit
+    with pytest.raises(ValueError) as e:
+        rule34.search([], limit=-10)
+    with pytest.raises(ValueError):
+        rule34.search([], limit=SEARCH_RESULT_MAX + 1)
 
 
 def test_rule34Py_tagmap(rule34):

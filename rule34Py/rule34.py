@@ -301,12 +301,11 @@ class rule34Py():
         return parse_qs(parsed.query)['id'][0]
 
     def search(self,
-        tags: list,
+        tags: list[str] = [],
         page_id: int = None,
         limit: int = SEARCH_RESULT_MAX,
-    ) -> list:
-        """
-        Search for posts.
+    ) -> list[Post]:
+        """Search for posts.
 
         :param tags: List of tags.
         :type tags: list[str]
@@ -323,10 +322,7 @@ class rule34Py():
         For more information, see:
 
             - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
-            - `Tags cheat sheet <https://rule34.xxx/index.php?page=tags&s=list>`_
         """
-
-        # Check if "limit" is in between 1 and 1000
         if limit < 0 or limit > SEARCH_RESULT_MAX:
             raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
 
@@ -342,22 +338,18 @@ class rule34Py():
 
         formatted_url = self._parseUrlParams(url, params)
         response = requests.get(formatted_url, headers=__headers__)
-        
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
+        response.raise_for_status()
 
-        # checking if status code is not 200
-        # (it's useless currently, becouse rule34.xxx returns always 200 OK regardless of an error)
-        # and checking if content lenths is 0 or smaller
-        # (curetly the only way to check for a error response)
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
+        # The Rule34 List API endpoint always returns code 200. But the response
+        # might be 0-bytes, if it cannot find the supplied 'tags' param; or an
+        # empty JSON array, if there are no results on that 'page_id'.
+        if len(response.content) == 0:
+            return []
 
-        for post in response.json():
-            ret_posts.append(Post.from_json(post))
-
-        return ret_posts
+        posts = []
+        for post_json in response.json():
+            posts.append(Post.from_json(post_json))
+        return posts
 
     def tagmap(self) -> list:
         """

@@ -409,10 +409,10 @@ class rule34Py():
 
     @property
     def version(self) -> str:
-        """
-        Rule34Py version.
+        """Rule34Py version.
 
         :return: Version of rule34py.
         :rtype: str
         """
+        raise DeprecationWarning("This method is due to be deprecated in a future release of rule34Py. Use `rule34Py.version` instead.")
         return __version__

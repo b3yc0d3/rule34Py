@@ -145,3 +145,12 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags, list)
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
+
+def test_rule34Py_version(rule34):
+    """The version() property should just raise a deprecation warning.
+    
+    Remove this test when the method is removed.
+    """
+    with pytest.raises(DeprecationWarning) as ex:
+        rule34.version
+    assert ex.match(r".*Use `rule34Py.version` instead.*")

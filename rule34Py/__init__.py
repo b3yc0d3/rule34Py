@@ -21,7 +21,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from rule34Py.rule34 import rule34Py
 from rule34Py.icame import ICame
 from rule34Py.post import Post
-from rule34Py.stats import Stat
 from rule34Py.toptag import TopTag
 
 from rule34Py.__vars__ import __version__ as version

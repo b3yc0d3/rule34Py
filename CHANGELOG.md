@@ -1,4 +1,56 @@
-## [1.4.10] - 2023/02/22
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [Unreleased]
+
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+
+## [2.0.0] - 2024-09-02
+
+### Added
+
+-  Added an autotesting suite based on `pytest` and `Responses`. (#16)
+-  Added a NOTICE.md file to tack third party license inclusions. (#16)
+
+### Changed
+
+- Updated the README quickstart instructions to avoid dead object references. (#16)
+- Switched the canonical project build framework from `setup.py` to `pyproject.toml`. (#18)
+
+### Removed
+
+- Removed the `rule34Py.stats` feature, as it was removed from the upstream Rule34 APIs. (#17)
+- Removed the legacy `rule34Py_old` module, as it is no longer functional. (#17)
+
+### Fixed
+
+- Fixed the `rule34Py.get_pool()` method using the wrong API url. (#16)
+
+
+## [1.4.11] - 2023-12-25
+
+### Changed
+
+- Updated and refreshed project documentation. (#13)
+
+### Fixed
+
+- Fixed the `rule34Py.random_post()` method using the wrong API url. (#4, #5)
+- Fixed an IndexError in the `rule34.random_post()` method. (#8)
+
+
+## [1.4.10] - 2023-02-22
 ### Added
 - `from_json` to Post class
 - `preview` field to Post class
@@ -14,12 +66,12 @@
 - changed how `search` and `get_post` are creating post objects
 
 
-## [1.4.9] - 2022/12/26
+## [1.4.9] - 2022-12-26
 ### Fixed
 - Fixed bug where 'search' function didn't used value parameter of 'page_id'
 
 
-## [1.4.8] - 2022/12/01
+## [1.4.8] - 2022-12-01
 ### Added
 - new class for TopMap
 
@@ -34,41 +86,41 @@
 - typos in some markdown files
 
 
-## [1.4.7] - 2022/09/22
+## [1.4.7] - 2022-09-22
 ### Changed
 - `RANDOM_POST` URI now uses '**&#95;&#95;base&#95;url&#95;&#95;**' instead of '**&#95;&#95;api&#95;url&#95;&#95;**' ( by talbaskin.business@gmail.com )
 
-## [1.4.5] - 2022/04/25
+## [1.4.5] - 2022-04-25
 ### Changed
 - added to function `search` additional error handling
 - updated DOCS
 - updated rule34.xxx api url
 
-## [1.4.4] - 2022/04/11
+## [1.4.4] - 2022-04-11
 ### Changed
 - search function, added new parameter "ignore_max_limit"
 - updated Docs
 - author email
 
-## [1.4.3] - 16-01-2022
+## [1.4.3] - 2022-01-16
 ### Changed
 - setuppy min versions
 
-## [1.4.2] - 18-11-2021
+## [1.4.2] - 2021-11-18
 ### Added
 - "tagmap" function (and docs for it)
 
 ### Changed
 - updated code snippet
 
-## [1.4.1] - 10-11-2021
+## [1.4.1] - 2021-11-10
 ### Added
 - "get_pool" Function (and docs for it)
 
 ### Changed
 - relative links to absolute links in all readme files
 
-## [1.4.0] - 07-11-2021
+## [1.4.0] - 2021-11-07
 ### Added
 - "search" Function
 - "get_comments" Functon
@@ -84,17 +136,17 @@
 ### Changed
 - updated README
 
-## [1.3.20] - 20-08-2021
+## [1.3.20] - 2021-08-20
 ### Changed
 - fixed [bug](https://github.com/b3yc0d3/rule34Py/issues/2)
 - "src/rule34Py.py"
 
-## [1.3.20] - 02-08-2021
+## [1.3.20] - 2021-08-02
 ### Changed
 - "random" Functon
 - "README.md" upated documentation
 
-## [0.0.1] - 06-05-2021
+## [0.0.1] - 2021-05-06
 ### Added
 - "search" Function
 - "getCommets" Function

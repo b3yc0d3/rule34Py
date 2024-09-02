@@ -16,6 +16,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 
+## [2.0.0] - 2024-09-02
+
+### Added
+
+-  Added an autotesting suite based on `pytest` and `Responses`. (#16)
+-  Added a NOTICE.md file to tack third party license inclusions. (#16)
+
+### Changed
+
+- Updated the README quickstart instructions to avoid dead object references. (#16)
+- Switched the canonical project build framework from `setup.py` to `pyproject.toml`. (#18)
+
+### Removed
+
+- Removed the `rule34Py.stats` feature, as it was removed from the upstream Rule34 APIs. (#17)
+- Removed the legacy `rule34Py_old` module, as it is no longer functional. (#17)
+
+### Fixed
+
+- Fixed the `rule34Py.get_pool()` method using the wrong API url. (#16)
+
+
+## [1.4.11] - 2023-12-25
+
+### Changed
+
+- Updated and refreshed project documentation. (#13)
+
+### Fixed
+
+- Fixed the `rule34Py.random_post()` method using the wrong API url. (#4, #5)
+- Fixed an IndexError in the `rule34.random_post()` method. (#8)
+
+
 ## [1.4.10] - 2023-02-22
 ### Added
 - `from_json` to Post class

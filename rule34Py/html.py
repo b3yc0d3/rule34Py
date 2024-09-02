@@ -5,6 +5,44 @@ import re
 
 from bs4 import BeautifulSoup
 
+from rule34Py.icame import ICame
+
+
+class ICamePage():
+    """The Rule34 'icame' page.
+    
+    This class can be instantiated as an object that automatically parses
+    the useful information from the page's html, or used as a static class
+    to parse the page's html directly.
+    """
+
+    top_chart: list[ICame] = []
+
+    def __init__(self, html: str):
+        self.top_chart = ICamePage.top_chart_from_html(html)
+
+    @staticmethod
+    def top_chart_from_html(html: str) -> list[ICame]:
+        """Parse the ICame Top 100 chart from the page html.
+        
+        :returns: A list of the top 100 ICame characters and their counts.
+        :rtype: list[ICame]
+        """
+        e_doc = BeautifulSoup(html, features="html.parser")
+
+        top_chart = []
+        e_rows = e_doc.find("table", border=1).find("tbody").find_all("tr")
+        for e_row in e_rows:
+            if e_row is None:
+                continue
+
+            character_name = e_row.select('td > a', href=True)[0].get_text(strip=True)
+            count = e_row.select('td')[1].get_text(strip=True)
+
+            top_chart.append(ICame(character_name, count))
+
+        return top_chart
+
 
 class TagMapPage():
     """The rule34.xxx/static/tagmap.html page.

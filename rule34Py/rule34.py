@@ -23,6 +23,7 @@ from collections.abc import Iterator
 from urllib.parse import parse_qs
 import random
 import urllib.parse as urlparse
+import warnings
 
 from bs4 import BeautifulSoup
 import requests
@@ -344,7 +345,7 @@ class rule34Py():
             posts.append(Post.from_json(post_json))
         return posts
 
-    def tagmap(self) -> dict[str, str]:
+    def tag_map(self) -> dict[str, str]:
         """Retrieve the tag map points.
 
         This method uses the tagmap static HTML.
@@ -355,6 +356,20 @@ class rule34Py():
         resp = self._get(__base_url__ + "static/tagmap.html")
         resp.raise_for_status()
         return TagMapPage.map_points_from_html(resp.text)
+
+    def tagmap(self) -> list[TopTag]:
+        """Retrieve list of top 100 global tags.
+
+        This method is deprecated in favor of the top_tags() method.
+
+        :return: List of top 100 tags, globally.
+        :rtype: list[TopTag]
+        """
+        warnings.warn(
+            "The rule34Py.tagmap() method is scheduled for deprecation in a future release. If you want to retrieve the Global Top-100 tags list, use the rule34Py.top_tags() method. If you want to retrieve the tag map data points, use the rule34Py.tag_map() method (with an underscore.)",
+            DeprecationWarning,
+        )
+        return self.top_tags()
 
     def top_tags(self) -> list[TopTag]:
         """Retrieve list of top 100 global tags.

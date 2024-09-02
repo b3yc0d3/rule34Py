@@ -127,16 +127,25 @@ def test_rule34Py_search(rule34):
         rule34.search([], limit=SEARCH_RESULT_MAX + 1)
 
 
-def test_rule34Py_tagmap(rule34):
-    """The client tagmap() method should return a map of tags.
+def test_rule34Py_tag_map(rule34):
+    """The client tag_map() method should return a map of tags.
     """
-    tagmap = rule34.tagmap()
-    assert isinstance(tagmap, dict)
-    assert len(tagmap) > 0
-    for key, value in tagmap.items():
+    tag_map = rule34.tag_map()
+    assert isinstance(tag_map, dict)
+    assert len(tag_map) > 0
+    for key, value in tag_map.items():
         assert isinstance(key, str)
         assert isinstance(value, str)
-        break  # just check the first tagmap point
+        break  # just check the first tag_map point
+
+
+def test_rule34Py_tagmap(rule34):
+    """The old tagmap() method should throw a deprecation warning, but return the top_tags() method."""
+    with pytest.warns(DeprecationWarning):
+        top_tags = rule34.tagmap()
+    assert isinstance(top_tags, list)
+    assert isinstance(top_tags[0], TopTag)
+
 
 def test_rule34Py_top_tags(rule34):
     """The top_tags() method returns a list of the top 100 global tags.

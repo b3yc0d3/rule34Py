@@ -46,18 +46,10 @@ r34Py.icame()
 r34Py.search(["neko"], page_id=2, limit=50)
 
 # get pool by id
-r34Py.get_pool(17509)
+r34Py.get_pool(28)
 
 # get a random post (in this case with tag(s))
 random = r34Py.random_post(["neko"])
-
-# get general site stats
-r34Py.stats.top_taggers()
-r34Py.stats.top_commenters()
-r34Py.stats.top_forum_posters()
-r34Py.stats.top_image_posters()
-r34Py.stats.top_note_editors()
-r34Py.stats.top_favorites()
 ```
 
 ## Development
@@ -92,6 +84,14 @@ python3 -m build -s -w -n
 
 pip install -e .
 ```
+
+
+### Running the Test Suite
+
+This project is tested by an organic `pytest` suite, stored under the `:tests/` directory.
+
+See the [`tests/README.md`](./tests/README.md) file for instructions on how to run the test suite.
+
 
 ### Committing your Changes
 - Branch name should be prefixed with

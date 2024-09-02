@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Removed the `deleted` and `ignore_max_limit` parameters from the `rule34Py.search()` method. Neither worked and only ever returned an exception. (#20)
+- Removed the `limit` parameter from the `rule34Py.icame()` method, as it did nothing. Users are directed to use list slicing instead. (#20)
 
 ### Fixed
 ### Security

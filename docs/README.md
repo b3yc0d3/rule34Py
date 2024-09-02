@@ -1,6 +1,6 @@
 # Rule34Py Documentation
 
-Last edited at `25-12-2023` by [b3yc0d3](https://github.com/b3yc0d3)
+Last edited at `02-09-2024` by [ripariancommit](https://github.com/ripariancommit)
 
 Parameters that are prefixed by an `?` are optional.
 

@@ -1,5 +1,7 @@
 """These tests confirm the functionality of the rule34Py.rule34 class.
 """
+import re
+
 import pytest
 
 from rule34Py import Post
@@ -141,8 +143,11 @@ def test_rule34Py_tag_map(rule34):
 
 def test_rule34Py_tagmap(rule34):
     """The old tagmap() method should throw a deprecation warning, but return the top_tags() method."""
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(DeprecationWarning) as warnings:
         top_tags = rule34.tagmap()
+    # The warning message should direct the user to the new methods.
+    assert re.match(r".*top_tags.*", str(warnings[0].message))
+    assert re.match(r".*tag_map.*", str(warnings[0].message))
     assert isinstance(top_tags, list)
     assert isinstance(top_tags[0], TopTag)
 
@@ -156,10 +161,14 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags[0], TopTag)
 
 def test_rule34Py_version(rule34):
-    """The version() property should just raise a deprecation warning.
+    """The version() property should throw a deprecation warning, but return its original value.
     
     Remove this test when the method is removed.
     """
-    with pytest.raises(DeprecationWarning) as ex:
-        rule34.version
-    assert ex.match(r".*Use `rule34Py.version` instead.*")
+    with pytest.warns(
+        DeprecationWarning,
+        match=r".*Use `rule34Py.version` instead.*",
+    ):
+        version = rule34.version
+    assert re.match(r"^\d+\.\d+\.\d+$", version)
+

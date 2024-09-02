@@ -388,5 +388,8 @@ class rule34Py():
         :return: Version of rule34py.
         :rtype: str
         """
-        raise DeprecationWarning("This method is due to be deprecated in a future release of rule34Py. Use `rule34Py.version` instead.")
+        warnings.warn(
+            "This method is scheduled for deprecation in a future release of rule34Py. Use `rule34Py.version` instead.",
+            DeprecationWarning,
+        )
         return __version__

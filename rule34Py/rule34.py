@@ -29,7 +29,7 @@ import requests
 
 from rule34Py.__vars__ import __headers__, __version__, __base_url__
 from rule34Py.api_urls import API_URLS
-from rule34Py.html import TagMapPage, ICamePage
+from rule34Py.html import TagMapPage, ICamePage, TopTagsPage
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
@@ -362,27 +362,9 @@ class rule34Py():
         :return: List of top 100 tags, globally.
         :rtype: list[TopTag]
         """
-        resp = requests.get(API_URLS.TOPMAP.value, headers=__headers__)
-        resp.raise_for_status()
-
-        bfs_raw = BeautifulSoup(resp.content.decode("utf-8"), features="html.parser")
-        rows = bfs_raw.find("table", class_="server-assigns").find_all("tr")
-
-        rows.pop(0)
-        rows.pop(0)
-
-        retData = []
-
-        for row in rows:
-            tags = row.find_all("td")
-
-            rank = tags[0].string[1:]
-            tagname = tags[1].string
-            percentage = tags[2].string[:-1]
-
-            retData.append(TopTag(rank=rank, tagname=tagname, percentage=percentage))
-
-        return retData
+        response = self._get(API_URLS.TOPMAP.value)
+        response.raise_for_status()
+        return TopTagsPage.top_tags_from_html(response.text)
 
     @property
     def version(self) -> str:

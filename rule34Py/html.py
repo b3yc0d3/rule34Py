@@ -6,6 +6,7 @@ import re
 from bs4 import BeautifulSoup
 
 from rule34Py.icame import ICame
+from rule34Py.toptag import TopTag
 
 
 class ICamePage():
@@ -82,3 +83,44 @@ class TagMapPage():
                 map_points[location] = point_data["text"]
 
         return map_points
+
+
+class TopTagsPage():
+    """The rule34.xxx/index.php?Page=toptags page.
+
+    This class can be instantiated as an object that automatically parses
+    the useful information from the page's html, or used as a static class
+    to parse the page's html directly.
+    """
+
+    top_tags: list[TopTag] = []
+
+    def __init__(self, html: str):
+        self.top_tags = TopTagsPage.top_tags_from_html(html)
+        
+    @staticmethod
+    def top_tags_from_html(html: str) -> list[TopTag]:
+        """Parse the "Top 100 tags, global" table from the page.
+        
+        :returns: A list of TopTags representing the top 100 chart.
+        :rtype: list[TopTag]
+        """
+        e_doc = BeautifulSoup(html, features="html.parser")
+        e_rows = e_doc.find("table", class_="server-assigns").find_all("tr")
+
+        top_tags = []
+        # Skip the first two rows; they are the table title and headers.
+        for e_row in e_rows[2:]:
+            e_tags = e_row.find_all("td")
+
+            rank = e_tags[0].string[1:]
+            tagname = e_tags[1].string
+            percentage = e_tags[2].string[:-1]
+
+            top_tags.append(TopTag(
+                rank=rank,
+                tagname=tagname,
+                percentage=percentage,
+            ))
+
+        return top_tags

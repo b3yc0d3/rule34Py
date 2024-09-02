@@ -51,6 +51,8 @@ class rule34Py():
     ```
     """
 
+    user_agent: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
+
     def __init__(self):
         """Initialize a new rule34 API client instance.
 
@@ -58,6 +60,19 @@ class rule34Py():
         :rtype: rule34Py
         """
         pass
+
+    def _get(self, *args, **kwargs) -> requests.Response:
+        """Send an HTTP GET request.
+
+        This method largely passes its arguments to the requests.get() method,
+        while also inserting a valid User-Agent.
+
+        :return: A requests.Response object from the GET request.
+        :rtype: requests.Response
+        """
+        kwargs["headers"] = kwargs.get("headers", {}) | \
+            {"User-Agent": self.user_agent}
+        return requests.get(*args, **kwargs)
 
     def get_comments(self, post_id: int) -> list:
         """

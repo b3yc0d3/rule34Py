@@ -59,7 +59,6 @@ def test_rule34Py_icame(rule34):
     assert isinstance(icame, list)
     assert len(icame) == 100  # the list length is 100 by default
     assert isinstance(icame[0], ICame)
-    # TODO: test the `limit` parameter once, it is working.
 
 
 def test_rule34Py_iter_search(rule34):

@@ -180,11 +180,8 @@ class rule34Py():
 
         return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
 
-    def icame(self, limit: int = 100) -> list:
+    def icame(self) -> list:
         """Retrieve list of top 100 iCame list.
-
-        :param limit: Limit of returned items. (Default: ``'100'``)
-        :type limit: int
 
         :return: List of iCame objects.
         :rtype: list[ICame]

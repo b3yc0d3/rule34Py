@@ -14,12 +14,11 @@ Python api wrapper for [rule34.xxx](https://rule34.xxx/).
 pip install rule34py
 ```
 
-#### Install it from Source
+#### Building it from Source
 ```
 git clone https://github.com/b3yc0d3/rule34Py.git
 cd rule34Py
-python setup.py sdist
-pip install -e .
+python3 -m build
 ```
 
 ## Documentation
@@ -80,7 +79,7 @@ deactivate
 
 ### Install and Build rule34Py in the Virtual Environment
 ```
-python3 -m build -s -w -n
+python3 -m build
 
 pip install -e .
 ```

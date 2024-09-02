@@ -128,9 +128,20 @@ def test_rule34Py_search(rule34):
 
 
 def test_rule34Py_tagmap(rule34):
-    """The client tagmap() method should return the 100 TopTags.
+    """The client tagmap() method should return a map of tags.
     """
     tagmap = rule34.tagmap()
-    assert isinstance(tagmap, list)
-    assert len(tagmap) == 100
-    assert isinstance(tagmap[0], TopTag)
+    assert isinstance(tagmap, dict)
+    assert len(tagmap) > 0
+    for key, value in tagmap.items():
+        assert isinstance(key, str)
+        assert isinstance(value, str)
+        break  # just check the first tagmap point
+
+def test_rule34Py_top_tags(rule34):
+    """The top_tags() method returns a list of the top 100 global tags.
+    """
+    top_tags = rule34.top_tags()
+    assert isinstance(top_tags, list)
+    assert len(top_tags) == 100
+    assert isinstance(top_tags[0], TopTag)

@@ -27,9 +27,10 @@ import urllib.parse as urlparse
 from bs4 import BeautifulSoup
 import requests
 
-from rule34Py.__vars__ import __headers__, __version__
+from rule34Py.__vars__ import __headers__, __version__, __base_url__
 from rule34Py.api_urls import API_URLS
 from rule34Py.icame import ICame
+from rule34Py.html import TagMapPage
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
@@ -366,24 +367,28 @@ class rule34Py():
             posts.append(Post.from_json(post_json))
         return posts
 
-    def tagmap(self) -> list:
+    def tagmap(self) -> dict[str, str]:
+        """Retrieve the tag map points.
+
+        This method uses the tagmap static HTML.
+        
+        :return: A mapping of country and district codes to their top tag. 3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.
+        :rtype: dict[str, str]
         """
-        Retrieve list of top 100 global tags.
+        resp = self._get(__base_url__ + "static/tagmap.html")
+        resp.raise_for_status()
+        return TagMapPage.map_points_from_html(resp.text)
+
+    def top_tags(self) -> list[TopTag]:
+        """Retrieve list of top 100 global tags.
 
         :return: List of top 100 tags, globally.
         :rtype: list[TopTag]
         """
+        resp = requests.get(API_URLS.TOPMAP.value, headers=__headers__)
+        resp.raise_for_status()
 
-        response = requests.get(API_URLS.TOPMAP.value, headers=__headers__)
-
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_topchart = []
-
-        if res_status != 200 or res_len <= 0:
-            return []
-
-        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
+        bfs_raw = BeautifulSoup(resp.content.decode("utf-8"), features="html.parser")
         rows = bfs_raw.find("table", class_="server-assigns").find_all("tr")
 
         rows.pop(0)
@@ -399,12 +404,6 @@ class rule34Py():
             percentage = tags[2].string[:-1]
 
             retData.append(TopTag(rank=rank, tagname=tagname, percentage=percentage))
-
-            #retData.append({
-            #    "rank": int(rank),
-            #    "tagname": tagname,
-            #    "percentage": float(percentage.strip())
-            #})
 
         return retData
 

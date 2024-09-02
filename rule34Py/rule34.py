@@ -3,7 +3,8 @@
 rule34Py - Python api wrapper for rule34.xxx
 
 Copyright (C) 2022 MiningXL <miningxl@gmail.com>
-Copyright (C) 2022-2023 b3yc0d3 <b3yc0d3@gmail.com>
+Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
+Copyright (c) 2024 ripariancommit <ripariancommit@protonmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,112 +32,12 @@ from rule34Py.__vars__ import __headers__, __version__
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
-from rule34Py.stats import Stat
 from rule34Py.toptag import TopTag
 
 """
 TODO: fix typos
 """
 
-class Stats:
-    def __get_top(self, name):
-        """
-        Get Top Taggers
-
-        :param name: Name of a top 10 list.
-                    Values may be:
-                        - Top 10 taggers
-                        - Top 10 commenter
-                        - Top 10 forum posters
-                        - Top 10 image posters
-                        - Top 10 note editors
-                        - Top 10 favorites
-        :type name: str
-
-        :return: List of stats.
-        :rtype: list[Stat]
-        """
-        retList = []
-        response = requests.get(API_URLS.STATS.value, headers=__headers__)
-
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_topchart = []
-
-        if res_status != 200 or res_len <= 0:
-            return []
-
-        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
-        tables = bfs_raw.select(".toptencont > table")
-
-        for table in tables:
-            title = table.select("thead > tr")[0].get_text(strip=True)
-
-            if title == name:
-                trs = table.find("tbody").find_all("tr")
-
-                for tr in trs:
-                    tds = tr.find_all("td")
-                    # 1 = Place
-                    # 2 = Count
-                    # 3 = Username
-                    retList.append(Stat(tds[0].get_text(strip=True), tds[1].get_text(strip=True), tds[2].get_text(strip=True)))
-                    #print(f"{tds[0].get_text(strip=True)} - {tds[1].get_text(strip=True)} - {tds[2].get_text(strip=True)}")
-        return retList
-
-    def top_taggers(self):
-        """
-        Get the top 10 Taggers of the Day.
-
-        :return: List of todays top 10 taggers.
-        :rtype: list[Stat]
-        """
-        return self.__get_top("Top 10 taggers")
-
-    def top_commenters(self):
-        """
-        Get the top 10 Commentators of the Day.
-
-        :return: List of todays top 10 commentators.
-        :rtype: list[Stat]
-        """
-        return self.__get_top("Top 10 commenters")
-
-    def top_forum_posters(self):
-        """
-        Get the top 10 Forum Posters of the Day.
-
-        :return: List of todays top 10 (forum) posters.
-        :rtype: list[Stat]
-        """
-        return self.__get_top("Top 10 forum posters")
-
-    def top_image_posters(self):
-        """
-        Get the top 10 Image Posters of the Day.
-
-        :return: List of todays top 10 image posters.
-        :rtype: list[Stat]
-        """
-        return self.__get_top("Top 10 image posters")
-
-    def top_note_editors(self):
-        """
-        Get the top 10 Note Editors of the Day.
-
-        :return: List of todays top 10 note editors.
-        :rtype: list[Stat]
-        """
-        return self.__get_top("Top 10 note editors")
-
-    def top_favorites(self):
-        """
-        Get the top 10 Favorites of the Day.
-
-        :return: List of todays top 10 favorites.
-        :rtype: list[Stat]
-        """
-        return self.__get_top("Top 10 favoriters")
 
 # Main Class
 class rule34Py(Exception):
@@ -149,7 +50,6 @@ class rule34Py(Exception):
         rule34.xxx API wrapper
         """
         self.__isInit__ = False
-        self._stats = Stats()
 
     def search(self,
         tags: list,
@@ -291,7 +191,7 @@ class rule34Py(Exception):
             id = div["id"][1:]
 
             if fast == True:
-                ret_posts.append(id)
+                ret_posts.append(int(id))
             else:
                 ret_posts.append(self.get_post(id))
 
@@ -472,16 +372,6 @@ class rule34Py(Exception):
             retURL = retURL.replace("{" + key + "}", value)
 
         return retURL
-
-    @property
-    def stats(self) -> Stats:
-        """
-        Global Stats.
-
-        :return: Stats class instance.
-        :rtype: Stats
-        """
-        return self._stats
 
     @property
     def version(self) -> str:

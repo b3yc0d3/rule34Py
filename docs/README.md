@@ -1,6 +1,6 @@
 # Rule34Py Documentation
 
-Last edited at `25-12-2023` by [b3yc0d3](https://github.com/b3yc0d3)
+Last edited at `02-09-2024` by [ripariancommit](https://github.com/ripariancommit)
 
 Parameters that are prefixed by an `?` are optional.
 
@@ -115,16 +115,6 @@ Retrieve list of top 100 global tags.
 **`list[TopTag]`** - List of global top 100 tags. See [TopTag](#toptag).
 </details>
 
-### Properties
-<details>
-<summary><code>stats -> Stats</code> - Global Stats</summary>
-
-Global Stats.
-
-##### Returns
-**`Stats`** - Stats class instance. See [Stats](#stats)
-</details>
-
 <details>
 <summary><code>version -> str</code> - Rule34Py version</summary>
 
@@ -133,64 +123,6 @@ Rule34Py version.
 ##### Returns
 **`str`** - Version of rule34py.
 </details>
-
-## Stats
-### Functions
-
-<details>
-<summary><code>top_commenters() -> list[Stat]</code> - Get the top 10 Taggers of the Day</summary>
-
-Get the top 10 Taggers of the Day.
-
-##### Returns
-**`list[Stat]`** - List of todays top 10 taggers. See [Stat](#stat).
-</details>
-
-<details>
-<summary><code>top_favorites() -> list[Stat]</code> - Get the top 10 Favorites of the Day</summary>
-
-Get the top 10 Favorites of the Day.
-
-##### Returns
-**`list[Stat]`** - List of todays top 10 favorites. See [Stat](#stat).
-</details>
-
-<details>
-<summary><code>top_forum_posters() -> list[Stat]</code> - Get the top 10 Forum Posters of the Day</summary>
-
-Get the top 10 Forum Posters of the Day.
-
-##### Returns
-**`list[Stat]`** - List of todays top 10 (forum) posters. See [Stat](#stat).
-</details>
-
-<details>
-<summary><code>top_image_posters() -> list[Stat]</code> - Get the top 10 Image Posters of the Day</summary>
-
-Get the top 10 Image Posters of the Day.
-
-##### Returns
-**`list[Stat]`** - List of todays top 10 image posters. See [Stat](#stat).
-</details>
-
-<details>
-<summary><code>top_note_editors() -> list[Stat]</code> - Get the top 10 Note Editors of the Day</summary>
-
-Get the top 10 Note Editors of the Day.
-
-##### Returns
-**`list[Stat]`** - List of todays top 10 note editors. See [Stat](#stat).
-</details>
-
-<details>
-<summary><code>top_taggers() -> list[Stat]</code> - Get the top 10 Taggers of the Day</summary>
-
-Get the top 10 Taggers of the Day.
-
-##### Returns
-**`list[Stat]`** - List of todays top 10 taggers. See [Stat](#stat).
-</details>
-
 
 ## Post
 

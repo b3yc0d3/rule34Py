@@ -3,7 +3,8 @@
 rule34Py - Python api wrapper for rule34.xxx
 
 Copyright (C) 2022 Tal A. Baskin <talbaskin.business@gmail.com>
-Copyright (C) 2023-2023 b3yc0d3 <b3yc0d3@gmail.com>
+Copyright (C) 2023-2024 b3yc0d3 <b3yc0d3@gmail.com>
+Copyright (c) 2024 ripariancommit <ripariancommit@protonmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,6 +37,5 @@ class API_URLS(str, Enum):
     ICAME = f"{__base_url__}index.php?page=icame" # returns: HTML
     RANDOM_POST = f"{__base_url__}index.php?page=post&s=random" #  returns: HTML
     USER_PAGE = f"{__api_url__}index.php?page=account&s=profile&id={{USER_ID}}" # returns: HTML
-    POOL = f"{__api_url__}index.php?page=pool&s=show&id={{POOL_ID}}" # returns: HTML
+    POOL = f"{__base_url__}index.php?page=pool&s=show&id={{POOL_ID}}" # returns: HTML
     TOPMAP = f"{__base_url__}index.php?page=toptags"
-    STATS = f"{__base_url__}index.php?page=stats" # returns: HTML

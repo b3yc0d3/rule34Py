@@ -2,7 +2,7 @@
 """
 rule34Py - Python api wrapper for rule34.xxx
 
-Copyright (C) 2022-2023 b3yc0d3 <b3yc0d3@gmail.com>
+Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__tuple__ = ("1", "4", "11")
+__version__tuple__ = ("2", "0", "0")
 __author__ = ("b3yc0d3")
 __email__ = ("b3yc0d3@gmail.com")
 

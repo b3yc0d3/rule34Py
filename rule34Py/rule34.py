@@ -75,10 +75,9 @@ class rule34Py():
         return requests.get(*args, **kwargs)
 
     def get_comments(self, post_id: int) -> list:
-        """
-        Retrieve comments of post by its id.
+        """Retrieve comments of post by its ID.
 
-        :param post_id: Posts id.
+        :param post_id: The Post's ID number.
         :type post_id: int
 
         :return: List of comments.
@@ -88,26 +87,23 @@ class rule34Py():
         params = [
             ["POST_ID", str(post_id)]
         ]
-        formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params) # Replacing placeholders
-        response = requests.get(formatted_url, headers=__headers__)
+        formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params)
+        response = self._get(formatted_url)
+        response.raise_for_status()
 
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_comments = []
+        comments = []
+        comment_soup = BeautifulSoup(response.content.decode("utf-8"), features="xml")
+        for e_comment in comment_soup.find_all("comment"):
+            comment = PostComment(
+                id = e_comment["id"],
+                owner_id = e_comment["creator_id"],
+                body = e_comment["body"],
+                post_id = e_comment["post_id"],
+                creation = e_comment["created_at"],
+            )
+            comments.append(comment)
 
-        if res_status != 200 or res_len <= 0:
-            return ret_comments
-
-        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="xml")
-        res_xml = bfs_raw.comments.findAll('comment')
-
-        # loop through all comments
-        for comment in res_xml:
-            attrs = dict(comment.attrs)
-            ret_comments.append(PostComment(attrs["id"], attrs["creator_id"], attrs["body"], attrs["post_id"], attrs["created_at"]))
-
-        return ret_comments
-
+        return comments
 
     def get_pool(self, pool_id: int, fast: bool = True) -> list:
         """

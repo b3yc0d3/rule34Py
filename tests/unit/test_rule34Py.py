@@ -90,10 +90,16 @@ def test_rule34Py_random_post(rule34):
     """The client random_post() method fetches a random Post object.
     """
     post = rule34.random_post()
+    print(post)
     assert isinstance(post, Post)
-    # You can specify tags to limit the random search
-    post = rule34.random_post(tags=["neko"])
-    assert "neko" in post.tags
+
+
+def test_rul34Py_random_post_id(rule34):
+    """The client random_post_id() method fetches a random Post ID number."""
+    id = rule34.random_post_id()
+    print(f"id={id}")
+    assert isinstance(id, int)
+    assert id > 0
 
 
 def test_rule34Py_search(rule34):

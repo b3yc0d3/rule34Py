@@ -242,49 +242,30 @@ class rule34Py():
 
         return retURL
 
-    def random_post(self, tags: list = None):
-        """
-        Get a random post.
+    def random_post(self) -> Post:
+        """Get a random post.
 
-        :param tags: Tag list to search. If none, post will be used regardless
-                    of it tags.
-        :type tags: list[str]
+        This method behaves similarly to the website's Post > Random function.
 
         :return: Post object.
         :rtype: Post
         """
+        return self.get_post(self.random_post_id())
 
-        ## Fixed bug: https://github.com/b3yc0d3/rule34Py/issues/2#issuecomment-902728779
-        if tags != None:
+    def random_post_id(self) -> int:
+        """Get a random Post ID.
 
-            search_raw = self.search(tags, limit=1000)
-            if search_raw == []:
-                return []
+        This method returns the Post ID contained in the 302 redirect the
+        website responds with, when you request use random post function.
 
-            randnum = random.randint(0, len(search_raw)-1)
-
-            while len(search_raw) <= 0:
-                search_raw = self.search(tags)
-            else:
-                return search_raw[randnum]
-
-        else:
-            return self.get_post(self._random_post_id())
-
-    def _random_post_id(self) -> str:
-        """
-        Get a random posts id.
-
-        **This function is only used internally.**
-
-        :return: Random post id
-        :rtype: str
+        :return: A random Post ID.
+        :rtype: int
         """
 
-        res = requests.get(API_URLS.RANDOM_POST.value, headers=__headers__)
-        parsed = urlparse.urlparse(res.url)
-
-        return parse_qs(parsed.query)['id'][0]
+        response = self._get(API_URLS.RANDOM_POST.value)
+        response.raise_for_status()
+        parsed = urlparse.urlparse(response.url)
+        return int(parse_qs(parsed.query)['id'][0])
 
     def search(self,
         tags: list[str] = [],

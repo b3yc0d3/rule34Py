@@ -32,23 +32,26 @@ You can find the documentation [here](https://github.com/b3yc0d3/rule34Py/tree/m
 from rule34Py import rule34Py
 r34Py = rule34Py()
 
-# get comments of an post
+# Get comments of an post.
 r34Py.get_comments(4153825)
 
-# get post by its id
+# Get post by its id.
 r34Py.get_post(4153825)
 
-# get top 100 icame
+# Get top 100 icame.
 r34Py.icame()
 
-# search for posts by tag(s)
+# Search for posts by tag(s).
 r34Py.search(["neko"], page_id=2, limit=50)
 
-# get pool by id
+# Get pool by id.
 r34Py.get_pool(28)
 
-# get a random post (in this case with tag(s))
-random = r34Py.random_post(["neko"])
+# Get a random post.
+random = r34Py.random_post()
+
+# Get just a random post ID.
+random_id = r34Py.random_post_id()
 ```
 
 ## Development

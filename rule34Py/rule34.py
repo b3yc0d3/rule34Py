@@ -304,7 +304,7 @@ class rule34Py():
             params.append(["PAGE_ID", str(page_id)])
 
         formatted_url = self._parseUrlParams(url, params)
-        response = requests.get(formatted_url, headers=__headers__)
+        response = self._get(formatted_url)
         response.raise_for_status()
 
         # The Rule34 List API endpoint always returns code 200. But the response

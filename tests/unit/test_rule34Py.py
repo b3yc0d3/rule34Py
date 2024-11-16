@@ -86,6 +86,15 @@ def test_rule34Py_iter_search(rule34):
     assert len(results) == 1002
 
 
+def test_rule34Py_get_post(rule34):
+    """The client get_post() method fetches a single Post by post ID."""
+    post = rule34.get_post(8973658)
+    assert isinstance(post, Post)
+    assert post.id == 8973658
+    # Post #2 does not exist.
+    assert rule34.get_post(2) is None
+
+
 def test_rule34Py_random_post(rule34):
     """The client random_post() method fetches a random Post object.
     """
@@ -164,6 +173,7 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags, list)
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
+
 
 def test_rule34Py_version(rule34):
     """The version() property should throw a deprecation warning, but return its original value.

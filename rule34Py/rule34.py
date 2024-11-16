@@ -147,34 +147,28 @@ class rule34Py():
 
         return ret_posts
 
-    def get_post(self, post_id: int) -> Post:
-        """
-        Get post by its id.
+    def get_post(self, post_id: int) -> Post | None:
+        """Get a Post by its ID.
 
-        :param post_id: Id of post.
+        :param post_id: The Post's ID number.
         :type post_id: int
 
-        :return: Post object.
-        :rtype: Post
+        :return: The Post object matching the post_id; or None, if the post_id is not found.
+        :rtype: Post | None
         """
-
         params = [
             ["POST_ID", str(post_id)]
         ]
         formatted_url = self._parseUrlParams(API_URLS.GET_POST.value, params)
-        response = requests.get(formatted_url, headers=__headers__)
+        response = self._get(formatted_url)
+        response.raise_for_status()
 
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
+        # The Posts list API returns an empty response when filters match no posts.
+        if len(response.content) == 0:
+            return None
 
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
-
-        for post in response.json():
-            ret_posts.append(Post.from_json(post))
-
-        return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
+        post_json = response.json()
+        return Post.from_json(post_json[0])
 
     def icame(self) -> list:
         """Retrieve list of top 100 iCame list.

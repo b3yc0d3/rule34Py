@@ -20,7 +20,7 @@
 
 from collections.abc import Iterator
 from urllib.parse import parse_qs
-import random
+import os
 import urllib.parse as urlparse
 import warnings
 
@@ -51,7 +51,10 @@ class rule34Py():
     ```
     """
 
-    user_agent: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
+    CAPTCHA_COOKIE_KEY: str = "cf_clearance"
+
+    user_agent: str = os.environ.get("R34_USER_AGENT", "Mozilla/5.0 (compatible; test)")
+    captcha_clearance: str | None = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
 
     def __init__(self):
         """Initialize a new rule34 API client instance.
@@ -70,8 +73,15 @@ class rule34Py():
         :return: A requests.Response object from the GET request.
         :rtype: requests.Response
         """
-        kwargs["headers"] = kwargs.get("headers", {}) | \
-            {"User-Agent": self.user_agent}
+        # headers
+        kwargs.setdefault("headers", {})
+        kwargs["headers"].setdefault("User-Agent", self.user_agent)
+
+        # cookies
+        kwargs.setdefault("cookies", {})
+        if self.captcha_clearance is not None:
+            kwargs["cookies"]["cf_clearance"] = self.captcha_clearance
+
         return requests.get(*args, **kwargs)
 
     def get_comments(self, post_id: int) -> list:

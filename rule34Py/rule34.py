@@ -29,7 +29,8 @@ import requests
 
 from rule34Py.__vars__ import __headers__, __version__, __base_url__
 from rule34Py.api_urls import API_URLS
-from rule34Py.html import TagMapPage, ICamePage, TopTagsPage
+from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage
+from rule34Py.pool import Pool
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
@@ -115,47 +116,24 @@ class rule34Py():
 
         return comments
 
-    def get_pool(self, pool_id: int, fast: bool = True) -> list:
-        """
-        Retrieve pool by its id.
+    def get_pool(self, pool_id: int) -> Pool:
+        """Retrieve a pool of Posts by its pool ID.
 
         **Be aware that if "fast" is set to False, it may takes longer.**
 
         :param pool_id: Pools id.
         :type pool_id: int
-        
-        :param fast: Fast "mode", if set to true only a list of post ids
-            will be returned.
-        :type fast: bool
 
-        :return: List of post objects (or post ids if fast is set to true).
-        :rtype: list[Post|int]
+        :return: A Pool object representing the requested pool.
+        :rtype: Pool
         """
 
         params = [
             ["POOL_ID", str(pool_id)]
         ]
-        response = requests.get(self._parseUrlParams(API_URLS.POOL.value, params), headers=__headers__)
-
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
-
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
-
-        soup = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
-
-        for div in soup.find_all("span", class_="thumb"):
-            a = div.find("a")
-            id = div["id"][1:]
-
-            if fast == True:
-                ret_posts.append(int(id))
-            else:
-                ret_posts.append(self.get_post(id))
-
-        return ret_posts
+        response = self._get(self._parseUrlParams(API_URLS.POOL.value, params))
+        response.raise_for_status()
+        return PoolPage.pool_from_html(response.text)
 
     def get_post(self, post_id: int) -> Post | None:
         """Get a Post by its ID.

@@ -49,5 +49,6 @@ def test_search(rule34):
 def test_get_pool(rule34):
     """The client can get the example pool by id."""
     pool = rule34.get_pool(EXAMPLE_POOL)
-    assert isinstance(pool, list)
-    assert len(pool) > 0  # there should be posts here
+    assert isinstance(pool, rule34Py.Pool)
+    assert pool.pool_id == 28
+    assert len(pool.posts) > 0  # there should be posts here

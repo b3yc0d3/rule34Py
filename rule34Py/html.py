@@ -32,13 +32,13 @@ class ICamePage():
         e_doc = BeautifulSoup(html, features="html.parser")
 
         top_chart = []
-        e_rows = e_doc.find("table", border=1).find("tbody").find_all("tr")
+        e_rows = e_doc.find("table", class_="highlightable").find("tbody").find_all("tr")
         for e_row in e_rows:
             if e_row is None:
                 continue
-
+            
             character_name = e_row.select('td > a', href=True)[0].get_text(strip=True)
-            count = e_row.select('td')[1].get_text(strip=True)
+            count = e_row.select('td')[2].get_text(strip=True)
 
             top_chart.append(ICame(character_name, count))
 

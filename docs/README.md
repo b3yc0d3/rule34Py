@@ -1,6 +1,6 @@
 # Rule34Py Documentation
 
-Last edited at `02-09-2024` by [ripariancommit](https://github.com/ripariancommit)
+Last edited at `31-12-2024` by [ripariancommit](https://github.com/ripariancommit) and [b3yc0d3](https://github.com/b3yc0d3)
 
 Parameters that are prefixed by an `?` are optional.
 
@@ -125,7 +125,7 @@ Retrieve the tag map points.
 </details>
 
 <details>
-<summary><code>tagmap() -> list[TopTag]</code> - Retrieve list of top 100 global tags</summary>
+<summary><strike><code>tagmap() -> list[TopTag]</code> - Retrieve list of top 100 global tags</strike></summary>
 
 Retrieve list of top 100 global tags.
 

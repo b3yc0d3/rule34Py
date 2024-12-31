@@ -1,6 +1,6 @@
 # Rule34Py Documentation
 
-Last edited at `02-09-2024` by [ripariancommit](https://github.com/ripariancommit)
+Last edited at `31-12-2024` by [ripariancommit](https://github.com/ripariancommit) and [b3yc0d3](https://github.com/b3yc0d3)
 
 Parameters that are prefixed by an `?` are optional.
 
@@ -62,14 +62,9 @@ Get post by its id.
 </details>
 
 <details>
-<summary><code>icame(limit: int) -> list[ICame]</code> - Retrieve list of top 100 iCame list</summary>
+<summary><code>icame() -> list[ICame]</code> - Retrieve list of top 100 iCame list</summary>
 
 Retrieve list of top 100 iCame list.
-
-##### Parameters
-| Parameter | Type  | Description                              |
-|:----------|:------|:-----------------------------------------|
-| `limit`   | `int` | Limit of returned items. (default `100`) |
 
 ##### Returns
 **`list[ICame]`** - List of [iCame](#icame) objects.
@@ -90,7 +85,7 @@ Get a random post.
 </details>
 
 <details>
-<summary><code>search(self, tags: list, ?page_id: int, ?limit: int, ?deleted: bool, ?ignore_max_limit: bool) -> list[Post]</code> - Search for posts</summary>
+<summary><code>search(self, tags: list[str], ?page_id: int, ?limit: int, ?deleted: bool) -> list[Post]</code> - Search for posts</summary>
 
 Search for posts
 
@@ -98,21 +93,55 @@ Search for posts
 | Parameter          | Type        | Description                                                    |
 |:-------------------|:------------|:---------------------------------------------------------------|
 | `tags`             | `list[str]` | List of tags.                                                  |
-| `page_id`          | `int`       | Page number.                                                   |
+| `page_id`          | `int`       | Page number/id.                                                   |
 | `limit`            | `init`      | Limit for posts returned per page (max. 1000).                 |
-| `ignore_max_limit` | `bool`      | If limit of 1000 should be ignored. *Not intended to be used.* |
 
 ##### Returns
 **`list[Post]`** - List of [Post](#post) objects for matching posts.
 </details>
 
 <details>
-<summary><code>tagmap() -> list[TopTag]</code> - Retrieve list of top 100 global tags</summary>
+<summary><code>iter_search(self, tags: list[str], max_results: (int | None)) -> Iterator[Post]</code> - Search for posts</summary>
+
+Search for posts, iterate through results, one element at a time.
+
+##### Parameters
+| Parameter          | Type         | Description                                                    |
+|:-------------------|:------------ |:---------------------------------------------------------------|
+| `tags`             | `list[str]`  | List of tags.                                                  |
+| `max_results`      | `int | None` | The maximum number of results to return before ending the iteration. <br> If 'None', then iteration will continue until the end of the results. Defaults to 'None'. |
+
+##### Returns
+**`Iterator[Post]`** - Iterator of [Post](#post) objects for matching posts.
+</details>
+
+<details>
+<summary><code>tag_map() -> dict[str, str]</code> - Retrieve the tag map points</summary>
+
+Retrieve the tag map points.
+
+##### Returns
+**`dict[str, str]`** - A mapping of country and district codes to their top tag. 3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.
+</details>
+
+<details>
+<summary><strike><code>tagmap() -> list[TopTag]</code> - Retrieve list of top 100 global tags</strike></summary>
+
+Retrieve list of top 100 global tags.
+
+**This method is deprecated in favor of the top_tags() method.**
+
+##### Returns
+**`list[TopTag]`** - List of global top 100 tags. See [TopTag](#toptag).
+</details>
+
+<details>
+<summary><code>top_tags() -> list[TopTag]</code> - Retrieve list of top 100 global tags</summary>
 
 Retrieve list of top 100 global tags.
 
 ##### Returns
-**`list[TopTag]`** - List of global top 100 tags. See [TopTag](#toptag).
+**`list[TopTag]`** - List of top 100 tags, globally. See [TopTag](#toptag).
 </details>
 
 <details>
@@ -167,7 +196,7 @@ Create Post from json data.
 
 ### Properties
 <details>
-<summary><code>change() -> int</code> - Post last update time</summary>
+<summary><code>change -> int</code> - Post last update time</summary>
 
 Post last update time.
 
@@ -178,7 +207,7 @@ Retrieve the timestamp indicating the last update/change of the post, as unix ti
 </details>
 
 <details>
-<summary><code>content_type() -> str</code> - Get type of post data (e.g. gif, image etc.)</summary>
+<summary><code>content_type -> str</code> - Get type of post data (e.g. gif, image etc.)</summary>
 
 Get type of post data (e.g. gif, image etc.).
 
@@ -193,7 +222,7 @@ Represents the value of `file_type` from the api.
 </details>
 
 <details>
-<summary><code>directory() -> int</code> - Get directory id of post</summary>
+<summary><code>directory -> int</code> - Get directory id of post</summary>
 
 Get directory id of post.
 
@@ -202,7 +231,7 @@ Get directory id of post.
 </details>
 
 <details>
-<summary><code>hash() -> str</code> - Obtain the unique hash of post</summary>
+<summary><code>hash -> str</code> - Obtain the unique hash of post</summary>
 
 Obtain the unique hash of post.
 
@@ -211,7 +240,7 @@ Obtain the unique hash of post.
 </details>
 
 <details>
-<summary><code>id() -> int</code> - Obtain the unique identifier of post</summary>
+<summary><code>id -> int</code> - Obtain the unique identifier of post</summary>
 
 Obtain the unique identifier of post.
 
@@ -220,7 +249,7 @@ Obtain the unique identifier of post.
 </details>
 
 <details>
-<summary><code>image() -> str</code> - Get the image of the post</summary>
+<summary><code>image -> str</code> - Get the image of the post</summary>
 
 Get the image of the post.
 
@@ -229,7 +258,7 @@ Get the image of the post.
 </details>
 
 <details>
-<summary><code>owner() -> str</code> - Get username of post creator</summary>
+<summary><code>owner -> str</code> - Get username of post creator</summary>
 
 Get username of post creator.
 
@@ -238,7 +267,7 @@ Get username of post creator.
 </details>
 
 <details>
-<summary><code>rating() -> str</code> - Retrieve the content rating of the post</summary>
+<summary><code>rating -> str</code> - Retrieve the content rating of the post</summary>
 
 Retrieve the content rating of the post.
 
@@ -251,7 +280,7 @@ Retrieve the content rating of the post.
 </details>
 
 <details>
-<summary><code>sample() -> str</code> - Get the sample image/video of the post</summary>
+<summary><code>sample -> str</code> - Get the sample image/video of the post</summary>
 
 Get the sample image/video of the post.
 
@@ -260,7 +289,7 @@ Get the sample image/video of the post.
 </details>
 
 <details>
-<summary><code>score() -> int</code> - Get the score of post</summary>
+<summary><code>score -> int</code> - Get the score of post</summary>
 
 Get the score of post.
 
@@ -269,7 +298,7 @@ Get the score of post.
 </details>
 
 <details>
-<summary><code>size() -> list[int, int]</code> - Retrieve actual size of post's image</summary>
+<summary><code>size -> list[int, int]</code> - Retrieve actual size of post's image</summary>
 
 Retrieve actual size of post's image.
 
@@ -278,7 +307,7 @@ Retrieve actual size of post's image.
 </details>
 
 <details>
-<summary><code>tags() -> list[str]</code> - Get tags of post</summary>
+<summary><code>tags -> list[str]</code> - Get tags of post</summary>
 
 Get tags of post.
 
@@ -287,7 +316,7 @@ Get tags of post.
 </details>
 
 <details>
-<summary><code>thumbnail() -> str</code> - Get the thumbnail image of the post</summary>
+<summary><code>thumbnail -> str</code> - Get the thumbnail image of the post</summary>
 
 Get the thumbnail image of the post.
 
@@ -296,7 +325,7 @@ Get the thumbnail image of the post.
 </details>
 
 <details>
-<summary><code>video() -> str</code> - Get the video of the post</summary>
+<summary><code>video -> str</code> - Get the video of the post</summary>
 
 Get the video of the post.
 
@@ -329,7 +358,7 @@ PostComment Class
 ### Properties
 
 <details>
-<summary><code>author_id() -> int</code> - Id of the comments author</summary>
+<summary><code>author_id -> int</code> - Id of the comments author</summary>
 
 Id of the comments author.
 
@@ -338,7 +367,7 @@ Id of the comments author.
 </details>
 
 <details>
-<summary><code>body() -> str</code> - Content of the comment</summary>
+<summary><code>body -> str</code> - Content of the comment</summary>
 
 Content of the comment.
 
@@ -347,7 +376,7 @@ Content of the comment.
 </details>
 
 <details>
-<summary><code>creation() -> int</code> - Timestamp when the comment was created <b><u>[ATTENTION]</u></b></summary>
+<summary><code>creation -> int</code> - Timestamp when the comment was created <b><u>[ATTENTION]</u></b></summary>
 
 Timestamp when the comment was created.
 
@@ -359,7 +388,7 @@ api request was made* and _not_ the time when the comment was created.**
 </details>
 
 <details>
-<summary><code>id() -> int</code> - Comments unique id</summary>
+<summary><code>id -> int</code> - Comments unique id</summary>
 
 Comments unique id.
 
@@ -368,7 +397,7 @@ Comments unique id.
 </details>
 
 <details>
-<summary><code>post_id() -> int</code> - Id of post, to whom the comment belongs</summary>
+<summary><code>post_id -> int</code> - Id of post, to whom the comment belongs</summary>
 
 Id of post, to whom the comment belongs.
 
@@ -399,7 +428,7 @@ Stat class.
 ### Properties
 
 <details>
-<summary><code>amount() -> int</code> - Get amount/count of it</summary>
+<summary><code>amount -> int</code> - Get amount/count of it</summary>
 
 Get amount/count of it.
 
@@ -408,7 +437,7 @@ Get amount/count of it.
 </details>
 
 <details>
-<summary><code>place() -> int</code> - Get index/positional place of the stat</summary>
+<summary><code>place -> int</code> - Get index/positional place of the stat</summary>
 
 Get index/positional place of the stat.
 
@@ -417,7 +446,7 @@ Get index/positional place of the stat.
 </details>
 
 <details>
-<summary><code>username() -> str</code> - Get username or name of character related to this stat</summary>
+<summary><code>username -> str</code> - Get username or name of character related to this stat</summary>
 
 Get username or name of character related to this stat.
 
@@ -460,7 +489,7 @@ Create TopTag class from JSON data.
 ### Properties
 
 <details>
-<summary><code>percentage() -> int</code> - Get tags percentage in use</summary>
+<summary><code>percentage -> float</code> - Get tags percentage in use</summary>
 
 Get tags percentage in use.
 
@@ -469,7 +498,7 @@ Get tags percentage in use.
 </details>
 
 <details>
-<summary><code>rank() -> int</code> - Get tags rank</summary>
+<summary><code>rank -> int</code> - Get tags rank</summary>
 
 Get tags rank.
 
@@ -478,7 +507,7 @@ Get tags rank.
 </details>
 
 <details>
-<summary><code>tagname() -> str</code> - Get tags name</summary>
+<summary><code>tagname -> str</code> - Get tags name</summary>
 
 Get tags name.
 
@@ -510,7 +539,7 @@ iCame chart item.
 ### Properties
 
 <details>
-<summary><code>character_name() -> str</code> - Get name of character</summary>
+<summary><code>character_name -> str</code> - Get name of character</summary>
 
 Get name of character.
 
@@ -519,7 +548,7 @@ Get name of character.
 </details>
 
 <details>
-<summary><code>count() -> int</code> - Get count of how often people came on the character</summary>
+<summary><code>count -> int</code> - Get count of how often people came on the character</summary>
 
 Get count of how often people came on the character.
 
@@ -528,7 +557,7 @@ Get count of how often people came on the character.
 </details>
 
 <details>
-<summary><code>tag_url() -> str</code> - Get url of tag</summary>
+<summary><code>tag_url -> str</code> - Get url of tag</summary>
 
 Get url of tag.
 

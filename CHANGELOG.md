@@ -9,9 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+- Added a `rule34Py.iter_search()` method that returns a Post search iterator that transparently handles pagination. (#20)
+- Added a `rule34Py._get()` method to handle HTTP GET requests from the servers. This logic was previously duplicated within most of the client's methods. (#20)
+- Added a `rule34Py.tag_map()` method which parses and returns the top 100 global tags (that was previously being returned from the `tagmap()` method.) (#20)
+- Added a `rule34Py.top_tags()` method, that parses the global Top-100 tags from the toptags page (like the deprecated `tagmap()` method.) (#20)
+- Added a `rule34Py.user_agent` class variable, that users can change to modify the client's User-Agent. (#20)
+
 ### Changed
+
+- Began migrating the client's User-Agent string into a client-scope variable (from the module), so that users can alter it if they wish.
+- `rule34Py` no longer inherits from the `Exception` class.
+
 ### Deprecated
+
+- Announced deprecation of the `rule34Py.rule34Py.version` property. Users should check the value of the module-scope `rule34Py.version` variable instead.  (#20)
+- Announced deprecation of the `rule34Py.rule34Py.tagmap()` method. Users should either call `rule34Py.top_tags()` to continue getting the Top-100 tags chart, or `rule34Py.tag_map()` to get the new Tag Map data points.  (#20)
+
 ### Removed
+
+- Removed the `deleted` and `ignore_max_limit` parameters from the `rule34Py.search()` method. Neither worked and only ever returned an exception. (#20)
+- Removed the `limit` parameter from the `rule34Py.icame()` method, as it did nothing. Users are directed to use list slicing instead. (#20)
+
 ### Fixed
 ### Security
 

@@ -1,124 +1,78 @@
-""""""
-"""
-rule34Py - Python api wrapper for rule34.xxx
+# rule34Py - Python api wrapper for rule34.xxx
+#
+# Copyright (C) 2022 MiningXL <miningxl@gmail.com>
+# Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Copyright (C) 2022 MiningXL <miningxl@gmail.com>
-Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
-Copyright (c) 2024 ripariancommit <ripariancommit@protonmail.com>
+"""This module contains the top-level Rule34 API client class."""
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-
-import requests
+from collections.abc import Iterator
+from urllib.parse import parse_qs
 import random
 import urllib.parse as urlparse
+import warnings
+
 from bs4 import BeautifulSoup
-from enum import Enum
-from urllib.parse import parse_qs
-# From this module
-from rule34Py.api_urls import API_URLS, __base_url__
-from rule34Py.__vars__ import __headers__, __version__
+import requests
+
+from rule34Py.__vars__ import __headers__, __version__, __base_url__
+from rule34Py.api_urls import API_URLS
+from rule34Py.html import TagMapPage, ICamePage, TopTagsPage
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
-from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
 
 """
 TODO: fix typos
 """
 
+SEARCH_RESULT_MAX = 1000  # API-defined maximum number of search results per request. <https://rule34.xxx/index.php?page=help&topic=dapi>
 
-# Main Class
-class rule34Py(Exception):
+
+class rule34Py():
+    """The rule34.xxx API client.
+
+    Usage:
+    ```python
+    client = rule34Py()
+    post = client.get_post(1234)
+    ```
     """
-    rule34.xxx API wrapper
-    """
+
+    user_agent: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
 
     def __init__(self):
+        """Initialize a new rule34 API client instance.
+
+        :return: A new rule34 API client instance.
+        :rtype: rule34Py
         """
-        rule34.xxx API wrapper
+        pass
+
+    def _get(self, *args, **kwargs) -> requests.Response:
+        """Send an HTTP GET request.
+
+        This method largely passes its arguments to the requests.get() method,
+        while also inserting a valid User-Agent.
+
+        :return: A requests.Response object from the GET request.
+        :rtype: requests.Response
         """
-        self.__isInit__ = False
-
-    def search(self,
-        tags: list,
-        page_id: int = None,
-        limit: int = 1000,
-        deleted: bool = False,
-        ignore_max_limit: bool = False) -> list:
-        """
-        Search for posts.
-
-        :param tags: List of tags.
-        :type tags: list[str]
-
-        :param page_id: Page number/id.
-        :type page_id: int
-
-        :param limit: Limit for posts returned per page (max. 1000).
-        :type limit: int
-
-        :param ignore_max_limit: If limit of 1000 should be ignored.
-        :type ignore_max_limit: bool
-
-        :return: List of Post objects for matching posts.
-        :rtype: list[Post]
-
-        For more information, see:
-
-            - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
-            - `Tags cheat sheet <https://rule34.xxx/index.php?page=tags&s=list>`_
-        """
-
-        # Check if "limit" is in between 1 and 1000
-        if not ignore_max_limit and limit > 1000 or limit <= 0:
-            raise Exception("invalid value for \"limit\"\n  value must be between 1 and 1000\n  see for more info:\n  https://github.com/b3yc0d3/rule34Py/blob/master/DOC/usage.md#search")
-            return
-
-        params = [
-            ["TAGS", "+".join(tags)],
-            ["LIMIT", str(limit)],
-        ]
-        url = API_URLS.SEARCH.value
-        # Add "page_id"
-        if page_id != None:
-            url += f"&pid={{PAGE_ID}}"
-            params.append(["PAGE_ID", str(page_id)])
-
-        
-        if deleted:
-            raise Exception("To include deleted images is not Implemented yet!")
-            #url += "&deleted=show"
-
-        formatted_url = self._parseUrlParams(url, params)
-        response = requests.get(formatted_url, headers=__headers__)
-        
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
-
-        # checking if status code is not 200
-        # (it's useless currently, becouse rule34.xxx returns always 200 OK regardless of an error)
-        # and checking if content lenths is 0 or smaller
-        # (curetly the only way to check for a error response)
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
-
-        for post in response.json():
-            ret_posts.append(Post.from_json(post))
-
-        return ret_posts
+        kwargs["headers"] = kwargs.get("headers", {}) | \
+            {"User-Agent": self.user_agent}
+        return requests.get(*args, **kwargs)
 
     def get_comments(self, post_id: int) -> list:
         """
@@ -226,41 +180,71 @@ class rule34Py(Exception):
 
         return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
 
-    def icame(self, limit: int = 100) -> list:
-        """
-        Retrieve list of top 100 iCame list.
-
-        :param limit: Limit of returned items.
-                        (Default: ``'100'``)
-        :type limit: int
+    def icame(self) -> list:
+        """Retrieve list of top 100 iCame list.
 
         :return: List of iCame objects.
         :rtype: list[ICame]
         """
+        response = self._get(API_URLS.ICAME.value)
+        response.raise_for_status()
+        return ICamePage.top_chart_from_html(response.text)
 
-        response = requests.get(API_URLS.ICAME.value, headers=__headers__)
+    def iter_search(
+        self,
+        tags: list[str] = [],
+        max_results: (int | None) = None,
+    ) -> Iterator[Post]:
+        """Iterate through Post search results, one element at a time.
 
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_topchart = []
+        This method transparently requests additional results pages until either max_results is reached, or there are no more results. It is possible that additional Posts may be added to the results between page calls, and so it is recommended that you deduplicate results if that is important to you.
 
-        if res_status != 200 or res_len <= 0:
-            return ret_topchart
+        :param tags: Tag list to search.
+        :type tags:  list[str]
 
-        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
-        rows = bfs_raw.find("table", border=1).find("tbody").find_all("tr")
+        :param max_results: The maximum number of results to return before ending the iteration. If 'None', then iteration will continue until the end of the results. Defaults to 'None'.
+        :type max_results: int|None
 
-        for row in rows:
-            if row == None:
-                continue
+        :return: Yields a Post Iterator.
+        :rtype:  Iterator[Post]
+        """
+        page_id = 0  # what page of the search results we're on
+        results_count = 0  # accumulator of how many results have been returned
 
-            character_name = row.select('td > a', href=True)[0].get_text(strip=True)
-            count = row.select('td')[1].get_text(strip=True)
+        while max_results is None or results_count < max_results:
+            results = self.search(tags, page_id=page_id)
+            if len(results) == 0:  # no results or end of search list
+                return
+            for result in results:
+                if max_results is not None and results_count >= max_results:
+                    return
+                yield result
+                results_count += 1
+            page_id += 1
 
-            ret_topchart.append(ICame(character_name, count))
+    def _parseUrlParams(self, url: str, params: list) -> str:
+        """
+        Parse url parameters.
 
+        **This function is only used internally.**
 
-        return ret_topchart
+        :return: Url filed with filled in placeholders.
+        :rtype: str
+
+        :Example:
+            self._parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
+        """
+
+        # Usage: _parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
+        retURL = url
+
+        for g in params:
+            key = g[0]
+            value = g[1]
+
+            retURL = retURL.replace("{" + key + "}", value)
+
+        return retURL
 
     def random_post(self, tags: list = None):
         """
@@ -291,49 +275,6 @@ class rule34Py(Exception):
         else:
             return self.get_post(self._random_post_id())
 
-    def tagmap(self) -> list:
-        """
-        Retrieve list of top 100 global tags.
-
-        :return: List of top 100 tags, globally.
-        :rtype: list[TopTag]
-        """
-
-        response = requests.get(API_URLS.TOPMAP.value, headers=__headers__)
-
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_topchart = []
-
-        if res_status != 200 or res_len <= 0:
-            return []
-
-        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
-        rows = bfs_raw.find("table", class_="server-assigns").find_all("tr")
-
-        rows.pop(0)
-        rows.pop(0)
-
-        retData = []
-
-        for row in rows:
-            tags = row.find_all("td")
-
-            rank = tags[0].string[1:]
-            tagname = tags[1].string
-            percentage = tags[2].string[:-1]
-
-            retData.append(TopTag(rank=rank, tagname=tagname, percentage=percentage))
-
-            #retData.append({
-            #    "rank": int(rank),
-            #    "tagname": tagname,
-            #    "percentage": float(percentage.strip())
-            #})
-
-        return retData
-
-
     def _random_post_id(self) -> str:
         """
         Get a random posts id.
@@ -349,36 +290,102 @@ class rule34Py(Exception):
 
         return parse_qs(parsed.query)['id'][0]
 
-    def _parseUrlParams(self, url: str, params: list) -> str:
+    def search(self,
+        tags: list[str] = [],
+        page_id: int = None,
+        limit: int = SEARCH_RESULT_MAX,
+    ) -> list[Post]:
+        """Search for posts.
+
+        :param tags: List of tags.
+        :type tags: list[str]
+
+        :param page_id: Page number/id.
+        :type page_id: int
+
+        :param limit: Limit for posts returned per page (max. 1000).
+        :type limit: int
+
+        :return: List of Post objects for matching posts.
+        :rtype: list[Post]
+
+        For more information, see:
+
+            - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
         """
-        Parse url parameters.
+        if limit < 0 or limit > SEARCH_RESULT_MAX:
+            raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
 
-        **This function is only used internally.**
+        params = [
+            ["TAGS", "+".join(tags)],
+            ["LIMIT", str(limit)],
+        ]
+        url = API_URLS.SEARCH.value
+        # Add "page_id"
+        if page_id != None:
+            url += f"&pid={{PAGE_ID}}"
+            params.append(["PAGE_ID", str(page_id)])
 
-        :return: Url filed with filled in placeholders.
-        :rtype: str
+        formatted_url = self._parseUrlParams(url, params)
+        response = requests.get(formatted_url, headers=__headers__)
+        response.raise_for_status()
 
-        :Example:
-            self._parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
+        # The Rule34 List API endpoint always returns code 200. But the response
+        # might be 0-bytes, if it cannot find the supplied 'tags' param; or an
+        # empty JSON array, if there are no results on that 'page_id'.
+        if len(response.content) == 0:
+            return []
+
+        posts = []
+        for post_json in response.json():
+            posts.append(Post.from_json(post_json))
+        return posts
+
+    def tag_map(self) -> dict[str, str]:
+        """Retrieve the tag map points.
+
+        This method uses the tagmap static HTML.
+        
+        :return: A mapping of country and district codes to their top tag. 3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.
+        :rtype: dict[str, str]
         """
+        resp = self._get(__base_url__ + "static/tagmap.html")
+        resp.raise_for_status()
+        return TagMapPage.map_points_from_html(resp.text)
 
-        # Usage: _parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
-        retURL = url
+    def tagmap(self) -> list[TopTag]:
+        """Retrieve list of top 100 global tags.
 
-        for g in params:
-            key = g[0]
-            value = g[1]
+        This method is deprecated in favor of the top_tags() method.
 
-            retURL = retURL.replace("{" + key + "}", value)
+        :return: List of top 100 tags, globally.
+        :rtype: list[TopTag]
+        """
+        warnings.warn(
+            "The rule34Py.tagmap() method is scheduled for deprecation in a future release. If you want to retrieve the Global Top-100 tags list, use the rule34Py.top_tags() method. If you want to retrieve the tag map data points, use the rule34Py.tag_map() method (with an underscore.). See `https://github.com/b3yc0d3/rule34Py/tree/master/docs#functions` for more information.",
+            DeprecationWarning,
+        )
+        return self.top_tags()
 
-        return retURL
+    def top_tags(self) -> list[TopTag]:
+        """Retrieve list of top 100 global tags.
+
+        :return: List of top 100 tags, globally.
+        :rtype: list[TopTag]
+        """
+        response = self._get(API_URLS.TOPMAP.value)
+        response.raise_for_status()
+        return TopTagsPage.top_tags_from_html(response.text)
 
     @property
     def version(self) -> str:
-        """
-        Rule34Py version.
+        """Rule34Py version.
 
         :return: Version of rule34py.
         :rtype: str
         """
+        warnings.warn(
+            "This method is scheduled for deprecation in a future release of rule34Py. Use `rule34Py.version` instead.",
+            DeprecationWarning,
+        )
         return __version__

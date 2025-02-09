@@ -6,7 +6,7 @@ license = {file = "LICENSE"}
 readme = "README.md"
 keywords = [ "rule34.xxx", "adult", "nsfw", "rule34-pi", "api-client" ]
 authors = [
-    { name = "MiningXL", email = "miningxl@gmail.com" },
+	{ name = "MiningXL", email = "miningxl@gmail.com" },
 	{ name = "b3yc0d3", email = "b3yc0d3@gmail.com" },
 	{ name = "Tal A. Baskin", email = "talbaskin.business@gmail.com" },
 	{ name = "ripariancommit", email = "ripariancommit@protonmail.com" }
@@ -17,9 +17,9 @@ maintainers = [
 ]
 dependencies = [
 	"requests-ratelimiter >= 0.7.0",
-    "beautifulsoup4 >= 4.9.3",
-    "requests >= 2.27.1",
-    "lxml >= 4.6.4"
+	"beautifulsoup4 >= 4.9.3",
+	"lxml >= 4.6.4",
+	"requests >= 2.27.1",
 ]
 classifiers = [
 	"Development Status :: 4 - Beta",

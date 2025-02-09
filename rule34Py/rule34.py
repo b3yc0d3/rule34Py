@@ -41,9 +41,6 @@ from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
 
-"""
-TODO: fix typos
-"""
 
 SEARCH_RESULT_MAX = 1000  # API-defined maximum number of search results per request. <https://rule34.xxx/index.php?page=help&topic=dapi>
 

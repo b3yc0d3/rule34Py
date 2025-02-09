@@ -25,9 +25,15 @@ import urllib.parse as urlparse
 import warnings
 
 from bs4 import BeautifulSoup
+from requests_ratelimiter import LimiterAdapter
 import requests
 
-from rule34Py.__vars__ import __headers__, __version__, __base_url__
+from rule34Py.__vars__ import (
+    __api_url__,
+    __base_url__,
+    __headers__,
+    __version__,
+)
 from rule34Py.api_urls import API_URLS
 from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage
 from rule34Py.pool import Pool
@@ -54,8 +60,10 @@ class rule34Py():
 
     CAPTCHA_COOKIE_KEY: str = "cf_clearance"
 
-    user_agent: str = os.environ.get("R34_USER_AGENT", "Mozilla/5.0 (compatible; test)")
+    _base_site_rate_limiter = LimiterAdapter(per_second=1)
     captcha_clearance: str | None = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
+    session: requests.Session = None
+    user_agent: str = os.environ.get("R34_USER_AGENT", "Mozilla/5.0 (compatible; test)")
 
     def __init__(self):
         """Initialize a new rule34 API client instance.
@@ -63,7 +71,8 @@ class rule34Py():
         :return: A new rule34 API client instance.
         :rtype: rule34Py
         """
-        pass
+        self.session = requests.session()
+        self.session.mount(__base_url__, self._base_site_rate_limiter)
 
     def _get(self, *args, **kwargs) -> requests.Response:
         """Send an HTTP GET request.
@@ -83,7 +92,7 @@ class rule34Py():
         if self.captcha_clearance is not None:
             kwargs["cookies"]["cf_clearance"] = self.captcha_clearance
 
-        return requests.get(*args, **kwargs)
+        return self.session.get(*args, **kwargs)
 
     def get_comments(self, post_id: int) -> list:
         """Retrieve comments of post by its ID.
@@ -299,6 +308,13 @@ class rule34Py():
         for post_json in response.json():
             posts.append(Post.from_json(post_json))
         return posts
+
+    def set_base_site_rate_limit(self, enabled: bool):
+        """Enables or disables the base site (rule34.xxx) API rate limiter."""
+        if enabled:
+            self.session.mount(__base_url__, self._base_site_rate_limiter)
+        else:
+            del self.session.adapters[__base_url__]
 
     def tag_map(self) -> dict[str, str]:
         """Retrieve the tag map points.

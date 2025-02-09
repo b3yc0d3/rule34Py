@@ -33,4 +33,4 @@ export R34_RECORD_RESPONSES=True
 python3 -m pytest tests/
 ```
 
-Remember to commmit the registry file changes with your test changes.
+Remember to commit the registry file changes with your test changes.

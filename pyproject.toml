@@ -1,6 +1,6 @@
 [project]
 name = "rule34Py"
-description = "API wraper for rule34.xxx"
+description = "API wrapper for rule34.xxx"
 version = "2.1.0"
 license = {file = "LICENSE"}
 readme = "README.md"
@@ -16,6 +16,7 @@ maintainers = [
 	{ name = "b3yc0d3", email = "b3yc0d3@gmail.com" }
 ]
 dependencies = [
+	"requests-ratelimiter >= 0.7.0",
     "beautifulsoup4 >= 4.9.3",
     "requests >= 2.27.1",
     "lxml >= 4.6.4"
@@ -44,3 +45,9 @@ Documentation = "https://github.com/b3yc0d3/rule34Py/tree/master/docs"
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+test = [
+	"pytest >= 8.3.2",
+	"responses >= 0.25.3",
+]

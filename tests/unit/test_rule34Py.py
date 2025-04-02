@@ -97,7 +97,7 @@ def test_rule34Py_random_post(rule34):
     assert isinstance(post, Post)
 
 
-def test_rul34Py_random_post_id(rule34):
+def test_rule34Py_random_post_id(rule34):
     """The client random_post_id() method fetches a random Post ID number."""
     id = rule34.random_post_id()
     print(f"id={id}")

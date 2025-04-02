@@ -31,7 +31,6 @@ import requests
 from rule34Py.__vars__ import (
     __api_url__,
     __base_url__,
-    __headers__,
     __version__,
 )
 from rule34Py.api_urls import API_URLS
@@ -42,6 +41,7 @@ from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
 
 
+DEFAULT_USER_AGENT = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
 SEARCH_RESULT_MAX = 1000  # API-defined maximum number of search results per request. <https://rule34.xxx/index.php?page=help&topic=dapi>
 
 
@@ -60,7 +60,7 @@ class rule34Py():
     _base_site_rate_limiter = LimiterAdapter(per_second=1)
     captcha_clearance: str | None = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
     session: requests.Session = None
-    user_agent: str = os.environ.get("R34_USER_AGENT", "Mozilla/5.0 (compatible; test)")
+    user_agent: str = os.environ.get("R34_USER_AGENT", DEFAULT_USER_AGENT)
 
     def __init__(self):
         """Initialize a new rule34 API client instance.

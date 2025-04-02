@@ -9,6 +9,7 @@ from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
+from rule34Py.__vars__ import __version__ as R34_VERSION
 
 
 TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
@@ -78,6 +79,21 @@ def test_rule34Py_iter_search(rule34):
     # transparently move to the next page.
     results = list(rule34.iter_search(["female"], max_results=1002))
     assert len(results) == 1002
+
+
+def test__rule34Py__user_agent(rule34):
+    """The client has a user agent attribute that can be user-defined."""
+    # Default should be something like "Mozilla/... rule34Py/1.2.3"
+    print(rule34.user_agent)
+    assert "Mozilla" in rule34.user_agent
+    assert "rule34Py" in rule34.user_agent
+    assert R34_VERSION in rule34.user_agent
+    
+    # The user_agent can be changed.
+    rule34.user_agent = "foobar"
+    resp = rule34._get("http://example.com")
+    print(resp.request.headers)
+    assert resp.request.headers["User-Agent"] == "foobar"
 
 
 def test_rule34Py_get_post(rule34):

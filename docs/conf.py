@@ -31,10 +31,23 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.duration",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
 ]
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+# sphinx.ext.autodoc configuration #
+autodoc_default_options = {
+    "special-members": "__init__",  # document class __init__()
+}
+autodoc_typehints = "both"  # Show typehints in the signature and as content of the function or method
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "requests": ("https://requests.readthedocs.io/en/latest/", None),
+}
+
 
 
 # -- Options for HTML output -------------------------------------------------

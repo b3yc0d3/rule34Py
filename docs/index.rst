@@ -9,3 +9,4 @@ Welcome to the rule34Py module documentation!
     :caption: Sections:
 
     api/index
+    tutorials/index

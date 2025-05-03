@@ -1,4 +1,4 @@
-""""""
+"""Python api wrapper for rule34.xxx"""
 """
 rule34Py - Python api wrapper for rule34.xxx
 

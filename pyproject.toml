@@ -51,3 +51,7 @@ test = [
 	"pytest >= 8.3.2",
 	"responses >= 0.25.3",
 ]
+docs = [
+	"sphinx >= 8.2.3",
+	"sphinx-rtd-theme >= 3.0.2",
+]

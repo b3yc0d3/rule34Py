@@ -39,7 +39,6 @@ exclude_patterns = []
 
 # sphinx.ext.autodoc configuration #
 autodoc_default_options = {
-    "special-members": "__init__",  # document class __init__()
 }
 autodoc_typehints = "both"  # Show typehints in the signature and as content of the function or method
 

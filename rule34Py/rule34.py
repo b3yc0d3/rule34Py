@@ -86,8 +86,7 @@ class rule34Py():
     def _get(self, *args, **kwargs) -> requests.Response:
         """Send an HTTP GET request.
 
-        This method largely passes its arguments to the requests.get() method,
-        while also inserting a valid User-Agent.
+        This method largely passes its arguments to the `requests.session.get() <https://requests.readthedocs.io/en/latest/api/#requests.Session.get>`_ method, while also inserting a valid User-Agent and captcha clearance.
 
         Returns:
             The Response object from the GET request.

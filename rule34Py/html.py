@@ -7,29 +7,44 @@ import re
 from bs4 import BeautifulSoup
 
 from rule34Py.icame import ICame
-from rule34Py.toptag import TopTag
 from rule34Py.pool import Pool, PoolHistoryEvent
+from rule34Py.toptag import TopTag
 
 
 class ICamePage():
     """The Rule34 'icame' page.
-    
+
+    https://rule34.xxx/index.php?page=icame
+
     This class can be instantiated as an object that automatically parses
     the useful information from the page's html, or used as a static class
     to parse the page's html directly.
     """
 
+    #: The top icame results, in descending order.
+    #: ie. element 0 is the most popular tag.
     top_chart: list[ICame] = []
 
-    def __init__(self, html: str):
+    def __init__(self, html: str) -> "ICamePage":
+        """Create a new ICamePage object.
+
+        Args:
+            html: The page HTML to parse.
+
+        Returns:
+            An ICamePage object containing information parsed from the page.
+        """
         self.top_chart = ICamePage.top_chart_from_html(html)
 
     @staticmethod
     def top_chart_from_html(html: str) -> list[ICame]:
         """Parse the ICame Top 100 chart from the page html.
-        
-        :returns: A list of the top 100 ICame characters and their counts.
-        :rtype: list[ICame]
+
+        Args:
+            html: The ICame page HTML, as a string.
+
+        Returns:
+            A list of the top 100 ICame characters and their counts.
         """
         e_doc = BeautifulSoup(html, features="html.parser")
 
@@ -48,12 +63,18 @@ class ICamePage():
 
 
 class PoolHistoryPage():
-    """A Rule34 Pool history page.
-    """
+    """A Rule34 Pool history page."""
 
     @staticmethod
     def events_from_html(html: str) -> list[PoolHistoryEvent]:
-        """Parse the history event entries from the page html."""
+        """Parse the history event entries from the page html.
+
+        Args:
+            html: The pool history page HTML to parse.
+
+        Returns:
+            A list of ``PoolHistoryEvents`` representing the changes in this Pool.
+        """
         e_doc = BeautifulSoup(html, "html.parser")
 
         events = []
@@ -78,16 +99,24 @@ class PoolHistoryPage():
 class PoolPage():
     """A Rule34 post Pool page."""
 
+    #: Regex matcher for the pool's ID.
     RE_PAGE_ID = re.compile(r"id=(\d+)")
 
     @staticmethod
     def pool_from_html(html: str) -> Pool:
-        """Generate a Pool object from the page HTML."""
+        """Generate a Pool object from the page HTML.
+
+        Args:
+            html: The pool page HTML, as a string.
+
+        Returns:
+            A Pool object representing the parsed page information.
+        """
         e_doc = BeautifulSoup(html, "html.parser")
         e_content = e_doc.find("div", id="content")
 
         # The pool html does not explicitly describe the pool ID anywhere, so
-        # extract it implictly from the pool history link href.
+        # extract it implicitly from the pool history link href.
         e_subnavbar = e_doc.find("ul", id="subnavbar")
         e_history = e_subnavbar.find_all("a")[-1]  # last link on the bar
         assert e_history.text == "History"  # check for safety
@@ -113,7 +142,6 @@ class PoolPage():
         return pool
 
 
-
 class TagMapPage():
     """The rule34.xxx/static/tagmap.html page.
 
@@ -122,17 +150,38 @@ class TagMapPage():
     to parse the page's html directly.
     """
 
+    #: Regex matcher for the TagMap page's plotly plot
     RE_NEWPLOT = re.compile(r"newPlot\((.*)\)", flags=re.S)
+    #: Regex matcher for each plotly point on the tag map
     RE_PLOT_POINT = re.compile(r"({[^}]+})", flags=re.S)
+    #: The JSON keys of the data points embedded in the plotly block
     MAP_POINT_KEYS = {"locationmode", "locations", "text"}
 
+    #: The most popular tag in each country or region code.
+    #: Formatted as ``[location_code, top_tag]``.
     map_points: dict[str, str] = {}
 
-    def __init__(self, html: str):
+    def __init__(self, html: str) -> "TagMapPage":
+        """Create a new TagMapPage from the page's HTML.
+
+        Args:
+            html: The Tag Map page HTML, as a string.
+        
+        Returns:
+            The parsed TagMapPage, with ``map_points`` extracted.
+        """
         self.map_points = TagMapPage.map_points_from_html(html)
 
     @staticmethod
     def map_points_from_html(html: str) -> dict[str, str]:
+        """Parse the map data from a Tag Map Page.
+        
+        Args:
+            html: The Tag Map page HTML as a string.
+
+        Returns:
+            The map data as a dictionary of ``[location_code, top_tag]``.
+        """
         e_doc = BeautifulSoup(html, "html.parser")
         map_points = {}
 
@@ -162,17 +211,22 @@ class TopTagsPage():
     to parse the page's html directly.
     """
 
+    #: The top-tags ranking list on this page.
     top_tags: list[TopTag] = []
 
-    def __init__(self, html: str):
+    def __init__(self, html: str) -> "TopTagsPage":
+        """Create a new TopTagsPage from the page's HTML."""
         self.top_tags = TopTagsPage.top_tags_from_html(html)
-        
+
     @staticmethod
     def top_tags_from_html(html: str) -> list[TopTag]:
         """Parse the "Top 100 tags, global" table from the page.
-        
-        :returns: A list of TopTags representing the top 100 chart.
-        :rtype: list[TopTag]
+
+        Args:
+            html: The Top Tags page HTML, as a string.
+
+        Returns:
+            A list of TopTags representing the top 100 chart.
         """
         e_doc = BeautifulSoup(html, features="html.parser")
         e_rows = e_doc.find("table", class_="server-assigns").find_all("tr")

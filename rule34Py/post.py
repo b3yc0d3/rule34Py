@@ -1,31 +1,41 @@
-""""""
-"""
-rule34Py - Python api wrapper for rule34.xxx
+# rule34Py - Python api wrapper for rule34.xxx
+# 
+# Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
+"""A module for representing Rule34 Post objects."""
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+# TODO: Restructure internal variable names
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-
-"""
-TODO: Restructure internal variable names
-"""
 
 class Post:
-    
+    """A Rule34 Post object.
+
+    This class is mostly a pythonic representation of the Rule34.xxx JSON API post object.
+    """
+
     @staticmethod
-    def from_json(json):        
+    def from_json(json: str) -> "Post":
+        """Initialize a Post object from an ``api.rule34.xxx`` JSON Post element.
+
+        Args:
+            json: The JSON string to parse.
+        
+        Returns:
+            The rule34Py.Post representation of the object.
+        """
         pFileUrl = json["file_url"]
         pHash = json["hash"]
         pId = json["id"]
@@ -34,7 +44,7 @@ class Post:
         pOwner = json["owner"]
         pTags = json["tags"].split(" ")
         preview = json["preview_url"]
-        sample = json["sample_url"] # thumbnail
+        sample = json["sample_url"]
         change = json["change"]
         directory = json["directory"]
         
@@ -42,7 +52,26 @@ class Post:
             
         return Post(pId, pHash, pScore, pSize, pFileUrl, preview, sample, pOwner, pTags, img_type, directory, change)
     
-    def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags: list, file_type: str, directory: int, change: int):
+    def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags: list, file_type: str, directory: int, change: int) -> "Post":
+        """Create a new Post object.
+
+        Args:
+            id: The Post's Rule34 ID number.
+            hash: The Post's Rule34 object hash.
+            score: The Post's voted user score.
+            size: A two-element list of image dimensions. [width, height]
+            image: URL to the Post's rule34 image server location.
+            preview: A URL to the Post's preview image.
+            sample: A URL to the Post's sample image.
+            owner: The user who owns the Post.
+            tags: A list of tags to assign to the Post.
+            file_type: The Post's image file type. One of ["image", "gif", "video"].
+            directory: The Post's image directory on the Rule34 image server.
+            change: The Post's change ID.
+
+        Returns:
+            Post: A reference to the new Post object.
+        """
         self._file_type = file_type
         self._video = ""
         self._image = ""
@@ -55,11 +84,11 @@ class Post:
         self._id = id
         self._hash = hash
         self._score = score
-        self._size = size # > [WIDTH:int, HEIGHT:int]
-        self._preview = preview # thumbnail
+        self._size = size
+        self._preview = preview
         self._sample = sample
         self._owner = owner
-        self._tags = tags # > [TAG:str, TAG:str,...]
+        self._tags = tags
         self._directory = directory
         self._change = change
         self._rating = None
@@ -67,162 +96,134 @@ class Post:
 
     @property
     def id(self) -> int:
-        """
-        Obtain the unique identifier of post.
+        """The unique numeric identifier of post.
 
-        :return: The unique identifier associated with the post.
-        :rtype: int
+        Returns:
+            The unique numeric identifier associated with the post.
         """
         return self._id
 
     @property
     def hash(self) -> str:
-        """
-        Obtain the unique hash of post.
+        """The unique rule34 hash of post.
 
-        :return: The hash associated with the post.
-        :rtype: str
+        Returns:
+            The hash associated with the post.
         """
         return self._hash
 
     @property
     def score(self) -> int:
-        """
-        Get the score of post.
+        """Get the score of post.
         
-        :return: The post's score.
-        :rtype: int
+        Returns:
+            The post's score.
         """
         return self._score
 
     @property
-    def size(self) -> list:
-        """
-        Retrieve actual size of post's image.
+    def size(self) -> list[int]:
+        """The Post's graphical dimension size.
         
-        :return: List of [width, height] representing the image dimensions.
-        :rtype: list[int, int]
+        Returns:
+            A list of the image's graphical dimensions, as [width, height].
         """
         return self._size
 
     @property
     def rating(self) -> str:
-        """
-        Retrieve the content rating of the post.
+        """The Post's content objectionability rating.
 
-        :return: A string representing the post's rating.
-            - 'e' Explicit
-            - 's' Safe
-            - 'q' Questionable
-        :rtype: str
+        Returns:
+            A string representing the post's rating.
+                - ``e`` = Explicit
+                - ``s`` = Safe
+                - ``q`` = Questionable
         """
         return self._rating
 
     @property
     def image(self) -> str:
-        """
-        Get the image of the post.
+        """The Post's full-resolution image URL.
 
-        :return: Image url for the post.
-        :rtype: str
+        Returns:
+            A string URL to the full-resolution image of the Post.
         """
-
         return self._image
     
     @property
     def video(self) -> str:
-        """
-        Get the video of the post.
+        """The Post's full-resolution video URL.
 
-        :return: Video url for the post.
-        :rtype: str
+        Returns:
+            A string URL to the full-resolution video URL.
         """
-
         return self._video
     
     @property
     def thumbnail(self) -> str:
-        """
-        Get the thumbnail image of the post.
+        """The Post's thumbnail image URL.
 
-        :return: Thumbnail url for the post.
-        :rtype: str
+        Returns:
+            A string URL to the Post's thumbnail image.
         """
-
         return self._preview
     
     @property
     def sample(self) -> str:
-        """
-        Get the sample image/video of the post.
+        """The Post's sample image URL.
 
-        :return: Sample data url for the post.
-        :rtype: str
+        Returns:
+            A string URL to the sample image.
         """
-
         return self._sample
 
     @property
     def owner(self) -> str:
-        """
-        Get username of post creator.
-            
-        :return: Username of post creator.
-        :rtype: str
-        """
+        """The Post's creator username.
 
+        Returns:
+            The string username of the Post creator.
+        """
         return self._owner
 
     @property
     def tags(self) -> list:
-        """
-        Get tags of post.
+        """The Post's tags.
 
-        :return: List of posts tags
-        :rtype: list[str]
+        Returns:
+            A List of the Post's tags.
         """
-
         return self._tags
 
     @property
     def content_type(self) -> str:
-        """
-        Get type of post data (e.g. gif, image etc.)
+        """The Post's content type.
 
-        Represents the value of ``file_type`` from the api.
-        
-        :return: A string indicating the type of the post.
-            Possible values:
-        
-            - 'image': Post is of an image.
-            - 'gif': Post is of an animation (gif, webm, or other format).
-            - 'video': Post is of a video.
-        :rtype: str
+        Represents the value of ``file_type`` from the JSON.
+
+        Returns:
+            A string indicating the Post's content type.
+                - ``image``: A static image.
+                - ``gif``: An animated image (gif, webm, or other format).
+                - ``video``: A video file.
         """
-        
         return self._file_type
-    
+
     @property
     def change(self) -> int:
-        """
-        Post last update time
+        """The Post's latest update time.
 
-        Retrieve the timestamp indicating the last update/change of
-        the post, as unix time epoch.
-
-        :return: UNIX Timestamp representing the post's last update/change.
-        :rtype: int
+        Returns:
+            An int representing the UNIX timestamp of the Post's latest update/change.
         """
-        
         return self._change
-    
+
     @property
     def directory(self) -> int:
-        """
-        Get directory id of post
+        """The Post's storage directory id.
 
-        :return: Unknown Data
-        :rtype: int
+        Returns:
+            A numeric representation of the Post's storage directory.
         """
-        
         return self._directory

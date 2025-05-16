@@ -108,6 +108,9 @@ class rule34Py():
         Args:
             post_id: The Post's ID number.
 
+        Error:
+            Due to a bug in the rule34 site API, the creation timestamp in returned comments are erroneously set to the time that the comment API request is received, not the comments' true creation times.
+
         Returns:
             List of comments returned from the request.
             If the post has no comments, an empty list will be returned.

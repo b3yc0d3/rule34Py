@@ -51,6 +51,6 @@ random_id = r34Py.random_post_id()
 
 ## Documentation
 
-This project has extensive [documentation]((https://b3yc0d3.github.io/rule34Py/), hosted on the upstream Github Pages. It includes additional **Tutorials**, **User Guides**, **API Documentation**, and more.
+This project has extensive [documentation](https://b3yc0d3.github.io/rule34Py/), hosted on the upstream Github Pages. It includes additional **Tutorials**, **User Guides**, **API Documentation**, and more.
 
 See the [Contributing Guide](https://b3yc0d3.github.io/rule34Py/dev/contributing.html) for information about how to contribute to this project and file bugs.

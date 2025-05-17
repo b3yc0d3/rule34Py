@@ -6,4 +6,5 @@
 
     tutorials/index
     api/index
+    guides/index
     dev/index

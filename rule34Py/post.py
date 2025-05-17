@@ -24,6 +24,20 @@ class Post:
     """A Rule34 Post object.
 
     This class is mostly a pythonic representation of the Rule34.xxx JSON API post object.
+
+    Parameters:
+        id: The Post's Rule34 ID number.
+        hash: The Post's Rule34 object hash.
+        score: The Post's voted user score.
+        size: A two-element list of image dimensions. [width, height]
+        image: URL to the Post's rule34 image server location.
+        preview: A URL to the Post's preview image.
+        sample: A URL to the Post's sample image.
+        owner: The user who owns the Post.
+        tags: A list of tags to assign to the Post.
+        file_type: The Post's image file type. One of ["image", "gif", "video"].
+        directory: The Post's image directory on the Rule34 image server.
+        change: The Post's change ID.
     """
 
     @staticmethod
@@ -53,22 +67,7 @@ class Post:
         return Post(pId, pHash, pScore, pSize, pFileUrl, preview, sample, pOwner, pTags, img_type, directory, change)
     
     def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags: list, file_type: str, directory: int, change: int):
-        """Create a new Post object.
-
-        Args:
-            id: The Post's Rule34 ID number.
-            hash: The Post's Rule34 object hash.
-            score: The Post's voted user score.
-            size: A two-element list of image dimensions. [width, height]
-            image: URL to the Post's rule34 image server location.
-            preview: A URL to the Post's preview image.
-            sample: A URL to the Post's sample image.
-            owner: The user who owns the Post.
-            tags: A list of tags to assign to the Post.
-            file_type: The Post's image file type. One of ["image", "gif", "video"].
-            directory: The Post's image directory on the Rule34 image server.
-            change: The Post's change ID.
-        """
+        """Create a new Post object."""
         self._file_type = file_type
         self._video = ""
         self._image = ""

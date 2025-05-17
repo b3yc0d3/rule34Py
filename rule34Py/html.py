@@ -19,21 +19,17 @@ class ICamePage():
     This class can be instantiated as an object that automatically parses
     the useful information from the page's html, or used as a static class
     to parse the page's html directly.
+
+    Args:
+        html: The page HTML to parse.
     """
 
     #: The top icame results, in descending order.
     #: ie. element 0 is the most popular tag.
     top_chart: list[ICame] = []
 
-    def __init__(self, html: str) -> "ICamePage":
-        """Create a new ICamePage object.
-
-        Args:
-            html: The page HTML to parse.
-
-        Returns:
-            An ICamePage object containing information parsed from the page.
-        """
+    def __init__(self, html: str):
+        """Create a new ICamePage object."""
         self.top_chart = ICamePage.top_chart_from_html(html)
 
     @staticmethod
@@ -148,6 +144,9 @@ class TagMapPage():
     This class can be instantiated as an object that automatically parses
     the useful information from the page's html, or used as a static class
     to parse the page's html directly.
+
+    Args:
+        html: The Tag Map page HTML, as a string.
     """
 
     #: Regex matcher for the TagMap page's plotly plot
@@ -161,15 +160,8 @@ class TagMapPage():
     #: Formatted as ``[location_code, top_tag]``.
     map_points: dict[str, str] = {}
 
-    def __init__(self, html: str) -> "TagMapPage":
-        """Create a new TagMapPage from the page's HTML.
-
-        Args:
-            html: The Tag Map page HTML, as a string.
-        
-        Returns:
-            The parsed TagMapPage, with ``map_points`` extracted.
-        """
+    def __init__(self, html: str):
+        """Create a new TagMapPage from the page's HTML."""
         self.map_points = TagMapPage.map_points_from_html(html)
 
     @staticmethod
@@ -209,12 +201,15 @@ class TopTagsPage():
     This class can be instantiated as an object that automatically parses
     the useful information from the page's html, or used as a static class
     to parse the page's html directly.
+
+    Args:
+        html: The Top Tags page HTML, as a string.
     """
 
     #: The top-tags ranking list on this page.
     top_tags: list[TopTag] = []
 
-    def __init__(self, html: str) -> "TopTagsPage":
+    def __init__(self, html: str):
         """Create a new TopTagsPage from the page's HTML."""
         self.top_tags = TopTagsPage.top_tags_from_html(html)
 

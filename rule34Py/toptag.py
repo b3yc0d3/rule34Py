@@ -35,8 +35,12 @@ class TopTag:
         self._tagname = tagname
         self._percentage = percentage
 
-    def __from_dict(json: dict):
-        """Create a TopTag object from JSON data."""
+    def __from_dict(json: dict) -> "TopTag":
+        """Create a TopTag object from JSON data.
+
+        Returns:
+            A new TopTag object, populated with values from the ``json`` dictionary.
+        """
         return TopTag(json["rank"], json["tagname"], json["percentage"] * 100)
 
     @property

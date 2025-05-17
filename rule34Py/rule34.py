@@ -75,11 +75,7 @@ class rule34Py():
     user_agent: str = os.environ.get("R34_USER_AGENT", DEFAULT_USER_AGENT)
 
     def __init__(self):
-        """Initialize a new rule34 API client instance.
-
-        Returns:
-            A new rule34 API client instance.
-        """
+        """Initialize a new rule34 API client instance."""
         self.session = requests.session()
         self.session.mount(__base_url__, self._base_site_rate_limiter)
 
@@ -117,8 +113,7 @@ class rule34Py():
 
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
-
+        """  # noqa: DOC502
         params = [
             ["POST_ID", str(post_id)]
         ]
@@ -154,8 +149,7 @@ class rule34Py():
 
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
-
+        """  # noqa: DOC502
         params = [
             ["POOL_ID", str(pool_id)]
         ]
@@ -174,7 +168,7 @@ class rule34Py():
 
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         params = [
             ["POST_ID", str(post_id)]
         ]
@@ -200,7 +194,7 @@ class rule34Py():
 
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         response = self._get(API_URLS.ICAME.value)
         response.raise_for_status()
         return ICamePage.top_chart_from_html(response.text)
@@ -226,7 +220,7 @@ class rule34Py():
 
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         page_id = 0  # what page of the search results we're on
         results_count = 0  # accumulator of how many results have been returned
 
@@ -282,7 +276,7 @@ class rule34Py():
         
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         return self.get_post(self.random_post_id())
 
     def random_post_id(self) -> int:
@@ -294,10 +288,12 @@ class rule34Py():
         Note:
             This method uses the interactive website and is rate-limited.
 
+        Returns:
+            A random post ID.
+
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
-
+        """  # noqa: DOC502
         response = self._get(API_URLS.RANDOM_POST.value)
         response.raise_for_status()
         parsed = urlparse.urlparse(response.url)
@@ -320,12 +316,13 @@ class rule34Py():
         Returns:
             A list of Post objects, representing the search results.
 
-        Raises: 
+        Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
+            ValueError: An invalid ``limit`` value was requested.
 
         References:
             - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
-        """
+        """  # noqa: DOC502
         if limit < 0 or limit > SEARCH_RESULT_MAX:
             raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
 
@@ -371,9 +368,9 @@ class rule34Py():
             A mapping of country and district codes to their top tag.
             3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.
 
-        Raises: 
+        Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         resp = self._get(__base_url__ + "static/tagmap.html")
         resp.raise_for_status()
         return TagMapPage.map_points_from_html(resp.text)
@@ -390,9 +387,9 @@ class rule34Py():
         Returns:
             A list of the current top 100 tags, globally.
 
-        Raises: 
+        Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         warnings.warn(
             "The rule34Py.tagmap() method is scheduled for deprecation in a future release. If you want to retrieve the Global Top-100 tags list, use the rule34Py.top_tags() method. If you want to retrieve the tag map data points, use the rule34Py.tag_map() method (with an underscore.). See `https://github.com/b3yc0d3/rule34Py/tree/master/docs#functions` for more information.",
             DeprecationWarning,
@@ -405,9 +402,9 @@ class rule34Py():
         Returns:
             A list of the current top 100 tags, globally.
 
-        Raises: 
+        Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
-        """
+        """  # noqa: DOC502
         response = self._get(API_URLS.TOPMAP.value)
         response.raise_for_status()
         return TopTagsPage.top_tags_from_html(response.text)

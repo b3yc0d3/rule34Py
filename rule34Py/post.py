@@ -52,7 +52,7 @@ class Post:
             
         return Post(pId, pHash, pScore, pSize, pFileUrl, preview, sample, pOwner, pTags, img_type, directory, change)
     
-    def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags: list, file_type: str, directory: int, change: int) -> "Post":
+    def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags: list, file_type: str, directory: int, change: int):
         """Create a new Post object.
 
         Args:
@@ -68,9 +68,6 @@ class Post:
             file_type: The Post's image file type. One of ["image", "gif", "video"].
             directory: The Post's image directory on the Rule34 image server.
             change: The Post's change ID.
-
-        Returns:
-            Post: A reference to the new Post object.
         """
         self._file_type = file_type
         self._video = ""

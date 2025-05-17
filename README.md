@@ -57,7 +57,7 @@ random_id = r34Py.random_post_id()
 ## Development
 Follow these steps to setup everything needed to develop on rule34Py.
 
-Currently this setup guide only shows how it is done on unix-like systems.
+Currently this setup guide only shows how it is done on UNIX-like systems.
 
 ### Clone This Repository
 ```
@@ -75,7 +75,7 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-To deactivate the virtual environment type the following in your terminal
+To deactivate the virtual environment type the following in your terminal.
 ```
 deactivate
 ```
@@ -84,7 +84,7 @@ deactivate
 ```
 python3 -m build
 
-pip install -e .
+pip install -e .[dev]
 ```
 
 
@@ -96,12 +96,13 @@ See the [`tests/README.md`](./tests/README.md) file for instructions on how to r
 
 
 ### Committing your Changes
+- Before committing your changes, run the project **linter** by calling `make lint`.
 - Branch name should be prefixed with
     - `fix-` when fixing an bug/error
     - `feat-` when a feature got added
     - `chore-` everything else that doesn't fall in the above categories
-- The title must be descriptive, what your pull request changes/does.
-- Write a breve description of what the pull request does/solves in the commit.
+- The title must describe what your pull request changes/does.
+- Write a brief description of what the pull request does/solves in the commit.
 - If your pull request fixes an issue, please mention that issue in the commit title.
 
 Example structure of a commit message

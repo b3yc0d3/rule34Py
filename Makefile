@@ -6,6 +6,7 @@ VERSION = $(shell git describe --tags)
 
 PYTHON3 ?= python3
 PYTHON_BUILD = $(PYTHON3) -m build
+RUFF = $(PYTHON3) -m ruff
 SPHINX_BUILD = $(PYTHON3) -m sphinx
 PYTEST = $(PYTHON3) -m pytest
 
@@ -39,6 +40,7 @@ check :
 clean : mostlyclean
 	find ./ -depth -path '**/.pytest_cache*' -print -delete
 	find ./ -depth -path '**/__pycache__*' -print -delete
+	$(RUFF) clean
 .PHONY : clean
 
 
@@ -54,6 +56,11 @@ distclean : clean
 html :
 	$(SPHINX_BUILD) --builder html docs $(builddir)/html
 .PHONY : html
+
+
+lint :
+	$(RUFF) check $(srcdir)
+.PHONY : lint
 
 
 mostlyclean :

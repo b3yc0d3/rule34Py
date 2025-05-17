@@ -47,6 +47,9 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]
+dev = [
+	"ruff >= 0.11.10",
+]
 test = [
 	"pytest >= 8.3.2",
 	"responses >= 0.25.3",
@@ -55,3 +58,25 @@ docs = [
 	"sphinx >= 8.2.3",
 	"sphinx-rtd-theme >= 3.0.2",
 ]
+
+[tool.ruff.lint]
+preview = true  # necessary to enable the pydoclint rules
+select = [
+	"D",  # pydocstyle
+	"DOC",  # pydoclint
+#	"I",  # isort
+#	"F",  # Pyflakes
+#	"E",  # pycodestyle - error
+#	"N",  # pep8-naming
+#	"PL",  # pylint - all
+#	"RUF",  # Ruff-specific rules
+]
+ignore = [
+	# Ignore line lengths; mostly bc. there is no way to ignore only docstring linelengths.
+	"E501",
+	# Ignore PEP 8 bad-module-name. 'rule34Py' does not comply, but will not be renamed.
+	"N999",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"  # Use Google-style docstrings.

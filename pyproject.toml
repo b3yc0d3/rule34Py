@@ -56,6 +56,7 @@ test = [
 ]
 docs = [
 	"sphinx >= 8.2.3",
+	"sphinx-mdinclude >= 0.6.2",
 	"sphinx-rtd-theme >= 3.0.2",
 ]
 

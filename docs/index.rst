@@ -1,17 +1,9 @@
-========
-rule34Py
-========
-
-Welcome to the rule34Py module documentation!
+.. mdinclude:: ../README.md
 
 .. toctree::
     :maxdepth: 2
-    :caption: Tutorials
+    :caption: Sections
 
     tutorials/index
-
-.. toctree::
-    :maxdepth: 2
-    :caption: API Reference
-
     api/index
+    dev/index

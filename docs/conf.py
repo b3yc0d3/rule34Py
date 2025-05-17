@@ -27,11 +27,12 @@ release = pyproject["project"]["version"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    "sphinx_mdinclude",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.duration",
-    "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
 ]
 
 templates_path = ['_templates']

@@ -51,27 +51,6 @@ random_id = r34Py.random_post_id()
 
 ## Documentation
 
-This project has extensive [documentation]((https://b3yc0d3.github.io/rule34Py/), hosted on the upstream Github Pages.
+This project has extensive [documentation]((https://b3yc0d3.github.io/rule34Py/), hosted on the upstream Github Pages. It includes additional **Tutorials**, **User Guides**, **API Documentation**, and more.
 
-The documentation includes additional **Tutorials**, **User Guides**, **API Documentation**, and more.
-
-
-### Committing your Changes
-- Before committing your changes, run the project **linter** by calling `make lint`.
-- Branch name should be prefixed with
-    - `fix-` when fixing an bug/error
-    - `feat-` when a feature got added
-    - `chore-` everything else that doesn't fall in the above categories
-- The title must describe what your pull request changes/does.
-- Write a brief description of what the pull request does/solves in the commit.
-- If your pull request fixes an issue, please mention that issue in the commit title.
-
-Example structure of a commit message
-```
-here goes the title of the commit
-
-Here goes the description
-```
-
-The title shall not be longer then 50 characters.
-**Select the `develop` branch for pull requests.**
+See the [Contributing Guide](https://b3yc0d3.github.io/rule34Py/dev/contributing.html) for information about how to contribute to this project and file bugs.

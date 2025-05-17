@@ -8,4 +8,5 @@ This section contains documentation primarily useful to developers who would lik
     :maxdepth: 1
 
     developer-guide
+    contributing
     license

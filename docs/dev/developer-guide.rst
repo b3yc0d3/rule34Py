@@ -65,7 +65,7 @@ The following instructions are written on the assumption that you are building i
 
     Build output will be placed in the ``:build/`` directory in your workspace.
 
-Other ```make`` targets are supported to ``clean`` the project and build other artifacts.
+Other ``make`` targets are supported to ``clean`` the project and build other artifacts.
 Generally, the project ``Makefile`` honors the `GNU Standard Targets <https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html>`_ specification.
 
 

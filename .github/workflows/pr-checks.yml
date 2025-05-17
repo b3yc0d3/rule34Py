@@ -25,6 +25,13 @@ jobs:
           path: ./build
           retention-days: 14
 
+      - name: Lint the project
+        shell: bash
+        run: |
+          python -m pip install .[dev]
+          make lint
+
+
   build-windows:
     runs-on: windows-latest
     steps:

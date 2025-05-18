@@ -16,10 +16,10 @@ maintainers = [
 	{ name = "b3yc0d3", email = "b3yc0d3@gmail.com" }
 ]
 dependencies = [
-	"requests-ratelimiter >= 0.7.0",
-	"beautifulsoup4 >= 4.9.3",
-	"lxml >= 4.6.4",
-	"requests >= 2.27.1",
+	"requests-ratelimiter",
+	"beautifulsoup4",
+	"lxml",
+	"requests",
 ]
 classifiers = [
 	"Development Status :: 4 - Beta",
@@ -48,16 +48,16 @@ build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]
 dev = [
-	"ruff >= 0.11.10",
+	"ruff",
 ]
 test = [
-	"pytest >= 8.3.2",
-	"responses >= 0.25.3",
+	"pytest",
+	"responses",
 ]
 docs = [
-	"sphinx >= 8.2.3",
-	"sphinx-mdinclude >= 0.6.2",
-	"sphinx-rtd-theme >= 3.0.2",
+	"sphinx",
+	"sphinx-mdinclude",
+	"sphinx-rtd-theme",
 ]
 
 [tool.ruff.lint]

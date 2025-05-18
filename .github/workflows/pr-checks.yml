@@ -6,39 +6,50 @@ on:
       - "**"
 
 jobs:
-  build-linux:
+  source-quality:
     runs-on: ubuntu-latest
-
+    name: Source Quality Checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build the project
-        uses: ./.github/actions/build-project
+      - name: Set up python
+        uses: actions/setup-python@v5
         with:
-          latest_python: true  # always use the latest python in PR checks
+          python-version: '3.x'
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ github.run_id }}-${{ github.run_number }}
-          path: ./build
-          retention-days: 14
-
-      - name: Lint the project
+      - name: Lint sources
         shell: bash
         run: |
           python -m pip install .[dev]
           make lint
 
+  build-and-test:
+    needs: source-quality
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.x', '3.9']
+        os: [ubuntu-latest, windows-latest]
 
-  build-windows:
-    runs-on: windows-latest
+    name: Build ${{ matrix.os }}-py${{ matrix.python-version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build the project
-        uses: ./.github/actions/build-project
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          latest_python: true  # always use the latest python in PR checks
+          python-version: ${{ matrix.python-version }}
+
+      - name: Build and test
+        uses: ./.github/actions/build-project
+
+      - name: Upload build artifacts
+        if: matrix.python-version == '3.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build.${{ github.run_id }}-${{ github.run_number }}.${{ matrix.os }}-py${{ matrix.python-version || 'latest' }}
+          path: ./build
+          retention-days: 14

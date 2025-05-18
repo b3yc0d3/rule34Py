@@ -2,10 +2,23 @@ name: PR Checks
 
 on:
   pull_request:
-    branches:
-      - "**"
+    types: [opened, edited, synchronize, reopened]
 
 jobs:
+  pr-quality:
+    name: PR Quality Checks
+    # Validates the quality of the PR and its constituent commits, against
+    # the policies of the upstream repo.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR target branch
+        run: |
+          echo "PR is targeting branch: ${{ github.event.pull_request.base.ref }}"
+          if [ "${{ github.event.pull_request.base.ref }}" != "develop" ]; then
+            echo "❌ Pull request must target 'develop' branch!"
+            exit 1
+          fi
+
   source-quality:
     runs-on: ubuntu-latest
     name: Source Quality Checks
@@ -25,7 +38,7 @@ jobs:
           make lint
 
   build-and-test:
-    needs: source-quality
+    needs: [pr-quality, source-quality]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

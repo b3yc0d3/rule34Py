@@ -1,7 +1,14 @@
 name: PR Checks
+# This workflow runs on PRs opened on the repo's 'develop' branch.
+# It's purpose is to check that repository policies around PR and source quality
+# and syntax are honored by developers. Commits which pass this workflow are
+# quality enough that they can be merged.
+# This workflow does not verify code correctness or run tests.
 
 on:
   pull_request:
+    branches:
+      - develop
     types: [opened, edited, synchronize, reopened]
 
 jobs:
@@ -36,33 +43,3 @@ jobs:
         run: |
           python -m pip install .[dev]
           make lint
-
-  build-and-test:
-    needs: [pr-quality, source-quality]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.x', '3.9']
-        os: [ubuntu-latest, windows-latest]
-
-    name: Build ${{ matrix.os }}-py${{ matrix.python-version }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Build and test
-        uses: ./.github/actions/build-project
-
-      - name: Upload build artifacts
-        if: matrix.python-version == '3.x'
-        uses: actions/upload-artifact@v4
-        with:
-          name: build.${{ github.run_id }}-${{ github.run_number }}.${{ matrix.os }}-py${{ matrix.python-version || 'latest' }}
-          path: ./build
-          retention-days: 14

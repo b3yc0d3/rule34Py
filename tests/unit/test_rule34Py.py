@@ -4,11 +4,15 @@ import re
 
 import pytest
 
-from rule34Py import Post
+from rule34Py import Post, Pool
 from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
+from rule34Py.__vars__ import __version__ as R34_VERSION
+
+
+TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
 
 
 def test_rule34Py_get_comments(rule34):
@@ -24,23 +28,14 @@ def test_rule34Py_get_comments(rule34):
 
 def test_rule34Py_get_pool(rule34):
     """The client can get a post pool object."""
-    TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
     TEST_NUM_POSTS = 14  # there are 14 posts in this pool
     FIRST_POST_ID = 952001
-    post_ids = rule34.get_pool(pool_id=TEST_POOL_ID, fast=True)
-    # when Fast=True, return type is list[int]
-    assert isinstance(post_ids, list)
-    assert len(post_ids) == TEST_NUM_POSTS
-    assert isinstance(post_ids[0], int)
-    assert post_ids[0] == FIRST_POST_ID
 
-    # Test non-fast operation
-    posts = rule34.get_pool(pool_id=TEST_POOL_ID, fast=False)
-    # when Fast=False, return type is list[Post]
-    assert isinstance(posts, list)
-    assert len(posts) == TEST_NUM_POSTS
-    assert isinstance(posts[0], Post)
-    assert posts[0].id == FIRST_POST_ID
+    pool = rule34.get_pool(pool_id=TEST_POOL_ID)
+    assert isinstance(pool, Pool)
+    assert pool.pool_id == TEST_POOL_ID
+    assert len(pool.posts) == TEST_NUM_POSTS
+    assert pool.posts[0] == FIRST_POST_ID
 
 
 def test_rule34Py_get_post(rule34):
@@ -86,14 +81,80 @@ def test_rule34Py_iter_search(rule34):
     assert len(results) == 1002
 
 
+def test__rule34Py__user_agent(rule34):
+    """The client has a user agent attribute that can be user-defined."""
+    # Default should be something like "Mozilla/... rule34Py/1.2.3"
+    print(rule34.user_agent)
+    assert "Mozilla" in rule34.user_agent
+    assert "rule34Py" in rule34.user_agent
+    assert R34_VERSION in rule34.user_agent
+    
+    # The user_agent can be changed.
+    rule34.user_agent = "foobar"
+    resp = rule34._get("http://example.com")
+    print(resp.request.headers)
+    assert resp.request.headers["User-Agent"] == "foobar"
+
+
+def test_rule34Py_get_post(rule34):
+    """The client get_post() method fetches a single Post by post ID."""
+    post = rule34.get_post(8973658)
+    assert isinstance(post, Post)
+    assert post.id == 8973658
+    # Post #2 does not exist.
+    assert rule34.get_post(2) is None
+
+
 def test_rule34Py_random_post(rule34):
     """The client random_post() method fetches a random Post object.
     """
     post = rule34.random_post()
+    print(post)
     assert isinstance(post, Post)
-    # You can specify tags to limit the random search
-    post = rule34.random_post(tags=["neko"])
-    assert "neko" in post.tags
+
+
+def test_rule34Py_random_post_id(rule34):
+    """The client random_post_id() method fetches a random Post ID number."""
+    id = rule34.random_post_id()
+    print(f"id={id}")
+    assert isinstance(id, int)
+    assert id > 0
+
+
+def test__rule34Py__request_limiter(rule34):
+    """The client has a configurable adapter for the base site that limits requests to some reasonable rate."""
+    from time import time
+
+    client = rule34
+
+    def time_requests(num_tests) -> float:
+        print("time_requests() =")
+        times = []
+        ts1 = None
+        ts2 = None
+        ts0 = time()  # timing session start
+        for i in range(0, num_tests + 1):
+            client.get_pool(TEST_POOL_ID)
+            ts2 = time()
+            if ts1 is not None:
+                tdelta = ts2 - ts1
+                times.append(tdelta)
+                print(f"time delta[{i}] = {tdelta} s")
+            ts1 = ts2
+        session_time = time() - ts0
+        print(f"session_time = {session_time}")
+        return session_time
+
+    # The default should be once per second
+    session_time = time_requests(5)
+    assert session_time >= 5 / 1
+
+    # Users can disable the rate limiter.
+    # This test can theoretically fail if the normal request time is
+    # every long.
+    client.set_base_site_rate_limit(False)
+    session_time = time_requests(5)
+    assert session_time <= 5
 
 
 def test_rule34Py_search(rule34):
@@ -158,6 +219,7 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags, list)
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
+
 
 def test_rule34Py_version(rule34):
     """The version() property should throw a deprecation warning, but return its original value.

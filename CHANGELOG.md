@@ -10,6 +10,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added captcha-compliance capabilities. You can now pass the client your captcha clearance token by completing the captcha in your browser, opening the response header, and writing your `cf_clearance` token into the client's `rule34Py.captcha_clearance` attribute and setting the client's `user_agent` attribute to match your browser.
+	- Alternatively, set your execution environment's `R34_CAPTCHA_CLEARANCE` and `R34_USER_AGENT` variables to the appropriate values. The client will read form them during initialization.
+- Added a rate limiter for requests to the rule34.xxx base site (the PHP endpoint). By default, the client will now limit API calls that use this endpoint to 1 per second.
+	- This behavior can be disabled by setting `rule34Py.set_base_site_rate_limit(False)`.
+	- There is no rate limit on the api.rule34.xxx endpoint, which is assumed to handle rate-limiting on the server-side.
+	- This new feature requires the `requests-ratelimiter` module.
+
+### Changed
+
+- Changed the behavior of the `rule34Py.random_post()` method to function more like the website. The method now accepts no `tag` parameters, and returns a random post ID from all posts on the site. Users who want to use the old behavior of returning a random post from the first 1000 tag-search results are directed to do something like `random.choice(rule34Py.search([tags...]))`.
+- Changed the `rule34Py.get_pool()` method to return a `Pool` object containing more complete information about a Pool.
+	- The Pool's post ids can be accessed via the `Pool.posts` attribute.
+
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+
+
+## [2.1.0] - 2024-12-31
+
+### Added
+
 - Added a `rule34Py.iter_search()` method that returns a Post search iterator that transparently handles pagination. (#20)
 - Added a `rule34Py._get()` method to handle HTTP GET requests from the servers. This logic was previously duplicated within most of the client's methods. (#20)
 - Added a `rule34Py.tag_map()` method which parses and returns the top 100 global tags (that was previously being returned from the `tagmap()` method.) (#20)
@@ -31,8 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the `deleted` and `ignore_max_limit` parameters from the `rule34Py.search()` method. Neither worked and only ever returned an exception. (#20)
 - Removed the `limit` parameter from the `rule34Py.icame()` method, as it did nothing. Users are directed to use list slicing instead. (#20)
 
-### Fixed
-### Security
 
 
 ## [2.0.0] - 2024-09-02

@@ -16,176 +16,185 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""This module contains the top-level Rule34 API client class."""
+"""A module containing the top-level Rule34 API client class."""
 
 from collections.abc import Iterator
 from urllib.parse import parse_qs
-import random
+import os
 import urllib.parse as urlparse
 import warnings
 
 from bs4 import BeautifulSoup
+from requests_ratelimiter import LimiterAdapter
 import requests
 
-from rule34Py.__vars__ import __headers__, __version__, __base_url__
+from rule34Py.__vars__ import (
+    __api_url__,
+    __base_url__,
+    __version__,
+)
 from rule34Py.api_urls import API_URLS
-from rule34Py.html import TagMapPage, ICamePage, TopTagsPage
+from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage
+from rule34Py.pool import Pool
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
 
-"""
-TODO: fix typos
-"""
 
-SEARCH_RESULT_MAX = 1000  # API-defined maximum number of search results per request. <https://rule34.xxx/index.php?page=help&topic=dapi>
+#: The default client user_agent, if one is not specified in the environment.
+DEFAULT_USER_AGENT: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
+#: API-defined maximum number of search results per request.
+#: [`Rule34 Docs <https://rule34.xxx/index.php?page=help&topic=dapi>`_]
+SEARCH_RESULT_MAX: int = 1000
 
 
 class rule34Py():
     """The rule34.xxx API client.
 
-    Usage:
-    ```python
-    client = rule34Py()
-    post = client.get_post(1234)
-    ```
+    This class is the primary broker for interactions with the real Rule34 servers.
+    It transparently chooses to interact with either the REST server endpoint, or the PHP interactive site, depending on what methods are executed.
+
+    Example:
+        .. code-block:: python
+
+            client = rule34Py()
+            post = client.get_post(1234)
     """
 
-    user_agent: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
+    CAPTCHA_COOKIE_KEY: str = "cf_clearance"  #: Captcha clearance HTML cookie key
+
+    _base_site_rate_limiter = LimiterAdapter(per_second=1)
+    #: Client captcha clearance token. Defaults to either the value of the ``R34_CAPTCHA_CLEARANCE`` environment variable; or None, if the environment variable is not asserted.
+    #: Can be overridden at runtime by the user.
+    captcha_clearance: str | None = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
+    #: The ``requests.Session`` object used when the client makes HTML requests.
+    session: requests.Session = None
+    #: The ``User-Agent`` HTML header value used when the client makes HTML requests.
+    #: Defaults to either the value of the ``R34_USER_AGENT`` environment variable; or the ``rule34Py.rule34.DEFAULT_USER_AGENT``, if not asserted.
+    #: Can be overridden by the user at runtime to change User-Agents.
+    user_agent: str = os.environ.get("R34_USER_AGENT", DEFAULT_USER_AGENT)
 
     def __init__(self):
-        """Initialize a new rule34 API client instance.
-
-        :return: A new rule34 API client instance.
-        :rtype: rule34Py
-        """
-        pass
+        """Initialize a new rule34 API client instance."""
+        self.session = requests.session()
+        self.session.mount(__base_url__, self._base_site_rate_limiter)
 
     def _get(self, *args, **kwargs) -> requests.Response:
         """Send an HTTP GET request.
 
-        This method largely passes its arguments to the requests.get() method,
-        while also inserting a valid User-Agent.
+        This method largely passes its arguments to the `requests.session.get() <https://requests.readthedocs.io/en/latest/api/#requests.Session.get>`_ method, while also inserting a valid User-Agent and captcha clearance.
 
-        :return: A requests.Response object from the GET request.
-        :rtype: requests.Response
+        Returns:
+            The Response object from the GET request.
         """
-        kwargs["headers"] = kwargs.get("headers", {}) | \
-            {"User-Agent": self.user_agent}
-        return requests.get(*args, **kwargs)
+        # headers
+        kwargs.setdefault("headers", {})
+        kwargs["headers"].setdefault("User-Agent", self.user_agent)
 
-    def get_comments(self, post_id: int) -> list:
-        """
-        Retrieve comments of post by its id.
+        # cookies
+        kwargs.setdefault("cookies", {})
+        if self.captcha_clearance is not None:
+            kwargs["cookies"]["cf_clearance"] = self.captcha_clearance
 
-        :param post_id: Posts id.
-        :type post_id: int
+        return self.session.get(*args, **kwargs)
 
-        :return: List of comments.
-        :rtype: list[PostComment]
-        """
+    def get_comments(self, post_id: int) -> list[PostComment]:
+        """Retrieve the comments left on a post.
 
+        Args:
+            post_id: The Post's ID number.
+
+        Error:
+            Due to a bug in the rule34 site API, the creation timestamp in returned comments are erroneously set to the time that the comment API request is received, not the comments' true creation times.
+
+        Returns:
+            List of comments returned from the request.
+            If the post has no comments, an empty list will be returned.
+
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         params = [
             ["POST_ID", str(post_id)]
         ]
-        formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params) # Replacing placeholders
-        response = requests.get(formatted_url, headers=__headers__)
+        formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params)
+        response = self._get(formatted_url)
+        response.raise_for_status()
 
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_comments = []
+        comments = []
+        comment_soup = BeautifulSoup(response.content.decode("utf-8"), features="xml")
+        for e_comment in comment_soup.find_all("comment"):
+            comment = PostComment(
+                id = e_comment["id"],
+                owner_id = e_comment["creator_id"],
+                body = e_comment["body"],
+                post_id = e_comment["post_id"],
+                creation = e_comment["created_at"],
+            )
+            comments.append(comment)
 
-        if res_status != 200 or res_len <= 0:
-            return ret_comments
+        return comments
 
-        bfs_raw = BeautifulSoup(response.content.decode("utf-8"), features="xml")
-        res_xml = bfs_raw.comments.findAll('comment')
+    def get_pool(self, pool_id: int) -> Pool:
+        """Retrieve a pool of Posts.
 
-        # loop through all comments
-        for comment in res_xml:
-            attrs = dict(comment.attrs)
-            ret_comments.append(PostComment(attrs["id"], attrs["creator_id"], attrs["body"], attrs["post_id"], attrs["created_at"]))
+        Note:
+            This method uses the interactive website and is rate-limited.
 
-        return ret_comments
+        Args:
+            pool_id: The pool's object ID on Rule34.
 
+        Returns:
+            A Pool object representing the requested pool.
 
-    def get_pool(self, pool_id: int, fast: bool = True) -> list:
-        """
-        Retrieve pool by its id.
-
-        **Be aware that if "fast" is set to False, it may takes longer.**
-
-        :param pool_id: Pools id.
-        :type pool_id: int
-        
-        :param fast: Fast "mode", if set to true only a list of post ids
-            will be returned.
-        :type fast: bool
-
-        :return: List of post objects (or post ids if fast is set to true).
-        :rtype: list[Post|int]
-        """
-
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         params = [
             ["POOL_ID", str(pool_id)]
         ]
-        response = requests.get(self._parseUrlParams(API_URLS.POOL.value, params), headers=__headers__)
+        response = self._get(self._parseUrlParams(API_URLS.POOL.value, params))
+        response.raise_for_status()
+        return PoolPage.pool_from_html(response.text)
 
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
+    def get_post(self, post_id: int) -> Post | None:
+        """Get a Post by its ID.
 
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
+        Args:
+            post_id: The Post's Rule34 ID.
 
-        soup = BeautifulSoup(response.content.decode("utf-8"), features="html.parser")
+        Returns:
+            The Post object matching the post_id; or None, if the post_id is not found.
 
-        for div in soup.find_all("span", class_="thumb"):
-            a = div.find("a")
-            id = div["id"][1:]
-
-            if fast == True:
-                ret_posts.append(int(id))
-            else:
-                ret_posts.append(self.get_post(id))
-
-        return ret_posts
-
-    def get_post(self, post_id: int) -> Post:
-        """
-        Get post by its id.
-
-        :param post_id: Id of post.
-        :type post_id: int
-
-        :return: Post object.
-        :rtype: Post
-        """
-
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         params = [
             ["POST_ID", str(post_id)]
         ]
         formatted_url = self._parseUrlParams(API_URLS.GET_POST.value, params)
-        response = requests.get(formatted_url, headers=__headers__)
+        response = self._get(formatted_url)
+        response.raise_for_status()
 
-        res_status = response.status_code
-        res_len = len(response.content)
-        ret_posts = []
+        # The Posts list API returns an empty response when filters match no posts.
+        if len(response.content) == 0:
+            return None
 
-        if res_status != 200 or res_len <= 0:
-            return ret_posts
+        post_json = response.json()
+        return Post.from_json(post_json[0])
 
-        for post in response.json():
-            ret_posts.append(Post.from_json(post))
+    def icame(self) -> list["ICame"]:
+        """Retrieve a list of the top 100 iCame objects.
 
-        return ret_posts if len(ret_posts) > 1 else (ret_posts[0] if len(ret_posts) == 1 else ret_posts)
+        Note:
+            This method uses the interactive website and is rate-limited.
 
-    def icame(self) -> list:
-        """Retrieve list of top 100 iCame list.
+        Returns:
+            The current top 100 iCame objects.
 
-        :return: List of iCame objects.
-        :rtype: list[ICame]
-        """
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         response = self._get(API_URLS.ICAME.value)
         response.raise_for_status()
         return ICamePage.top_chart_from_html(response.text)
@@ -197,17 +206,21 @@ class rule34Py():
     ) -> Iterator[Post]:
         """Iterate through Post search results, one element at a time.
 
-        This method transparently requests additional results pages until either max_results is reached, or there are no more results. It is possible that additional Posts may be added to the results between page calls, and so it is recommended that you deduplicate results if that is important to you.
+        This method transparently requests additional results pages until either ``max_results`` is reached, or there are no more results.
+        It is possible that additional Posts may be added to the results between page calls, and so it is recommended that you deduplicate results if that is important to you.
 
-        :param tags: Tag list to search.
-        :type tags:  list[str]
+        Args:
+            tags: A list of tags to search.
+                If the tags list is empty, all posts will be returned.
+            max_results: The maximum number of results to return before ending the iteration.
+                If ``None``, then iteration will continue until the end of the results.
 
-        :param max_results: The maximum number of results to return before ending the iteration. If 'None', then iteration will continue until the end of the results. Defaults to 'None'.
-        :type max_results: int|None
+        Yields:
+            An iterator representing each Post element of the search results.
 
-        :return: Yields a Post Iterator.
-        :rtype:  Iterator[Post]
-        """
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         page_id = 0  # what page of the search results we're on
         results_count = 0  # accumulator of how many results have been returned
 
@@ -223,19 +236,23 @@ class rule34Py():
             page_id += 1
 
     def _parseUrlParams(self, url: str, params: list) -> str:
+        """Parse url parameters.
+
+        Args:
+            url: URL, containing placeholder values.
+            params: A list of parameter values, to substitute into the URL's placeholders.
+
+        Example:
+            .. code-block:: python
+
+                formatted_url = _parseUrlParams(
+                    "domain.com/index.php?v={{VERSION}}",
+                    [["VERSION", "1.10"]]
+                    )
+
+        Returns:
+            The input URL, reformatted to contain the parameters in place of their placeholders.
         """
-        Parse url parameters.
-
-        **This function is only used internally.**
-
-        :return: Url filed with filled in placeholders.
-        :rtype: str
-
-        :Example:
-            self._parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
-        """
-
-        # Usage: _parseUrlParams("domain.com/index.php?v={{VERSION}}", [["VERSION", "1.10"]])
         retURL = url
 
         for g in params:
@@ -246,73 +263,66 @@ class rule34Py():
 
         return retURL
 
-    def random_post(self, tags: list = None):
-        """
-        Get a random post.
+    def random_post(self) -> Post:
+        """Get a random post.
 
-        :param tags: Tag list to search. If none, post will be used regardless
-                    of it tags.
-        :type tags: list[str]
+        This method behaves similarly to the website's Post > Random function.
 
-        :return: Post object.
-        :rtype: Post
-        """
+        Note:
+            This method uses the interactive website and is rate-limited.
 
-        ## Fixed bug: https://github.com/b3yc0d3/rule34Py/issues/2#issuecomment-902728779
-        if tags != None:
+        Returns:
+            A random Post.
+        
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
+        return self.get_post(self.random_post_id())
 
-            search_raw = self.search(tags, limit=1000)
-            if search_raw == []:
-                return []
+    def random_post_id(self) -> int:
+        """Get a random Post ID.
 
-            randnum = random.randint(0, len(search_raw)-1)
+        This method returns the Post ID contained in the 302 redirect the
+        website responds with, when you use the "random post" function.
 
-            while len(search_raw) <= 0:
-                search_raw = self.search(tags)
-            else:
-                return search_raw[randnum]
+        Note:
+            This method uses the interactive website and is rate-limited.
 
-        else:
-            return self.get_post(self._random_post_id())
+        Returns:
+            A random post ID.
 
-    def _random_post_id(self) -> str:
-        """
-        Get a random posts id.
-
-        **This function is only used internally.**
-
-        :return: Random post id
-        :rtype: str
-        """
-
-        res = requests.get(API_URLS.RANDOM_POST.value, headers=__headers__)
-        parsed = urlparse.urlparse(res.url)
-
-        return parse_qs(parsed.query)['id'][0]
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
+        response = self._get(API_URLS.RANDOM_POST.value)
+        response.raise_for_status()
+        parsed = urlparse.urlparse(response.url)
+        return int(parse_qs(parsed.query)['id'][0])
 
     def search(self,
         tags: list[str] = [],
-        page_id: int = None,
+        page_id: int | None = None,
         limit: int = SEARCH_RESULT_MAX,
     ) -> list[Post]:
         """Search for posts.
 
-        :param tags: List of tags.
-        :type tags: list[str]
+        Args:
+            tags: A list of tags to search for.
+            page_id: The search page number to request, or None.
+                If None, search will eventually return all pages.
+            limit: The maximum number of post results to return per page.
+                Defaults to ``SEARCH_RESULT_MAX`` (1000, by Rule34 policy).
 
-        :param page_id: Page number/id.
-        :type page_id: int
+        Returns:
+            A list of Post objects, representing the search results.
 
-        :param limit: Limit for posts returned per page (max. 1000).
-        :type limit: int
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+            ValueError: An invalid ``limit`` value was requested.
 
-        :return: List of Post objects for matching posts.
-        :rtype: list[Post]
-
-        For more information, see:
-
+        References:
             - `rule34.xxx API Documentation <https://rule34.xxx/index.php?page=help&topic=dapi>`_
-        """
+        """  # noqa: DOC502
         if limit < 0 or limit > SEARCH_RESULT_MAX:
             raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
 
@@ -327,7 +337,7 @@ class rule34Py():
             params.append(["PAGE_ID", str(page_id)])
 
         formatted_url = self._parseUrlParams(url, params)
-        response = requests.get(formatted_url, headers=__headers__)
+        response = self._get(formatted_url)
         response.raise_for_status()
 
         # The Rule34 List API endpoint always returns code 200. But the response
@@ -341,14 +351,26 @@ class rule34Py():
             posts.append(Post.from_json(post_json))
         return posts
 
+    def set_base_site_rate_limit(self, enabled: bool):
+        """Enables or disables the base site (rule34.xxx) API rate limiter."""
+        if enabled:
+            self.session.mount(__base_url__, self._base_site_rate_limiter)
+        else:
+            del self.session.adapters[__base_url__]
+
     def tag_map(self) -> dict[str, str]:
         """Retrieve the tag map points.
 
-        This method uses the tagmap static HTML.
-        
-        :return: A mapping of country and district codes to their top tag. 3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.
-        :rtype: dict[str, str]
-        """
+        Note:
+            This method uses the interactive website and is rate-limited.
+
+        Returns:
+            A mapping of country and district codes to their top tag.
+            3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.
+
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         resp = self._get(__base_url__ + "static/tagmap.html")
         resp.raise_for_status()
         return TagMapPage.map_points_from_html(resp.text)
@@ -356,11 +378,18 @@ class rule34Py():
     def tagmap(self) -> list[TopTag]:
         """Retrieve list of top 100 global tags.
 
-        This method is deprecated in favor of the top_tags() method.
+        Warning:
+            This method is deprecated.
 
-        :return: List of top 100 tags, globally.
-        :rtype: list[TopTag]
-        """
+        Warn:
+            This method is deprecated in favor of the top_tags() method.
+
+        Returns:
+            A list of the current top 100 tags, globally.
+
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         warnings.warn(
             "The rule34Py.tagmap() method is scheduled for deprecation in a future release. If you want to retrieve the Global Top-100 tags list, use the rule34Py.top_tags() method. If you want to retrieve the tag map data points, use the rule34Py.tag_map() method (with an underscore.). See `https://github.com/b3yc0d3/rule34Py/tree/master/docs#functions` for more information.",
             DeprecationWarning,
@@ -370,9 +399,12 @@ class rule34Py():
     def top_tags(self) -> list[TopTag]:
         """Retrieve list of top 100 global tags.
 
-        :return: List of top 100 tags, globally.
-        :rtype: list[TopTag]
-        """
+        Returns:
+            A list of the current top 100 tags, globally.
+
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """  # noqa: DOC502
         response = self._get(API_URLS.TOPMAP.value)
         response.raise_for_status()
         return TopTagsPage.top_tags_from_html(response.text)
@@ -381,8 +413,14 @@ class rule34Py():
     def version(self) -> str:
         """Rule34Py version.
 
-        :return: Version of rule34py.
-        :rtype: str
+        Warning:
+            This method is deprecated.
+
+        Warns:
+            This method is deprecated in favor of rule34Py.version.
+
+        Returns:
+            The version string of the rule34Py package.
         """
         warnings.warn(
             "This method is scheduled for deprecation in a future release of rule34Py. Use `rule34Py.version` instead.",

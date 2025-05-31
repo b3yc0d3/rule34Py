@@ -1,5 +1,6 @@
 """This module contains classes for parsing HTML pages from the rule34.xxx site."""
 
+from datetime import datetime
 import json
 import re
 
@@ -7,6 +8,7 @@ from bs4 import BeautifulSoup
 
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
+from rule34Py.pool import Pool, PoolHistoryEvent
 
 
 class ICamePage():
@@ -43,6 +45,73 @@ class ICamePage():
             top_chart.append(ICame(character_name, count))
 
         return top_chart
+
+
+class PoolHistoryPage():
+    """A Rule34 Pool history page.
+    """
+
+    @staticmethod
+    def events_from_html(html: str) -> list[PoolHistoryEvent]:
+        """Parse the history event entries from the page html."""
+        e_doc = BeautifulSoup(html, "html.parser")
+
+        events = []
+        e_events_table = e_doc.find("div", id="content").find("table")
+        for e_row in e_events_table.find("tbody").find_all("tr"):
+            e_data = e_row.find_all("td")
+
+            post_ids = e_data[0].text.split(" ")
+            post_ids = [int(id) for id in post_ids]
+            uname = e_data[1].text
+            date = datetime.fromisoformat(e_data[2].text)
+
+            events.append(PoolHistoryEvent(
+                date = date,
+                updater_uname = uname,
+                post_ids = post_ids,
+            ))
+
+        return events
+
+
+class PoolPage():
+    """A Rule34 post Pool page."""
+
+    RE_PAGE_ID = re.compile(r"id=(\d+)")
+
+    @staticmethod
+    def pool_from_html(html: str) -> Pool:
+        """Generate a Pool object from the page HTML."""
+        e_doc = BeautifulSoup(html, "html.parser")
+        e_content = e_doc.find("div", id="content")
+
+        # The pool html does not explicitly describe the pool ID anywhere, so
+        # extract it implictly from the pool history link href.
+        e_subnavbar = e_doc.find("ul", id="subnavbar")
+        e_history = e_subnavbar.find_all("a")[-1]  # last link on the bar
+        assert e_history.text == "History"  # check for safety
+        id_match = re.search(r"id=(\d+)", e_history["href"])
+        pool_id = int(id_match.group(1))
+
+        e_title = e_content.find("h4")
+        name = e_title.text.removeprefix("Pool: ")
+
+        description = e_title.find_next_sibling("div").text
+
+        pool = Pool(
+            pool_id = pool_id,
+            name = name,
+            description = description,
+        )
+
+        e_pool = e_content.find("div", id="pool-show")
+        for e_post in e_pool.find_all("span", class_="thumb"):
+            post_id = int(e_post["id"].removeprefix("p"))
+            pool.posts.append(post_id)
+
+        return pool
+
 
 
 class TagMapPage():

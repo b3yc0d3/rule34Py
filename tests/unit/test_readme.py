@@ -49,11 +49,6 @@ def test_search(rule34):
 def test_get_pool(rule34):
     """The client can get the example pool by id."""
     pool = rule34.get_pool(EXAMPLE_POOL)
-    assert isinstance(pool, list)
-    assert len(pool) > 0  # there should be posts here
-
-def test_random_post(rule34):
-    """The client can get a random post tagged 'neko.'"""
-    # This will actually be the same post, as the request passes through the mock server.
-    post = rule34.random_post(["neko"])
-    assert isinstance(post, Post)  # just check that it is a post
+    assert isinstance(pool, rule34Py.Pool)
+    assert pool.pool_id == 28
+    assert len(pool.posts) > 0  # there should be posts here

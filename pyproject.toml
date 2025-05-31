@@ -1,12 +1,12 @@
 [project]
 name = "rule34Py"
-description = "API wraper for rule34.xxx"
+description = "API wrapper for rule34.xxx"
 version = "2.1.0"
 license = {file = "LICENSE"}
 readme = "README.md"
 keywords = [ "rule34.xxx", "adult", "nsfw", "rule34-pi", "api-client" ]
 authors = [
-    { name = "MiningXL", email = "miningxl@gmail.com" },
+	{ name = "MiningXL", email = "miningxl@gmail.com" },
 	{ name = "b3yc0d3", email = "b3yc0d3@gmail.com" },
 	{ name = "Tal A. Baskin", email = "talbaskin.business@gmail.com" },
 	{ name = "ripariancommit", email = "ripariancommit@protonmail.com" }
@@ -16,9 +16,10 @@ maintainers = [
 	{ name = "b3yc0d3", email = "b3yc0d3@gmail.com" }
 ]
 dependencies = [
-    "beautifulsoup4 >= 4.9.3",
-    "requests >= 2.27.1",
-    "lxml >= 4.6.4"
+	"requests-ratelimiter >= 0.7.0",
+	"beautifulsoup4 >= 4.9.3",
+	"lxml >= 4.6.4",
+	"requests >= 2.27.1",
 ]
 classifiers = [
 	"Development Status :: 4 - Beta",
@@ -44,3 +45,9 @@ Documentation = "https://github.com/b3yc0d3/rule34Py/tree/master/docs"
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+test = [
+	"pytest >= 8.3.2",
+	"responses >= 0.25.3",
+]

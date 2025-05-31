@@ -1,0 +1,185 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to clear Rule34 captcha defenses &mdash; rule34Py 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20623aea"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer Documentation" href="../dev/index.html" />
+    <link rel="prev" title="User Guides" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rule34Py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User Guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to clear Rule34 captcha defenses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clearing-the-defenses">Clearing the defenses</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Developer Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rule34Py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User Guides</a></li>
+      <li class="breadcrumb-item active">How to clear Rule34 captcha defenses</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/captcha-clearance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-clear-rule34-captcha-defenses">
+<h1>How to clear Rule34 captcha defenses<a class="headerlink" href="#how-to-clear-rule34-captcha-defenses" title="Link to this heading"></a></h1>
+<p>The <a class="reference external" href="https://rule34.xxx/">rule34.xxx</a> interactive (PHP) site occasionally enables Cloudflare captcha defenses, to limit non-human access to the interactive site.
+As of writing (2025-05-17), captcha defenses are enabled.</p>
+<p>The <a class="reference external" href="https://rule34.xxx/index.php?page=help&amp;topic=dapi">api.rule34.xxx</a> REST API endpoint does not have captcha defenses.
+Workflows in the rule34Py module prefer to use the REST API endpoint wherever possible.
+But not all features of the interactive site are supported by the REST endpoint, and so the module defaults to parsing the interactive site’s HTML.</p>
+<p>In order to enable these interactive workflows, while providing at least some respect to the site’s captcha defense, rule34Py allows the user to: complete the captcha defense manually in their browser, and then give their captcha clearance to the python module to use in subsequent interactions.</p>
+<p>Note that the module will rate-limit requests to the interactive site to 1 request per second, as a further courtesy to the site owners.
+We also recommend avoiding these workflows entirely in your application design, out of respect.</p>
+<p>Reference the <a class="reference external" href="../../api/rule34Py/rule34.html#rule34Py.rule34.rule34Py">rule34Py.rule34Py</a> class documentation for an indication of which workflows have these limits.</p>
+<section id="clearing-the-defenses">
+<h2>Clearing the defenses<a class="headerlink" href="#clearing-the-defenses" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Use any reasonable browser with javascript enabled to open any URL to the <a class="reference external" href="https://rule34.xxx">https://rule34.xxx</a> site.</p></li>
+<li><p>Open your browser’s Network Inspector feature (or equivalent).</p>
+<blockquote>
+<div><div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>F12 in Firefox and Chrome</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>With the inspector open and capturing transactions, complete the captcha test.</p></li>
+<li><p>Use the network inspector to find the document transaction where the rule34.xxx homepage (or really any page) is returned to you. In the transaction’s <code class="docutils literal notranslate"><span class="pre">Headers</span> <span class="pre">&gt;</span> <span class="pre">Request</span> <span class="pre">Headers</span> <span class="pre">&gt;</span> <span class="pre">Cookie</span></code> key. It should contain <code class="docutils literal notranslate"><span class="pre">cf_clearance=...</span></code> in its value. Copy and store the total value of the cf_clearance (it should be ~450 characters).</p>
+<blockquote>
+<div><img alt="../_images/cf_clearance_example.webp" src="../_images/cf_clearance_example.webp" />
+</div></blockquote>
+</li>
+<li><p>Use the network inspector to find your browser’s <code class="docutils literal notranslate"><span class="pre">Headers</span> <span class="pre">&gt;</span> <span class="pre">Request</span> <span class="pre">Headers</span> <span class="pre">&gt;</span> <span class="pre">User-Agent</span></code> value. Copy and store the total value of this header.</p>
+<blockquote>
+<div><img alt="../_images/user-agent_example.webp" src="../_images/user-agent_example.webp" />
+</div></blockquote>
+</li>
+<li><p>Issue your clearance and user-agent to the rule34Py client class using one of the following methods.</p>
+<blockquote>
+<div><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It is necessary to capture and set both your <code class="docutils literal notranslate"><span class="pre">user_agent</span></code> and <code class="docutils literal notranslate"><span class="pre">cf_clearance</span></code> value. When Cloudflare issues you a cf_clearance, it is only valid for the User-Agent (of your browser) that completed the captcha test.</p>
+</div>
+<ol class="loweralpha simple">
+<li><p>In your python module, set the value of <code class="docutils literal notranslate"><span class="pre">rule34Py.cf_clearance</span></code> to your token value.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rule34Py</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">r34</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">r34</span><span class="o">.</span><span class="n">rule34Py</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">cf_clearance</span> <span class="o">=</span>  <span class="c1"># ${token_value}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span>  <span class="c1"># ${user_agent}</span>
+
+<span class="c1"># Some code that uses the rule34Py client.</span>
+</pre></div>
+</div>
+<ol class="loweralpha simple" start="2">
+<li><p>Set your execution environment’s <code class="docutils literal notranslate"><span class="pre">R34_CAPTCHA_CLEARANCE</span></code> variable to your token value.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">R34_CAPTCHA_CLEARANCE</span><span class="o">=</span><span class="si">${</span><span class="nv">token_value</span><span class="si">}</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">R34_USER_AGENT</span><span class="o">=</span><span class="si">${</span><span class="nv">user_agent</span><span class="si">}</span>
+<span class="c1"># some script or commands that use rule34Py</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Consider that the lifetime of your captcha clearance is the same as in the browser. Do not rely on this feature for multi-day operations or code that you are sharing with others.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="User Guides" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dev/index.html" class="btn btn-neutral float-right" title="Developer Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, b3yc0d3.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

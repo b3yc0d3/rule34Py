@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developer Guide &mdash; rule34Py 2.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20623aea"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Developer Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rule34Py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tl-dr">tl;dr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project-layout">Project Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-project-from-source">Building the project from source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-project-test-suite">Running the project test suite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-project-documentation">Building the project documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integrating-this-project">Integrating this project</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html">LICENSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#notice">NOTICE</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rule34Py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developer Documentation</a></li>
+      <li class="breadcrumb-item active">Developer Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/developer-guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="developer-guide">
+<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Link to this heading"></a></h1>
+<section id="tl-dr">
+<h2>tl;dr<a class="headerlink" href="#tl-dr" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span><span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span><span class="w"> </span>.<span class="o">[</span>test<span class="o">]</span>
+make<span class="w"> </span>all<span class="w">    </span><span class="c1"># build wheel</span>
+make<span class="w"> </span>check<span class="w">  </span><span class="c1"># run unit tests</span>
+make<span class="w"> </span>dist<span class="w">   </span><span class="c1"># build sdist</span>
+make<span class="w"> </span>html<span class="w">   </span><span class="c1"># build documentation</span>
+make<span class="w"> </span>lint<span class="w">   </span><span class="c1"># run project linter</span>
+</pre></div>
+</div>
+</section>
+<section id="project-layout">
+<h2>Project Layout<a class="headerlink" href="#project-layout" title="Link to this heading"></a></h2>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/</span></code> contains GitHub specific workflows, actions, and templates.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs/</span></code> contains project documentation, including the source for the sphinx-generated documentation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rule34Py/</span></code> contains the source code for the <code class="docutils literal notranslate"><span class="pre">rule34Py</span></code> package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/</span></code> contains the project test suite.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/unit/</span></code> contains the project unit-tests, which can be run without building or installing the project.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="building-the-project-from-source">
+<h2>Building the project from source<a class="headerlink" href="#building-the-project-from-source" title="Link to this heading"></a></h2>
+<p>This project can be built directly from source using a few host tools.
+Supported development environments include:</p>
+<ul class="simple">
+<li><p>Ubuntu 24.04</p></li>
+<li><p>Windows</p></li>
+</ul>
+<p>The following instructions are written on the assumption that you are building in a Linux environment.</p>
+<ol class="arabic">
+<li><p>Start by cloning the repository with <code class="docutils literal notranslate"><span class="pre">git</span></code>.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/b3yc0d3/rule34Py.git
+<span class="nb">cd</span><span class="w"> </span>rule34Py
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>(Optional. Recommended.) Setup a python virtual environment.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;/.venv&quot;</span><span class="w"> </span>&gt;&gt;.git/info/exclude<span class="w">  </span><span class="c1"># excludes your venv from git tracking</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Install project python dependencies from the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file. Use <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">Make</span></code> to build the project. The <code class="docutils literal notranslate"><span class="pre">all</span></code> make target (the default) builds the project’s wheels.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+make<span class="w"> </span>all
+</pre></div>
+</div>
+<p>Build output will be placed in the <code class="docutils literal notranslate"><span class="pre">:build/</span></code> directory in your workspace.</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Other <code class="docutils literal notranslate"><span class="pre">make</span></code> targets are supported to <code class="docutils literal notranslate"><span class="pre">clean</span></code> the project and build other artifacts.
+Generally, the project <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> honors the <a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html">GNU Standard Targets</a> specification.</p>
+</section>
+<section id="running-the-project-test-suite">
+<h2>Running the project test suite<a class="headerlink" href="#running-the-project-test-suite" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Setup your build environment as in the “Building the project from source” section.</p></li>
+<li><p>Install the optional test dependencies and invoke their <code class="docutils literal notranslate"><span class="pre">make</span></code> target.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>test<span class="o">]</span>
+make<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>For more information, reference the <code class="docutils literal notranslate"><span class="pre">:tests/README.md</span></code> file.</p>
+</section>
+<section id="building-the-project-documentation">
+<h2>Building the project documentation<a class="headerlink" href="#building-the-project-documentation" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Setup your build environment as in the “Building the project from source” section.</p></li>
+<li><p>Install the optional docs dependencies and invoke their <code class="docutils literal notranslate"><span class="pre">make</span></code> target.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span>
+make<span class="w"> </span>html
+</pre></div>
+</div>
+<p>Build output will be placed in the <code class="docutils literal notranslate"><span class="pre">:build/html/</span></code> directory.</p>
+</div></blockquote>
+</li>
+<li><p>(Optional.) Host the build output locally to test changes.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>build/html
+python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">8080</span>
+</pre></div>
+</div>
+<p>Python will host the docs site at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>.</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="integrating-this-project">
+<h2>Integrating this project<a class="headerlink" href="#integrating-this-project" title="Link to this heading"></a></h2>
+<p>This project is <a class="reference external" href="./license.html#license">licensed</a> under the GPLv3 license.
+Ensure that your project’s licensing strategy is compatible with the GPL.
+For more information, reference the GNU reference guide for GPLv3 <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html">here</a>.</p>
+<p>All direct dependencies of this project are either GPL licensed, or are licensed more permissively.
+But testing code does call the <code class="docutils literal notranslate"><span class="pre">reponses</span></code> module, which is licensed under the Apache 2.0 license.
+Reference the <a class="reference external" href="./license.html#notice">:NOTICE.md</a> file for more information.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Developer Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, b3yc0d3.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

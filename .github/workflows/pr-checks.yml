@@ -1,0 +1,44 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build the project
+        uses: ./.github/actions/build-project
+        with:
+          latest_python: true  # always use the latest python in PR checks
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.run_id }}-${{ github.run_number }}
+          path: ./build
+          retention-days: 14
+
+      - name: Lint the project
+        shell: bash
+        run: |
+          python -m pip install .[dev]
+          make lint
+
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build the project
+        uses: ./.github/actions/build-project
+        with:
+          latest_python: true  # always use the latest python in PR checks

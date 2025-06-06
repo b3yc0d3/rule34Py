@@ -1,6 +1,8 @@
+# NOTICE
+
 The following third-party software is used in this project:
 
-# Responses
+## Responses
 * Licensed under the Apache License, Version 2.0
 * Copyright (c) David Cramer
 

@@ -1,7 +1,7 @@
 # rule34Py - Python api wrapper for rule34.xxx
 # 
 # Copyright (C) 2022 Tal A. Baskin <talbaskin.business@gmail.com>
-# Copyright (C) 2023-2024 b3yc0d3 <b3yc0d3@gmail.com>
+# Copyright (C) 2023-2025 b3yc0d3 <b3yc0d3@gmail.com>
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

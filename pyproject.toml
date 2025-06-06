@@ -40,7 +40,7 @@ packages = [ "rule34Py" ]
 [project.urls]
 Issues = "https://github.com/b3yc0d3/rule34Py/issues"
 Repository = "https://github.com/b3yc0d3/rule34Py"
-Documentation = "https://github.com/b3yc0d3/rule34Py/tree/master/docs"
+Documentation = "https://b3yc0d3.github.io/rule34Py/"
 
 [build-system]
 requires = ["setuptools", "wheel"]

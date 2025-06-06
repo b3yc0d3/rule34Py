@@ -17,7 +17,7 @@
 """Define module-scoped, hidden constants and variables."""
 
 
-__version__tuple__ = ("2", "1", "0")
+__version__tuple__ = ("3", "0", "0")
 __author__ = ("b3yc0d3")
 __email__ = ("b3yc0d3@gmail.com")
 

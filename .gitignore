@@ -1,5 +1,5 @@
 publish.sh
-debug.json
+debug*
 __pycache__
 setup.py
 LICENSE.txt

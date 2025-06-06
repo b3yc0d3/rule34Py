@@ -4,7 +4,7 @@
 PROJECT = rule34py
 VERSION = $(shell git describe --tags)
 
-TWINE = twine upload dist/*
+TWINE = twine
 PYTHON3 ?= python3
 PYTHON_BUILD = $(PYTHON3) -m build
 RUFF = $(PYTHON3) -m ruff
@@ -34,6 +34,7 @@ all : html
 
 
 check :
+	$(TWINE) check dist/*
 	PYTHONPATH=$(srcdir)/.. $(PYTEST) tests/unit/
 .PHONY : check
 
@@ -46,11 +47,11 @@ clean : mostlyclean
 
 
 dist :
-	$(PYTHON_BUILD) --sdist --outdir $(builddir)
+	$(PYTHON_BUILD) --sdist --wheel --outdir $(builddir)
 .PHONY : dist
 
-publish : clean dist
-	$(TWINE)
+publish : clean dist check
+	$(TWINE) upload dist/*
 .PHONY : publish
 
 

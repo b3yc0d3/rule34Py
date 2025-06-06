@@ -1,7 +1,7 @@
 [project]
 name = "rule34Py"
 description = "API wrapper for rule34.xxx"
-version = "2.1.0"
+version = "3.0.0"
 license = {file = "LICENSE"}
 readme = "README.md"
 keywords = [ "rule34.xxx", "adult", "nsfw", "rule34-pi", "api-client" ]

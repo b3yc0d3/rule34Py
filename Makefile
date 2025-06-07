@@ -47,7 +47,7 @@ clean : mostlyclean
 
 
 dist :
-	$(PYTHON_BUILD) --sdist --wheel --outdir $(builddir)
+	$(PYTHON_BUILD) --sdist --outdir $(builddir)
 .PHONY : dist
 
 publish : clean dist check

@@ -47,6 +47,7 @@ build-backend = "setuptools.build_meta"
 [project.optional-dependencies]
 dev = [
 	"ruff",
+	"twine",
 ]
 test = [
 	"pytest",

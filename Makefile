@@ -29,7 +29,7 @@ htmldir ?= $(docdir)/html
 #################
 
 all :
-	$(PYTHON3) -m build --wheel --outdir $(builddir) --verbose
+	$(PYTHON_BUILD) --wheel --outdir $(builddir) --verbose
 .PHONY : all
 
 

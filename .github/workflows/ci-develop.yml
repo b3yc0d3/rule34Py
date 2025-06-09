@@ -1,0 +1,36 @@
+name: CI Testing
+# This pipeline builds and tests the project.
+# Commits that pass this workflow can be assumed to be functionally correct,
+# per the current state of the mock responses registry.
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.x', '3.9']
+        os: [ubuntu-latest, windows-latest]
+
+    name: Build ${{ matrix.os }}-py${{ matrix.python-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build the project
+        uses: ./.github/actions/build-project
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run unit tests
+        shell: bash
+        run: |
+          python -m pip install .[test]
+          make check

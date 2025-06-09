@@ -8,7 +8,12 @@
 
 from datetime import datetime
 from pathlib import Path
-import tomllib as toml
+import sys
+
+if sys.version_info < (3, 11):
+    import tomli as toml
+else:
+    import tomllib as toml
 
 PROJECT_ROOT = Path(__file__).parent.resolve() / ".."
 

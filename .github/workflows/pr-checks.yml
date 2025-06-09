@@ -1,44 +1,45 @@
 name: PR Checks
+# This workflow runs on PRs opened on the repo's 'develop' branch.
+# It's purpose is to check that repository policies around PR and source quality
+# and syntax are honored by developers. Commits which pass this workflow are
+# quality enough that they can be merged.
+# This workflow does not verify code correctness or run tests.
 
 on:
   pull_request:
     branches:
-      - "**"
+      - develop
+    types: [opened, edited, synchronize, reopened]
 
 jobs:
-  build-linux:
+  pr-quality:
+    name: PR Quality Checks
+    # Validates the quality of the PR and its constituent commits, against
+    # the policies of the upstream repo.
     runs-on: ubuntu-latest
+    steps:
+      - name: Check PR target branch
+        run: |
+          echo "PR is targeting branch: ${{ github.event.pull_request.base.ref }}"
+          if [ "${{ github.event.pull_request.base.ref }}" != "develop" ]; then
+            echo "❌ Pull request must target 'develop' branch!"
+            exit 1
+          fi
 
+  source-quality:
+    runs-on: ubuntu-latest
+    name: Source Quality Checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build the project
-        uses: ./.github/actions/build-project
+      - name: Set up python
+        uses: actions/setup-python@v5
         with:
-          latest_python: true  # always use the latest python in PR checks
+          python-version: '3.x'
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ github.run_id }}-${{ github.run_number }}
-          path: ./build
-          retention-days: 14
-
-      - name: Lint the project
+      - name: Lint sources
         shell: bash
         run: |
           python -m pip install .[dev]
           make lint
-
-
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build the project
-        uses: ./.github/actions/build-project
-        with:
-          latest_python: true  # always use the latest python in PR checks

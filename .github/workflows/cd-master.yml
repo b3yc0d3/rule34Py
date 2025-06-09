@@ -1,0 +1,45 @@
+name: Continuous Delivery
+# This workflow performs post-push actions on the 'master' branch.
+# It should build the final version of the branch artifacts, that might be
+# released to PyPi or GH. And it should build and deploy the GH Pages artifacts.
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build the project
+        uses: ./.github/actions/build-project
+        with:
+          python-version: '3.x'
+
+  gh-pages:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./build
+          pattern: build.*.Linux-py3.x
+          merge-multiple: true
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/html

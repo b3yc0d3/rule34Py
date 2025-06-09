@@ -1,7 +1,7 @@
 # rule34Py - Python api wrapper for rule34.xxx
 #
 # Copyright (C) 2022 MiningXL <miningxl@gmail.com>
-# Copyright (C) 2022-2024 b3yc0d3 <b3yc0d3@gmail.com>
+# Copyright (C) 2022-2025 b3yc0d3 <b3yc0d3@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 """A module containing the top-level Rule34 API client class."""
 
 from collections.abc import Iterator
+from typing import Union
 from urllib.parse import parse_qs
 import os
 import urllib.parse as urlparse
@@ -66,7 +67,7 @@ class rule34Py():
     _base_site_rate_limiter = LimiterAdapter(per_second=1)
     #: Client captcha clearance token. Defaults to either the value of the ``R34_CAPTCHA_CLEARANCE`` environment variable; or None, if the environment variable is not asserted.
     #: Can be overridden at runtime by the user.
-    captcha_clearance: str | None = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
+    captcha_clearance: Union[str, None] = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
     #: The ``requests.Session`` object used when the client makes HTML requests.
     session: requests.Session = None
     #: The ``User-Agent`` HTML header value used when the client makes HTML requests.
@@ -157,7 +158,7 @@ class rule34Py():
         response.raise_for_status()
         return PoolPage.pool_from_html(response.text)
 
-    def get_post(self, post_id: int) -> Post | None:
+    def get_post(self, post_id: int) -> Union[Post, None]:
         """Get a Post by its ID.
 
         Args:
@@ -202,7 +203,7 @@ class rule34Py():
     def iter_search(
         self,
         tags: list[str] = [],
-        max_results: (int | None) = None,
+        max_results: Union[int, None] = None,
     ) -> Iterator[Post]:
         """Iterate through Post search results, one element at a time.
 
@@ -301,7 +302,7 @@ class rule34Py():
 
     def search(self,
         tags: list[str] = [],
-        page_id: int | None = None,
+        page_id: Union[int, None] = None,
         limit: int = SEARCH_RESULT_MAX,
     ) -> list[Post]:
         """Search for posts.

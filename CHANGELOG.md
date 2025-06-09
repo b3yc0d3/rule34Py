@@ -6,25 +6,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [3.0.0] - 2025-06-09
 
 ### Added
 
 - Added captcha-compliance capabilities. You can now pass the client your captcha clearance token by completing the captcha in your browser, opening the response header, and writing your `cf_clearance` token into the client's `rule34Py.captcha_clearance` attribute and setting the client's `user_agent` attribute to match your browser.
 	- Alternatively, set your execution environment's `R34_CAPTCHA_CLEARANCE` and `R34_USER_AGENT` variables to the appropriate values. The client will read form them during initialization.
+	- See [this user guide](https://b3yc0d3.github.io/rule34Py/guides/captcha-clearance.html) for more information. (#24)
 - Added a rate limiter for requests to the rule34.xxx base site (the PHP endpoint). By default, the client will now limit API calls that use this endpoint to 1 per second.
 	- This behavior can be disabled by setting `rule34Py.set_base_site_rate_limit(False)`.
 	- There is no rate limit on the api.rule34.xxx endpoint, which is assumed to handle rate-limiting on the server-side.
 	- This new feature requires the `requests-ratelimiter` module.
+- Added project documentation via sphinx docs. See: https://b3yc0d3.github.io/rule34Py/. It can be built by calling `make html`. (#24)
 
 ### Changed
 
 - Changed the behavior of the `rule34Py.random_post()` method to function more like the website. The method now accepts no `tag` parameters, and returns a random post ID from all posts on the site. Users who want to use the old behavior of returning a random post from the first 1000 tag-search results are directed to do something like `random.choice(rule34Py.search([tags...]))`.
 - Changed the `rule34Py.get_pool()` method to return a `Pool` object containing more complete information about a Pool.
 	- The Pool's post ids can be accessed via the `Pool.posts` attribute.
+- Moved the `:examples/` python recipes into tutorial documentation in the new sphinx documentation (`:docs/tutorials`). (#24)
 
 ### Deprecated
+
+- Deprecated support for python runtimes 3.5 to 3.8, as they are EOL. The minimum supported python version is now 3.9. (#27)
+
 ### Removed
+
+- Removed the deprecated `legacy.setup.py` file. Users are instructed to upgrade their setuptools installation and use `pyproject.toml` to build the project.
+- Removed the `debug.py` file. Users are instructed to use the `make check` Makefile target to run the project's test suite. (#27)
+
 ### Fixed
 ### Security
 

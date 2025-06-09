@@ -1,7 +1,7 @@
 [project]
 name = "rule34Py"
 description = "API wrapper for rule34.xxx"
-version = "2.1.0"
+version = "3.0.0"
 license = {file = "LICENSE"}
 readme = "README.md"
 keywords = [ "rule34.xxx", "adult", "nsfw", "rule34-pi", "api-client" ]
@@ -11,25 +11,23 @@ authors = [
 	{ name = "Tal A. Baskin", email = "talbaskin.business@gmail.com" },
 	{ name = "ripariancommit", email = "ripariancommit@protonmail.com" }
 ]
-requires-python = ">=3.5"
+requires-python = ">=3.9,<4.0"
 maintainers = [
 	{ name = "b3yc0d3", email = "b3yc0d3@gmail.com" }
 ]
 dependencies = [
-	"requests-ratelimiter >= 0.7.0",
-	"beautifulsoup4 >= 4.9.3",
-	"lxml >= 4.6.4",
-	"requests >= 2.27.1",
+	"requests-ratelimiter",
+	"beautifulsoup4",
+	"lxml",
+	"requests",
 ]
 classifiers = [
 	"Development Status :: 4 - Beta",
-	"Programming Language :: Python :: 3.5",
-	"Programming Language :: Python :: 3.6",
-	"Programming Language :: Python :: 3.7",
-	"Programming Language :: Python :: 3.8",
 	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
 	"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 	"Operating System :: OS Independent"
 ]
@@ -40,7 +38,7 @@ packages = [ "rule34Py" ]
 [project.urls]
 Issues = "https://github.com/b3yc0d3/rule34Py/issues"
 Repository = "https://github.com/b3yc0d3/rule34Py"
-Documentation = "https://github.com/b3yc0d3/rule34Py/tree/master/docs"
+Documentation = "https://b3yc0d3.github.io/rule34Py/"
 
 [build-system]
 requires = ["setuptools", "wheel"]
@@ -48,16 +46,18 @@ build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]
 dev = [
-	"ruff >= 0.11.10",
+	"ruff",
+	"twine",
 ]
 test = [
-	"pytest >= 8.3.2",
-	"responses >= 0.25.3",
+	"pytest",
+	"responses",
 ]
 docs = [
-	"sphinx >= 8.2.3",
-	"sphinx-mdinclude >= 0.6.2",
-	"sphinx-rtd-theme >= 3.0.2",
+	"sphinx",
+	"sphinx-mdinclude",
+	"sphinx-rtd-theme",
+	"tomli; python_version < \"3.11\"",
 ]
 
 [tool.ruff.lint]

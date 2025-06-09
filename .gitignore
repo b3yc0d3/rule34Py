@@ -1,6 +1,10 @@
 publish.sh
-debug.json
+debug*
 __pycache__
+setup.py
+LICENSE.txt
+stats.py
+rule34Py_old.py
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
@@ -155,3 +159,5 @@ Thumbs.db
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+**/.ruff_cache

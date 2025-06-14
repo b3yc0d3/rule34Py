@@ -18,8 +18,8 @@
 
 
 __version__tuple__ = ("3", "0", "0")
-__author__ = ("b3yc0d3")
-__email__ = ("b3yc0d3@gmail.com")
+__author__ = "b3yc0d3"
+__email__ = "b3yc0d3@gmail.com"
 
 __version__ = ".".join(__version__tuple__) # xx.xx.xx
 

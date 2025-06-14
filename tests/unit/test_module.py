@@ -5,7 +5,10 @@ import re
 import rule34Py
 
 
-def test_version():
-    """The module should contain a version triplet in a `version` variable."""
+def test__module__metadata():
+    """The module should contain author name, email, and version dunders."""
     RE_VERSION = re.compile(r"^\d+\.\d+\.\d+$")
-    assert RE_VERSION.match(rule34Py.version)
+
+    assert rule34Py.__author__ == "b3yc0d3"
+    assert rule34Py.__email__ == "b3yc0d3@gmail.com"
+    assert RE_VERSION.match(rule34Py.__version__)

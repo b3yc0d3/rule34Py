@@ -4,12 +4,12 @@ import re
 
 import pytest
 
+from rule34Py import __version__ as R34_VERSION
 from rule34Py import Post, Pool
 from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
-from rule34Py.__vars__ import __version__ as R34_VERSION
 
 
 TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.

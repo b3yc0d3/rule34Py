@@ -14,7 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""Python api wrapper for rule34.xxx."""
+"""Python API wrapper for rule34.xxx."""
+
+
+__version__tuple__ = ("3", "0", "0")
+__author__ = ("b3yc0d3")
+__email__ = ("b3yc0d3@gmail.com")
+
+__version__ = ".".join(__version__tuple__) # xx.xx.xx
 
 
 from rule34Py.rule34 import rule34Py
@@ -22,5 +29,3 @@ from rule34Py.icame import ICame
 from rule34Py.post import Post
 from rule34Py.toptag import TopTag
 from rule34Py.pool import Pool, PoolHistoryEvent
-
-from rule34Py.__vars__ import __version__ as version

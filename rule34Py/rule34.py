@@ -29,12 +29,13 @@ from bs4 import BeautifulSoup
 from requests_ratelimiter import LimiterAdapter
 import requests
 
-from rule34Py.__vars__ import (
+from rule34Py import __version__
+
+from rule34Py.api_urls import (
     __api_url__,
     __base_url__,
-    __version__,
+    API_URLS,
 )
-from rule34Py.api_urls import API_URLS
 from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage
 from rule34Py.pool import Pool
 from rule34Py.post import Post

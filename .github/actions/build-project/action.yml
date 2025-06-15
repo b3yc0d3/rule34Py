@@ -17,11 +17,9 @@ runs:
     - name: Install host python dependencies
       shell: bash
       run: |
-        python -m pip install --upgrade setuptools build
-        python -m pip install . .[dev] .[docs] .[test]
-        pip freeze \
-          --exclude rule34Py \
-          >build/requirements.txt
+        pipx install poetry
+        poetry self update
+        poetry install
 
     - name: Build wheel and dist
       shell: bash

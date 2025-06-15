@@ -8,7 +8,7 @@ tl;dr
 
 .. code-block:: bash
 
-    pip install . .[docs] .[dev] .[test]
+    poetry install
     make all    # build wheel
     make check  # run unit tests
     make dist   # build sdist
@@ -34,6 +34,12 @@ Building the project from source
 ================================
 
 This project can be built directly from source using a few host tools.
+At a minimum you will require:
+
+- `git <https://git-scm.com/downloads>`_
+- `GNU Make <https://www.gnu.org/software/make/>`_
+- `poetry <https://python-poetry.org/>`_
+
 Supported development environments include:
 
 - Ubuntu 24.04
@@ -48,27 +54,14 @@ The following instructions are written on the assumption that you are building i
         git clone https://github.com/b3yc0d3/rule34Py.git
         cd rule34Py
 
-#. (Optional. Recommended.) Setup a python virtual environment.
+#. Use poetry to install project python dependencies from the ``pyproject.toml`` file. Use ``GNU Make`` to build the project. The ``all`` make target (the default) builds the project's wheels.
 
     .. code-block:: bash
 
-        python -m venv .venv
-        echo "/.venv" >>.git/info/exclude  # excludes your venv from git tracking
-        source .venv/bin/activate
-
-#. Install project python dependencies from the ``pyproject.toml`` file. Use ``GNU Make`` to build the project. The ``all`` make target (the default) builds the project's wheels.
-
-    .. code-block:: bash
-
-        pip install . .[dev]
+        poetry install
         make all
 
     Build output will be placed in the ``:build/`` directory in your workspace.
-
-.. Note::
-
-    If you are using a very old python environment, your installed version of setuptools and python may not be aware of how to process pyproject.toml files.
-    If this seems to be the case, try upgrading your build tools by calling ``python -m pip install --upgrade setuptools build``.
 
 Other ``make`` targets are supported to ``clean`` the project and build other artifacts.
 Generally, the project ``Makefile`` honors the `GNU Standard Targets <https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html>`_ specification.
@@ -79,12 +72,19 @@ Running the project test suite
 
 #. Setup your build environment as in the "Building the project from source" section.
 
-#. Install the optional test dependencies and invoke their ``make`` target.
+#. Use poetry to run the unit tests, by invoking the ``check`` target.
 
     .. code-block:: bash
 
-        pip install .[test]
         make test
+
+.. tip::
+
+    You can invoke a single test by passing appropriate arguments to the ``PYTEST_ARGS`` variable during invocation. eg.
+
+    .. code-block:: bash
+
+        PYTEST_ARGS="-k package" make check
 
 For more information, reference the ``:tests/README.md`` file.
 
@@ -94,11 +94,10 @@ Building the project documentation
 
 #. Setup your build environment as in the "Building the project from source" section.
 
-#. Install the optional docs dependencies and invoke their ``make`` target.
+#. Use poetry to build the project documentation by invoking the ``html`` target.
 
     .. code-block:: bash
 
-        pip install .[docs]
         make html
 
     Build output will be placed in the ``:build/html/`` directory.
@@ -121,5 +120,5 @@ Ensure that your project's licensing strategy is compatible with the GPL.
 For more information, reference the GNU reference guide for GPLv3 `here <https://www.gnu.org/licenses/gpl-3.0.en.html>`_.
 
 All direct dependencies of this project are either GPL licensed, or are licensed more permissively.
-But testing code does call the ``reponses`` module, which is licensed under the Apache 2.0 license.
+But testing code does call the ``responses`` module, which is licensed under the Apache 2.0 license.
 Reference the `:NOTICE.md <./license.html#notice>`_ file for more information.

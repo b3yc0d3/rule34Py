@@ -3,12 +3,14 @@ PROJECT = $(shell $(PYTHON3) scripts/read_pyproject.py project/name | tr 'A-Z' '
 VERSION = $(shell $(PYTHON3) scripts/read_pyproject.py project/version)
 
 # Binaries
-PYTHON3 ?= python3
-PYTEST = $(PYTHON3) -m pytest
-PYTHON_BUILD = $(PYTHON3) -m build
-RUFF = $(PYTHON3) -m ruff
-SPHINX = $(PYTHON3) -m sphinx
-TWINE = $(PYTHON3) -m twine
+POETRY ?= poetry $(POETRY_ARGS)
+POETRY_ARGS ?=
+PYTHON3 ?= $(POETRY) run python3
+
+PYTEST = $(POETRY) run pytest $(PYTEST_ARGS)
+PYTEST_ARGS ?=
+RUFF = $(POETRY) run ruff
+SPHINX_BUILD = $(POETRY) run sphinx-build
 
 # Source files
 builddir ?= build
@@ -38,11 +40,11 @@ htmldir ?= $(docdir)/html
 ################
 
 $(wheels) &: $(dist_files)
-	$(PYTHON_BUILD) --outdir $(builddir) --wheel
+	$(POETRY) build --output $(builddir) --format=wheel
 
 
 $(sdist) : $(dist_files)
-	$(PYTHON_BUILD) --outdir $(builddir) --sdist
+	$(POETRY) --output $(builddir) --format=sdist
 
 
 # PHONY TARGETS #
@@ -56,7 +58,7 @@ all : $(wheels)
 
 # Run pre-installation tests on the built artifacts.
 check : all
-	PYTHONPATH=$(builddir)/lib $(PYTEST) tests/unit/
+	PYTHONPATH=. $(PYTEST) tests/unit/
 .PHONY : check
 
 
@@ -75,19 +77,19 @@ dist : $(sdist)
 
 # Check and publish the python package index artifacts.
 publish : $(sdist) $(wheels)
-	$(TWINE) check $(^)
-	$(TWINE) upload $(^)
+	$(POETRY) publish --dist-dir=$(builddir)
 .PHONY : publish
 
 
 # Build the project's HTML documentation.
 html :
-	$(SPHINX) --builder html docs $(builddir)/html
+	$(SPHINX_BUILD) --builder html docs $(builddir)/html
 .PHONY : html
 
 
 # Lint the project source for quality.
 lint :
+	$(POETRY) check --strict
 	$(RUFF) check $(srcdir)
 .PHONY : lint
 

@@ -21,6 +21,7 @@
 from collections.abc import Iterator
 from typing import Union
 from urllib.parse import parse_qs
+import importlib.metadata
 import os
 import urllib.parse as urlparse
 import warnings
@@ -28,8 +29,6 @@ import warnings
 from bs4 import BeautifulSoup
 from requests_ratelimiter import LimiterAdapter
 import requests
-
-from rule34Py import __version__
 
 from rule34Py.api_urls import (
     __api_url__,
@@ -43,8 +42,10 @@ from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
 
 
+PROJECT_VERSION = importlib.metadata.version(__package__)
+
 #: The default client user_agent, if one is not specified in the environment.
-DEFAULT_USER_AGENT: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
+DEFAULT_USER_AGENT: str = f"Mozilla/5.0 (compatible; rule34Py/{PROJECT_VERSION})"
 #: API-defined maximum number of search results per request.
 #: [`Rule34 Docs <https://rule34.xxx/index.php?page=help&topic=dapi>`_]
 SEARCH_RESULT_MAX: int = 1000
@@ -410,22 +411,3 @@ class rule34Py():
         response = self._get(API_URLS.TOPMAP.value)
         response.raise_for_status()
         return TopTagsPage.top_tags_from_html(response.text)
-
-    @property
-    def version(self) -> str:
-        """Rule34Py version.
-
-        Warning:
-            This method is deprecated.
-
-        Warns:
-            This method is deprecated in favor of rule34Py.version.
-
-        Returns:
-            The version string of the rule34Py package.
-        """
-        warnings.warn(
-            "This method is scheduled for deprecation in a future release of rule34Py. Use `rule34Py.version` instead.",
-            DeprecationWarning,
-        )
-        return __version__

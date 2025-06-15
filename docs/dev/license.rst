@@ -1,9 +1,12 @@
 
+.. _license-text:
+
 LICENSE
 =======
 
 .. literalinclude:: ../../LICENSE
 
 
-.. NOTICE.md already includes an H1 header.
+.. _notice-text:
+
 .. mdinclude:: ../../NOTICE.md

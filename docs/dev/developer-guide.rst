@@ -115,10 +115,10 @@ Building the project documentation
 Integrating this project
 ========================
 
-This project is `licensed <./license.html#license>`_ under the GPLv3 license.
+This project is :ref:`licensed <license-text>` under the GPLv3 license.
 Ensure that your project's licensing strategy is compatible with the GPL.
 For more information, reference the GNU reference guide for GPLv3 `here <https://www.gnu.org/licenses/gpl-3.0.en.html>`_.
 
 All direct dependencies of this project are either GPL licensed, or are licensed more permissively.
 But testing code does call the ``responses`` module, which is licensed under the Apache 2.0 license.
-Reference the `:NOTICE.md <./license.html#notice>`_ file for more information.
+Reference the :ref:`:NOTICE.md <notice-text>` file for more information.

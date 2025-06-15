@@ -87,8 +87,13 @@ html :
 .PHONY : html
 
 
+linkcheck :
+	$(SPHINX_BUILD) --builder linkcheck docs $(builddir)/linkcheck
+.PHONY : linkcheck
+
+
 # Lint the project source for quality.
-lint :
+lint : linkcheck
 	$(POETRY) check --strict
 	$(RUFF) check $(srcdir)
 .PHONY : lint

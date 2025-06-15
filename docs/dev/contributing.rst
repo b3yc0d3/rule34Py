@@ -6,7 +6,7 @@ Thanks for taking an interest in contributing to the rule34Py project!
 
 * This project's **canonical upstream** is at https://github.com/b3yc0d3/rule34Py.
 * File **bugs**, **enhancement requests**, and other **issues** to the GH issue tracker at https://github.com/b3yc0d3/rule34Py/issues.
-* See the `Developer Guide <./developer-guide.html>`_ for information about how to **build** this project from source and run tests.
+* See the :doc:`Developer Guide <./developer-guide>` for information about how to **build** this project from source and run tests.
 
 
 Submitting Changes

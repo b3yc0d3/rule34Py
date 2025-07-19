@@ -5,7 +5,7 @@ import responses
 import responses._recorder
 import pytest
 
-from rule34Py.__vars__ import __base_url__, __api_url__
+from rule34Py.api_urls import __api_url__, __base_url__
 
 
 SCRIPT_ROOT = Path(__file__).parent

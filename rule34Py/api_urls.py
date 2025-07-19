@@ -19,7 +19,10 @@
 
 
 from enum import Enum
-from rule34Py.__vars__ import __base_url__, __api_url__
+
+
+__base_url__ = "https://rule34.xxx/"
+__api_url__ = "https://api.rule34.xxx/"
 
 
 class API_URLS(str, Enum):

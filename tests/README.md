@@ -8,10 +8,9 @@ This project is tested by an organic test suite based on `pytest`.
 To run the unit tests on your repo's source code, install the test suite dependencies declared in `:pyproject.toml` and invoke pytest.
 
 ```bash
-# from the repository root directory ...
-pip install .[test]
-
-python3 -m pytest tests/
+# From the top level of the project ...
+poetry install
+PYTHONPATH=. poetry run pytest tests/
 ```
 
 
@@ -30,7 +29,8 @@ If you are confident that the requested content is well-formed (as when you are 
 
 ```bash
 export R34_RECORD_RESPONSES=True
-python3 -m pytest tests/
+# From the top level of the project ...
+PYTHONPATH=. poetry run pytest tests/
 ```
 
 Remember to commit the registry file changes with your test changes.

@@ -1,5 +1,6 @@
 """These tests confirm the functionality of the rule34Py.rule34 class.
 """
+import importlib.metadata
 import re
 
 import pytest
@@ -9,10 +10,10 @@ from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
-from rule34Py.__vars__ import __version__ as R34_VERSION
 
 
 TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
+R34_VERSION = importlib.metadata.version("rule34Py")
 
 
 def test_rule34Py_get_comments(rule34):
@@ -219,17 +220,3 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags, list)
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
-
-
-def test_rule34Py_version(rule34):
-    """The version() property should throw a deprecation warning, but return its original value.
-    
-    Remove this test when the method is removed.
-    """
-    with pytest.warns(
-        DeprecationWarning,
-        match=r".*Use `rule34Py.version` instead.*",
-    ):
-        version = rule34.version
-    assert re.match(r"^\d+\.\d+\.\d+$", version)
-

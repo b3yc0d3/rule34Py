@@ -7,3 +7,4 @@ This section contains how-to guides and special topics of interest to module use
 	:maxdepth: 1
 
 	captcha-clearance
+	package-metadata

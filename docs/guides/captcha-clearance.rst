@@ -14,7 +14,7 @@ In order to enable these interactive workflows, while providing at least some re
 Note that the module will rate-limit requests to the interactive site to 1 request per second, as a further courtesy to the site owners.
 We also recommend avoiding these workflows entirely in your application design, out of respect.
 
-Reference the `rule34Py.rule34Py <../../api/rule34Py/rule34.html#rule34Py.rule34.rule34Py>`_ class documentation for an indication of which workflows have these limits.
+Reference the :doc:`rule34Py.rule34Py <../../api/rule34Py/rule34>` class documentation for an indication of which workflows have these limits.
 
 
 Clearing the defenses

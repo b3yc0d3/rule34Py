@@ -53,6 +53,13 @@ intersphinx_mapping = {
     "requests": ("https://requests.readthedocs.io/en/latest/", None),
 }
 
+## Sphinx linkcheck options
+linkcheck_ignore = [
+    r"https?://.*gnu.org(:\d+)?[/$]?.*",  # GNU.org is heavily rate limited
+    r"https?://localhost(:\d+)?[/$]?.*",  # Broken unless the dev is hosting a server.
+    r"https?://rule34.xxx(:\d+)?[/$]?.*",  # Interactive site will always 403
+]
+
 
 
 # -- Options for HTML output -------------------------------------------------

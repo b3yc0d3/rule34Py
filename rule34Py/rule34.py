@@ -40,6 +40,7 @@ from rule34Py.pool import Pool
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
+from rule34Py.autocomplete_tag import AutocompleteTag
 
 
 PROJECT_VERSION = importlib.metadata.version(__package__)
@@ -81,6 +82,37 @@ class rule34Py():
         """Initialize a new rule34 API client instance."""
         self.session = requests.session()
         self.session.mount(__base_url__, self._base_site_rate_limiter)
+
+    def autocomplete(self, tag_string: str) -> list[AutocompleteTag]:
+        """Retrieve tag suggestions based on partial input.
+        Args:
+            tag_string: Partial tag input to search suggestions for.
+        Returns:
+            A list of AutocompleteTag objects matching the search query,
+            ordered by popularity (descending).
+        Raises:
+            requests.HTTPError: The backing HTTP request failed.
+            ValueError: If the response contains invalid data structure.
+        """  # noqa: DOC502
+        params = [["q", tag_string]]
+        formatted_url = self._parseUrlParams(API_URLS.AUTOCOMPLETE.value, params)
+        response = self._get(formatted_url, headers = {
+                                                "Referer": "https://rule34.xxx/",
+                                                "Origin": "https://rule34.xxx",
+                                                "Accept": "*/*"
+                                            })
+        response.raise_for_status()
+
+        raw_data = response.json()
+        results = [
+            AutocompleteTag(
+                label=item["label"],
+                value=item["value"],
+                type=item["type"]
+            )
+            for item in raw_data
+        ]
+        return results
 
     def _get(self, *args, **kwargs) -> requests.Response:
         """Send an HTTP GET request.

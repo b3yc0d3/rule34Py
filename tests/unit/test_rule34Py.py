@@ -10,11 +10,29 @@ from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
-
+from rule34Py.autocomplete_tag import AutocompleteTag
 
 TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
 R34_VERSION = importlib.metadata.version("rule34Py")
 
+def test_rule34Py_autocomplete(rule34):
+    """The autocomplete method should return a list of tag suggestions."""
+    suggestions = rule34.autocomplete("neko")
+    
+    assert isinstance(suggestions, list)
+    
+    if suggestions:
+        first = suggestions[0]
+        assert isinstance(first, AutocompleteTag)
+        assert hasattr(first, 'label')
+        assert hasattr(first, 'value')
+        assert hasattr(first, 'type')
+        assert isinstance(first.label, str)
+        assert isinstance(first.value, str)
+        assert isinstance(first.type, str)
+
+    empty_suggestions = rule34.autocomplete("")
+    assert isinstance(empty_suggestions, list)
 
 def test_rule34Py_get_comments(rule34):
     """The get_comments() method should fetch a list of comments from a post.

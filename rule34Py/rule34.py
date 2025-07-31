@@ -85,11 +85,14 @@ class rule34Py():
 
     def autocomplete(self, tag_string: str) -> list[AutocompleteTag]:
         """Retrieve tag suggestions based on partial input.
+
         Args:
             tag_string: Partial tag input to search suggestions for.
+
         Returns:
             A list of AutocompleteTag objects matching the search query,
             ordered by popularity (descending).
+
         Raises:
             requests.HTTPError: The backing HTTP request failed.
             ValueError: If the response contains invalid data structure.

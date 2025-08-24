@@ -14,3 +14,4 @@
 
 # Ruff
 **/.ruff_cache
+dist/

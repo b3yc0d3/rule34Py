@@ -207,6 +207,17 @@ def test_rule34Py_search(rule34):
     with pytest.raises(ValueError):
         rule34.search([], limit=SEARCH_RESULT_MAX + 1)
 
+def test_rule34Py_search_exclude_ai(rule34):
+    """The client can search for posts by tags, with excluding ai generated content."""
+    # search by single tag
+    results1 = rule34.search(["neko"], exclude_ai=True)
+    ids1 = [post.id for post in results1]
+    print(f"ids1={ids1[:10]}...")
+    assert isinstance(results1, list)  # return type is list
+    
+    assert len(results1) == SEARCH_RESULT_MAX
+    assert isinstance(results1[0], Post)  # return list contains Post objects
+
 
 def test_rule34Py_tag_map(rule34):
     """The client tag_map() method should return a map of tags.

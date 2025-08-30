@@ -21,6 +21,7 @@
 from collections.abc import Iterator
 from typing import Union
 from urllib.parse import parse_qs
+import importlib.metadata
 import os
 import urllib.parse as urlparse
 import warnings
@@ -29,27 +30,29 @@ from bs4 import BeautifulSoup
 from requests_ratelimiter import LimiterAdapter
 import requests
 
-from rule34Py.__vars__ import (
+from rule34Py.api_urls import (
     __api_url__,
     __base_url__,
-    __version__,
+    API_URLS,
 )
-from rule34Py.api_urls import API_URLS
 from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage
 from rule34Py.pool import Pool
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
+from rule34Py.autocomplete_tag import AutocompleteTag
 
+
+PROJECT_VERSION = importlib.metadata.version(__package__)
 
 #: The default client user_agent, if one is not specified in the environment.
-DEFAULT_USER_AGENT: str = f"Mozilla/5.0 (compatible; rule34Py/{__version__})"
+DEFAULT_USER_AGENT: str = f"Mozilla/5.0 (compatible; rule34Py/{PROJECT_VERSION})"
 #: API-defined maximum number of search results per request.
 #: [`Rule34 Docs <https://rule34.xxx/index.php?page=help&topic=dapi>`_]
 SEARCH_RESULT_MAX: int = 1000
 
 
-class rule34Py():
+class rule34Py:
     """The rule34.xxx API client.
 
     This class is the primary broker for interactions with the real Rule34 servers.
@@ -59,6 +62,9 @@ class rule34Py():
         .. code-block:: python
 
             client = rule34Py()
+            client.api_key="API_KEY"
+            client.user_id="USER_ID"
+
             post = client.get_post(1234)
     """
 
@@ -74,11 +80,56 @@ class rule34Py():
     #: Defaults to either the value of the ``R34_USER_AGENT`` environment variable; or the ``rule34Py.rule34.DEFAULT_USER_AGENT``, if not asserted.
     #: Can be overridden by the user at runtime to change User-Agents.
     user_agent: str = os.environ.get("R34_USER_AGENT", DEFAULT_USER_AGENT)
+    #: User id required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
+    user_id: str = None
+    #: Api key required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
+    api_key: str = None
 
     def __init__(self):
-        """Initialize a new rule34 API client instance."""
+        """Initialize a new rule34 API client instance.
+
+        Args:
+            api_key: Api key from rule34.xxx
+
+            user_id: User id from rule34.xxx account
+
+        The api key and the user id can both be found at <https://rule34.xxx/index.php?page=account&s=options>.
+        """
         self.session = requests.session()
         self.session.mount(__base_url__, self._base_site_rate_limiter)
+
+    def autocomplete(self, tag_string: str) -> list[AutocompleteTag]:
+        """Retrieve tag suggestions based on partial input.
+
+        Args:
+            tag_string: Partial tag input to search suggestions for.
+
+        Returns:
+            A list of AutocompleteTag objects matching the search query,
+            ordered by popularity (descending).
+
+        Raises:
+            requests.HTTPError: The backing HTTP request failed.
+            ValueError: If the response contains invalid data structure.
+        """  # noqa: DOC502
+        params = [["q", tag_string]]
+        formatted_url = self._parseUrlParams(API_URLS.AUTOCOMPLETE.value, params)
+        response = self._get(
+            formatted_url,
+            headers={
+                "Referer": "https://rule34.xxx/",
+                "Origin": "https://rule34.xxx",
+                "Accept": "*/*",
+            },
+        )
+        response.raise_for_status()
+
+        raw_data = response.json()
+        results = [
+            AutocompleteTag(label=item["label"], value=item["value"], type=item["type"])
+            for item in raw_data
+        ]
+        return results
 
     def _get(self, *args, **kwargs) -> requests.Response:
         """Send an HTTP GET request.
@@ -87,10 +138,25 @@ class rule34Py():
 
         Returns:
             The Response object from the GET request.
+
+        Raises:
+            ValueError: API credentials aer not supplied.
         """
+        is_api_request = args[0].startswith(__api_url__) == True
+
+        # check if api credentials are set
+        if is_api_request and self.user_id == None and self.api_key == None:
+            raise ValueError(
+                "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+            )
+
         # headers
         kwargs.setdefault("headers", {})
         kwargs["headers"].setdefault("User-Agent", self.user_agent)
+
+        # api authentication
+        if is_api_request:
+            kwargs["params"] = {"api_key": self.api_key, "user_id": self.user_id}
 
         # cookies
         kwargs.setdefault("cookies", {})
@@ -115,9 +181,7 @@ class rule34Py():
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
-        params = [
-            ["POST_ID", str(post_id)]
-        ]
+        params = [["POST_ID", str(post_id)]]
         formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params)
         response = self._get(formatted_url)
         response.raise_for_status()
@@ -126,11 +190,11 @@ class rule34Py():
         comment_soup = BeautifulSoup(response.content.decode("utf-8"), features="xml")
         for e_comment in comment_soup.find_all("comment"):
             comment = PostComment(
-                id = e_comment["id"],
-                owner_id = e_comment["creator_id"],
-                body = e_comment["body"],
-                post_id = e_comment["post_id"],
-                creation = e_comment["created_at"],
+                id=e_comment["id"],
+                owner_id=e_comment["creator_id"],
+                body=e_comment["body"],
+                post_id=e_comment["post_id"],
+                creation=e_comment["created_at"],
             )
             comments.append(comment)
 
@@ -151,9 +215,7 @@ class rule34Py():
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
-        params = [
-            ["POOL_ID", str(pool_id)]
-        ]
+        params = [["POOL_ID", str(pool_id)]]
         response = self._get(self._parseUrlParams(API_URLS.POOL.value, params))
         response.raise_for_status()
         return PoolPage.pool_from_html(response.text)
@@ -170,9 +232,7 @@ class rule34Py():
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
-        params = [
-            ["POST_ID", str(post_id)]
-        ]
+        params = [["POST_ID", str(post_id)]]
         formatted_url = self._parseUrlParams(API_URLS.GET_POST.value, params)
         response = self._get(formatted_url)
         response.raise_for_status()
@@ -274,7 +334,7 @@ class rule34Py():
 
         Returns:
             A random Post.
-        
+
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
@@ -298,10 +358,12 @@ class rule34Py():
         response = self._get(API_URLS.RANDOM_POST.value)
         response.raise_for_status()
         parsed = urlparse.urlparse(response.url)
-        return int(parse_qs(parsed.query)['id'][0])
+        return int(parse_qs(parsed.query)["id"][0])
 
-    def search(self,
+    def search(
+        self,
         tags: list[str] = [],
+        exclude_ai: bool = False,
         page_id: Union[int, None] = None,
         limit: int = SEARCH_RESULT_MAX,
     ) -> list[Post]:
@@ -309,6 +371,8 @@ class rule34Py():
 
         Args:
             tags: A list of tags to search for.
+            exclude_ai: Exclude ai generated content from the results.
+                Default is False.
             page_id: The search page number to request, or None.
                 If None, search will eventually return all pages.
             limit: The maximum number of post results to return per page.
@@ -326,6 +390,12 @@ class rule34Py():
         """  # noqa: DOC502
         if limit < 0 or limit > SEARCH_RESULT_MAX:
             raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
+
+        # exclude all tags starting with ai if user whishes so
+        if exclude_ai == True:
+            # filter out any ai tag
+            tags = [tag for tag in tags if not tag.lower().startswith("ai")]
+            tags.append("-ai*")
 
         params = [
             ["TAGS", "+".join(tags)],
@@ -409,22 +479,3 @@ class rule34Py():
         response = self._get(API_URLS.TOPMAP.value)
         response.raise_for_status()
         return TopTagsPage.top_tags_from_html(response.text)
-
-    @property
-    def version(self) -> str:
-        """Rule34Py version.
-
-        Warning:
-            This method is deprecated.
-
-        Warns:
-            This method is deprecated in favor of rule34Py.version.
-
-        Returns:
-            The version string of the rule34Py package.
-        """
-        warnings.warn(
-            "This method is scheduled for deprecation in a future release of rule34Py. Use `rule34Py.version` instead.",
-            DeprecationWarning,
-        )
-        return __version__

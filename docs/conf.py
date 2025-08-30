@@ -45,6 +45,7 @@ exclude_patterns = []
 
 # sphinx.ext.autodoc configuration #
 autodoc_default_options = {
+    "private-members": False
 }
 autodoc_typehints = "both"  # Show typehints in the signature and as content of the function or method
 
@@ -52,6 +53,13 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "requests": ("https://requests.readthedocs.io/en/latest/", None),
 }
+
+## Sphinx linkcheck options
+linkcheck_ignore = [
+    r"https?://.*gnu.org(:\d+)?[/$]?.*",  # GNU.org is heavily rate limited
+    r"https?://localhost(:\d+)?[/$]?.*",  # Broken unless the dev is hosting a server.
+    r"https?://rule34.xxx(:\d+)?[/$]?.*",  # Interactive site will always 403
+]
 
 
 

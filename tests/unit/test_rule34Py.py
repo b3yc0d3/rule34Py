@@ -1,5 +1,6 @@
 """These tests confirm the functionality of the rule34Py.rule34 class.
 """
+import importlib.metadata
 import re
 
 import pytest
@@ -9,11 +10,29 @@ from rule34Py.rule34 import SEARCH_RESULT_MAX
 from rule34Py.post_comment import PostComment
 from rule34Py.icame import ICame
 from rule34Py.toptag import TopTag
-from rule34Py.__vars__ import __version__ as R34_VERSION
-
+from rule34Py.autocomplete_tag import AutocompleteTag
 
 TEST_POOL_ID = 28  # An arbitrary, very-old pool, that is probably stable.
+R34_VERSION = importlib.metadata.version("rule34Py")
 
+def test_rule34Py_autocomplete(rule34):
+    """The autocomplete method should return a list of tag suggestions."""
+    suggestions = rule34.autocomplete("neko")
+    
+    assert isinstance(suggestions, list)
+    
+    if suggestions:
+        first = suggestions[0]
+        assert isinstance(first, AutocompleteTag)
+        assert hasattr(first, 'label')
+        assert hasattr(first, 'value')
+        assert hasattr(first, 'type')
+        assert isinstance(first.label, str)
+        assert isinstance(first.value, str)
+        assert isinstance(first.type, str)
+
+    empty_suggestions = rule34.autocomplete("")
+    assert isinstance(empty_suggestions, list)
 
 def test_rule34Py_get_comments(rule34):
     """The get_comments() method should fetch a list of comments from a post.
@@ -188,6 +207,17 @@ def test_rule34Py_search(rule34):
     with pytest.raises(ValueError):
         rule34.search([], limit=SEARCH_RESULT_MAX + 1)
 
+def test_rule34Py_search_exclude_ai(rule34):
+    """The client can search for posts by tags, with excluding ai generated content."""
+    # search by single tag
+    results1 = rule34.search(["neko"], exclude_ai=True)
+    ids1 = [post.id for post in results1]
+    print(f"ids1={ids1[:10]}...")
+    assert isinstance(results1, list)  # return type is list
+    
+    assert len(results1) == SEARCH_RESULT_MAX
+    assert isinstance(results1[0], Post)  # return list contains Post objects
+
 
 def test_rule34Py_tag_map(rule34):
     """The client tag_map() method should return a map of tags.
@@ -219,17 +249,3 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags, list)
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
-
-
-def test_rule34Py_version(rule34):
-    """The version() property should throw a deprecation warning, but return its original value.
-    
-    Remove this test when the method is removed.
-    """
-    with pytest.warns(
-        DeprecationWarning,
-        match=r".*Use `rule34Py.version` instead.*",
-    ):
-        version = rule34.version
-    assert re.match(r"^\d+\.\d+\.\d+$", version)
-

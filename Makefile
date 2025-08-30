@@ -44,7 +44,7 @@ $(wheels) &: $(dist_files)
 
 
 $(sdist) : $(dist_files)
-	$(POETRY) --output $(builddir) --format=sdist
+	$(POETRY) build --output $(builddir) --format=sdist
 
 
 # PHONY TARGETS #
@@ -52,7 +52,7 @@ $(sdist) : $(dist_files)
 
 # Build all binary targets necessary for installation.
 # Does not build documentation or source distributions.
-all : $(wheels)
+all : $(wheels) $(sdist)
 .PHONY : all
 
 

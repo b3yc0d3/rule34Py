@@ -52,7 +52,7 @@ DEFAULT_USER_AGENT: str = f"Mozilla/5.0 (compatible; rule34Py/{PROJECT_VERSION})
 SEARCH_RESULT_MAX: int = 1000
 
 
-class rule34Py():
+class rule34Py:
     """The rule34.xxx API client.
 
     This class is the primary broker for interactions with the real Rule34 servers.
@@ -62,6 +62,9 @@ class rule34Py():
         .. code-block:: python
 
             client = rule34Py()
+            client.api_key="API_KEY"
+            client.user_id="USER_ID"
+
             post = client.get_post(1234)
     """
 
@@ -77,9 +80,21 @@ class rule34Py():
     #: Defaults to either the value of the ``R34_USER_AGENT`` environment variable; or the ``rule34Py.rule34.DEFAULT_USER_AGENT``, if not asserted.
     #: Can be overridden by the user at runtime to change User-Agents.
     user_agent: str = os.environ.get("R34_USER_AGENT", DEFAULT_USER_AGENT)
+    #: User id required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
+    user_id: str = None
+    #: Api key required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
+    api_key: str = None
 
     def __init__(self):
-        """Initialize a new rule34 API client instance."""
+        """Initialize a new rule34 API client instance.
+
+        Args:
+            api_key: Api key from rule34.xxx
+
+            user_id: User id from rule34.xxx account
+
+        The api key and the user id can both be found at <https://rule34.xxx/index.php?page=account&s=options>.
+        """
         self.session = requests.session()
         self.session.mount(__base_url__, self._base_site_rate_limiter)
 
@@ -99,20 +114,19 @@ class rule34Py():
         """  # noqa: DOC502
         params = [["q", tag_string]]
         formatted_url = self._parseUrlParams(API_URLS.AUTOCOMPLETE.value, params)
-        response = self._get(formatted_url, headers = {
-                                                "Referer": "https://rule34.xxx/",
-                                                "Origin": "https://rule34.xxx",
-                                                "Accept": "*/*"
-                                            })
+        response = self._get(
+            formatted_url,
+            headers={
+                "Referer": "https://rule34.xxx/",
+                "Origin": "https://rule34.xxx",
+                "Accept": "*/*",
+            },
+        )
         response.raise_for_status()
 
         raw_data = response.json()
         results = [
-            AutocompleteTag(
-                label=item["label"],
-                value=item["value"],
-                type=item["type"]
-            )
+            AutocompleteTag(label=item["label"], value=item["value"], type=item["type"])
             for item in raw_data
         ]
         return results
@@ -124,10 +138,23 @@ class rule34Py():
 
         Returns:
             The Response object from the GET request.
+
+        Raises:
+            ValueError: API credentials aer not supplied.
         """
+        is_api_request = args[0].startswith(__api_url__) == True
+
+        # check if api credentials are set
+        if is_api_request and self.user_id == None and self.api_key == None:
+            raise ValueError("API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information.")
+
         # headers
         kwargs.setdefault("headers", {})
         kwargs["headers"].setdefault("User-Agent", self.user_agent)
+
+        # api authentication
+        if is_api_request:
+            kwargs["params"] = {"api_key": self.api_key, "user_id": self.user_id}
 
         # cookies
         kwargs.setdefault("cookies", {})
@@ -152,9 +179,7 @@ class rule34Py():
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
-        params = [
-            ["POST_ID", str(post_id)]
-        ]
+        params = [["POST_ID", str(post_id)]]
         formatted_url = self._parseUrlParams(API_URLS.COMMENTS, params)
         response = self._get(formatted_url)
         response.raise_for_status()
@@ -163,11 +188,11 @@ class rule34Py():
         comment_soup = BeautifulSoup(response.content.decode("utf-8"), features="xml")
         for e_comment in comment_soup.find_all("comment"):
             comment = PostComment(
-                id = e_comment["id"],
-                owner_id = e_comment["creator_id"],
-                body = e_comment["body"],
-                post_id = e_comment["post_id"],
-                creation = e_comment["created_at"],
+                id=e_comment["id"],
+                owner_id=e_comment["creator_id"],
+                body=e_comment["body"],
+                post_id=e_comment["post_id"],
+                creation=e_comment["created_at"],
             )
             comments.append(comment)
 
@@ -188,9 +213,7 @@ class rule34Py():
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
-        params = [
-            ["POOL_ID", str(pool_id)]
-        ]
+        params = [["POOL_ID", str(pool_id)]]
         response = self._get(self._parseUrlParams(API_URLS.POOL.value, params))
         response.raise_for_status()
         return PoolPage.pool_from_html(response.text)
@@ -207,9 +230,7 @@ class rule34Py():
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
-        params = [
-            ["POST_ID", str(post_id)]
-        ]
+        params = [["POST_ID", str(post_id)]]
         formatted_url = self._parseUrlParams(API_URLS.GET_POST.value, params)
         response = self._get(formatted_url)
         response.raise_for_status()
@@ -311,7 +332,7 @@ class rule34Py():
 
         Returns:
             A random Post.
-        
+
         Raises:
             requests.HTTPError: The backing HTTP GET operation failed.
         """  # noqa: DOC502
@@ -335,9 +356,10 @@ class rule34Py():
         response = self._get(API_URLS.RANDOM_POST.value)
         response.raise_for_status()
         parsed = urlparse.urlparse(response.url)
-        return int(parse_qs(parsed.query)['id'][0])
+        return int(parse_qs(parsed.query)["id"][0])
 
-    def search(self,
+    def search(
+        self,
         tags: list[str] = [],
         page_id: Union[int, None] = None,
         limit: int = SEARCH_RESULT_MAX,

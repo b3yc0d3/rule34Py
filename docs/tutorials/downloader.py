@@ -1,6 +1,8 @@
 from rule34Py import rule34Py
 
 client = rule34Py()
+client.api_key = "YOUR_API_KEY"
+client.user_id = "YOUR_USER_ID"
 
 TAGS = ["neko", "sort:score", "-video"]
 

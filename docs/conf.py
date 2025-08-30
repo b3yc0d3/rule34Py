@@ -45,6 +45,7 @@ exclude_patterns = []
 
 # sphinx.ext.autodoc configuration #
 autodoc_default_options = {
+    "private-members": False
 }
 autodoc_typehints = "both"  # Show typehints in the signature and as content of the function or method
 

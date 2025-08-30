@@ -5,6 +5,8 @@ client = rule34Py()
 TAGS = ["neko", "sort:score", "-video"]
 
 results = client.search(tags=TAGS)
+client.api_key = "YOUR_API_KEY"
+client.user_id = "YOUR_USER_ID"
 
 from pathlib import Path
 import requests

@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contributing &mdash; rule34Py 3.0.0 documentation</title>
+  <title>Contributing &mdash; rule34Py 4.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=acc74ff5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/documentation_options.js?v=3304f9e4"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -90,7 +90,7 @@
 <ul class="simple">
 <li><p>This project’s <strong>canonical upstream</strong> is at <a class="reference external" href="https://github.com/b3yc0d3/rule34Py">https://github.com/b3yc0d3/rule34Py</a>.</p></li>
 <li><p>File <strong>bugs</strong>, <strong>enhancement requests</strong>, and other <strong>issues</strong> to the GH issue tracker at <a class="reference external" href="https://github.com/b3yc0d3/rule34Py/issues">https://github.com/b3yc0d3/rule34Py/issues</a>.</p></li>
-<li><p>See the <a class="reference external" href="./developer-guide.html">Developer Guide</a> for information about how to <strong>build</strong> this project from source and run tests.</p></li>
+<li><p>See the <a class="reference internal" href="developer-guide.html"><span class="doc">Developer Guide</span></a> for information about how to <strong>build</strong> this project from source and run tests.</p></li>
 </ul>
 <section id="submitting-changes">
 <h2>Submitting Changes<a class="headerlink" href="#submitting-changes" title="Link to this heading"></a></h2>
@@ -98,7 +98,7 @@
 <li><p>Base your development branch off of the <a class="reference external" href="https://github.com/b3yc0d3/rule34Py/tree/develop">upstream</a> <code class="docutils literal notranslate"><span class="pre">develop</span></code> reference.</p></li>
 <li><p>Before committing your changes, run the <strong>project linter</strong> using <code class="docutils literal notranslate"><span class="pre">make</span></code>. It will use the <code class="docutils literal notranslate"><span class="pre">ruff</span></code> to lint all the project sources.</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install<span class="w">  </span><span class="c1"># Optional, if you have not done it previously.</span>
 make<span class="w"> </span>lint
 </pre></div>
 </div>
@@ -107,7 +107,7 @@ make<span class="w"> </span>lint
 </li>
 <li><p>Run the project’s test suite against your changes. Ensure that all tests pass.</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>test<span class="o">]</span>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install<span class="w">  </span><span class="c1"># Optional, if you have not done it previously.</span>
 make<span class="w"> </span>check
 </pre></div>
 </div>

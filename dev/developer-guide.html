@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Developer Guide &mdash; rule34Py 3.0.0 documentation</title>
+  <title>Developer Guide &mdash; rule34Py 4.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=acc74ff5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/documentation_options.js?v=3304f9e4"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -93,7 +93,7 @@
 <h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Link to this heading"></a></h1>
 <section id="tl-dr">
 <h2>tl;dr<a class="headerlink" href="#tl-dr" title="Link to this heading"></a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span><span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span><span class="w"> </span>.<span class="o">[</span>test<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install
 make<span class="w"> </span>all<span class="w">    </span><span class="c1"># build wheel</span>
 make<span class="w"> </span>check<span class="w">  </span><span class="c1"># run unit tests</span>
 make<span class="w"> </span>dist<span class="w">   </span><span class="c1"># build sdist</span>
@@ -120,7 +120,13 @@ make<span class="w"> </span>lint<span class="w">   </span><span class="c1"># run
 <section id="building-the-project-from-source">
 <h2>Building the project from source<a class="headerlink" href="#building-the-project-from-source" title="Link to this heading"></a></h2>
 <p>This project can be built directly from source using a few host tools.
-Supported development environments include:</p>
+At a minimum you will require:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://git-scm.com/downloads">git</a></p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/software/make/">GNU Make</a></p></li>
+<li><p><a class="reference external" href="https://python-poetry.org/">poetry</a></p></li>
+</ul>
+<p>Supported development environments include:</p>
 <ul class="simple">
 <li><p>Ubuntu 24.04</p></li>
 <li><p>Windows</p></li>
@@ -135,18 +141,9 @@ Supported development environments include:</p>
 </div>
 </div></blockquote>
 </li>
-<li><p>(Optional. Recommended.) Setup a python virtual environment.</p>
+<li><p>Use poetry to install project python dependencies from the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file. Use <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">Make</span></code> to build the project. The <code class="docutils literal notranslate"><span class="pre">all</span></code> make target (the default) builds the project’s wheels.</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;/.venv&quot;</span><span class="w"> </span>&gt;&gt;.git/info/exclude<span class="w">  </span><span class="c1"># excludes your venv from git tracking</span>
-<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-<li><p>Install project python dependencies from the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file. Use <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">Make</span></code> to build the project. The <code class="docutils literal notranslate"><span class="pre">all</span></code> make target (the default) builds the project’s wheels.</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install
 make<span class="w"> </span>all
 </pre></div>
 </div>
@@ -154,11 +151,6 @@ make<span class="w"> </span>all
 </div></blockquote>
 </li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are using a very old python environment, your installed version of setuptools and python may not be aware of how to process pyproject.toml files.
-If this seems to be the case, try upgrading your build tools by calling <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">setuptools</span> <span class="pre">build</span></code>.</p>
-</div>
 <p>Other <code class="docutils literal notranslate"><span class="pre">make</span></code> targets are supported to <code class="docutils literal notranslate"><span class="pre">clean</span></code> the project and build other artifacts.
 Generally, the project <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> honors the <a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html">GNU Standard Targets</a> specification.</p>
 </section>
@@ -166,25 +158,30 @@ Generally, the project <code class="docutils literal notranslate"><span class="p
 <h2>Running the project test suite<a class="headerlink" href="#running-the-project-test-suite" title="Link to this heading"></a></h2>
 <ol class="arabic">
 <li><p>Setup your build environment as in the “Building the project from source” section.</p></li>
-<li><p>Install the optional test dependencies and invoke their <code class="docutils literal notranslate"><span class="pre">make</span></code> target.</p>
+<li><p>Use poetry to run the unit tests, by invoking the <code class="docutils literal notranslate"><span class="pre">check</span></code> target.</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>test<span class="o">]</span>
-make<span class="w"> </span><span class="nb">test</span>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nb">test</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 </ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can invoke a single test by passing appropriate arguments to the <code class="docutils literal notranslate"><span class="pre">PYTEST_ARGS</span></code> variable during invocation. eg.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">PYTEST_ARGS</span><span class="o">=</span><span class="s2">&quot;-k package&quot;</span><span class="w"> </span>make<span class="w"> </span>check
+</pre></div>
+</div>
+</div>
 <p>For more information, reference the <code class="docutils literal notranslate"><span class="pre">:tests/README.md</span></code> file.</p>
 </section>
 <section id="building-the-project-documentation">
 <h2>Building the project documentation<a class="headerlink" href="#building-the-project-documentation" title="Link to this heading"></a></h2>
 <ol class="arabic">
 <li><p>Setup your build environment as in the “Building the project from source” section.</p></li>
-<li><p>Install the optional docs dependencies and invoke their <code class="docutils literal notranslate"><span class="pre">make</span></code> target.</p>
+<li><p>Use poetry to build the project documentation by invoking the <code class="docutils literal notranslate"><span class="pre">html</span></code> target.</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span>
-make<span class="w"> </span>html
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>html
 </pre></div>
 </div>
 <p>Build output will be placed in the <code class="docutils literal notranslate"><span class="pre">:build/html/</span></code> directory.</p>
@@ -203,12 +200,12 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 </section>
 <section id="integrating-this-project">
 <h2>Integrating this project<a class="headerlink" href="#integrating-this-project" title="Link to this heading"></a></h2>
-<p>This project is <a class="reference external" href="./license.html#license">licensed</a> under the GPLv3 license.
+<p>This project is <a class="reference internal" href="license.html#license-text"><span class="std std-ref">licensed</span></a> under the GPLv3 license.
 Ensure that your project’s licensing strategy is compatible with the GPL.
 For more information, reference the GNU reference guide for GPLv3 <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html">here</a>.</p>
 <p>All direct dependencies of this project are either GPL licensed, or are licensed more permissively.
-But testing code does call the <code class="docutils literal notranslate"><span class="pre">reponses</span></code> module, which is licensed under the Apache 2.0 license.
-Reference the <a class="reference external" href="./license.html#notice">:NOTICE.md</a> file for more information.</p>
+But testing code does call the <code class="docutils literal notranslate"><span class="pre">responses</span></code> module, which is licensed under the Apache 2.0 license.
+Reference the <a class="reference internal" href="license.html#notice-text"><span class="std std-ref">:NOTICE.md</span></a> file for more information.</p>
 </section>
 </section>
 

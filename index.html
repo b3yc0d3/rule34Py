@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rule34py &mdash; rule34Py 3.0.0 documentation</title>
+  <title>rule34py &mdash; rule34Py 4.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=acc74ff5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/documentation_options.js?v=3304f9e4"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -75,6 +75,8 @@
              
   <div align="center"><section id="rule34py">
 <h1>rule34py<a class="headerlink" href="#rule34py" title="Link to this heading"></a></h1>
+<a class="reference external image-reference" href="https://img.shields.io/github/actions/workflow/status/b3yc0d3/rule34Py/cd-master.yml"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/b3yc0d3/rule34Py/cd-master.yml" />
+</a>
 <a class="reference external image-reference" href="https://img.shields.io/github/license/b3yc0d3/rule34Py"><img alt="GPL-3.0" src="https://img.shields.io/github/license/b3yc0d3/rule34Py" />
 </a>
 <a class="reference external image-reference" href="https://pypi.org/project/rule34Py/"><img alt="" src="https://img.shields.io/pypi/v/rule34Py" />
@@ -94,28 +96,30 @@ See the <a class="reference external" href="https://b3yc0d3.github.io/rule34Py/d
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rule34Py</span><span class="w"> </span><span class="kn">import</span> <span class="n">rule34Py</span>
-<span class="n">r34Py</span> <span class="o">=</span> <span class="n">rule34Py</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">rule34Py</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;YOUR_API_KEY&quot;</span>
+<span class="n">client</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="s2">&quot;YOUR_USER_ID&quot;</span>
 
 <span class="c1"># Get comments of an post.</span>
-<span class="n">r34Py</span><span class="o">.</span><span class="n">get_comments</span><span class="p">(</span><span class="mi">4153825</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get_comments</span><span class="p">(</span><span class="mi">4153825</span><span class="p">)</span>
 
 <span class="c1"># Get post by its id.</span>
-<span class="n">r34Py</span><span class="o">.</span><span class="n">get_post</span><span class="p">(</span><span class="mi">4153825</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get_post</span><span class="p">(</span><span class="mi">4153825</span><span class="p">)</span>
 
 <span class="c1"># Get top 100 icame.</span>
-<span class="n">r34Py</span><span class="o">.</span><span class="n">icame</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">icame</span><span class="p">()</span>
 
 <span class="c1"># Search for posts by tag(s).</span>
-<span class="n">r34Py</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s2">&quot;neko&quot;</span><span class="p">],</span> <span class="n">page_id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s2">&quot;neko&quot;</span><span class="p">],</span> <span class="n">page_id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
 <span class="c1"># Get pool by id.</span>
-<span class="n">r34Py</span><span class="o">.</span><span class="n">get_pool</span><span class="p">(</span><span class="mi">28</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get_pool</span><span class="p">(</span><span class="mi">28</span><span class="p">)</span>
 
 <span class="c1"># Get a random post.</span>
-<span class="n">random</span> <span class="o">=</span> <span class="n">r34Py</span><span class="o">.</span><span class="n">random_post</span><span class="p">()</span>
+<span class="n">random</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">random_post</span><span class="p">()</span>
 
 <span class="c1"># Get just a random post ID.</span>
-<span class="n">random_id</span> <span class="o">=</span> <span class="n">r34Py</span><span class="o">.</span><span class="n">random_post_id</span><span class="p">()</span>
+<span class="n">random_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">random_post_id</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -136,6 +140,8 @@ See the <a class="reference external" href="https://b3yc0d3.github.io/rule34Py/d
 </li>
 <li class="toctree-l1"><a class="reference internal" href="guides/index.html">User Guides</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="guides/captcha-clearance.html">How to clear Rule34 captcha defenses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/api-credentials.html">How to set Rule34 api credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/package-metadata.html">How to get package metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dev/index.html">Developer Documentation</a><ul>

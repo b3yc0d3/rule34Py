@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rule34Py.api_urls &mdash; rule34Py 3.0.0 documentation</title>
+  <title>rule34Py.api_urls &mdash; rule34Py 4.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=acc74ff5"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/documentation_options.js?v=3304f9e4"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -97,9 +97,15 @@
 <p>A module containing URL templates for the rule34.xxx websites.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="rule34Py.api_urls.API_URLS">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rule34Py.api_urls.</span></span><span class="sig-name descname"><span class="pre">API_URLS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rule34Py.api_urls.API_URLS" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rule34Py.api_urls.</span></span><span class="sig-name descname"><span class="pre">API_URLS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rule34Py.api_urls.API_URLS" title="Link to this definition"></a></dt>
 <dd><p>rule34.xxx API endpoint URLs.</p>
 <p>Internal class used to change easily urls, if they should ever change.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rule34Py.api_urls.API_URLS.AUTOCOMPLETE">
+<span class="sig-name descname"><span class="pre">AUTOCOMPLETE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://ac.rule34.xxx/autocomplete.php?q={q}'</span></em><a class="headerlink" href="#rule34Py.api_urls.API_URLS.AUTOCOMPLETE" title="Link to this definition"></a></dt>
+<dd><p>The tags autocomplete URL</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.api_urls.API_URLS.COMMENTS">
 <span class="sig-name descname"><span class="pre">COMMENTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://api.rule34.xxx/index.php?page=dapi&amp;s=comment&amp;q=index&amp;post_id={POST_ID}'</span></em><a class="headerlink" href="#rule34Py.api_urls.API_URLS.COMMENTS" title="Link to this definition"></a></dt>

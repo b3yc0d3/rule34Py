@@ -6,7 +6,7 @@ Thanks for taking an interest in contributing to the rule34Py project!
 
 * This project's **canonical upstream** is at https://github.com/b3yc0d3/rule34Py.
 * File **bugs**, **enhancement requests**, and other **issues** to the GH issue tracker at https://github.com/b3yc0d3/rule34Py/issues.
-* See the `Developer Guide <./developer-guide.html>`_ for information about how to **build** this project from source and run tests.
+* See the :doc:`Developer Guide <./developer-guide>` for information about how to **build** this project from source and run tests.
 
 
 Submitting Changes
@@ -18,7 +18,7 @@ Submitting Changes
 
     .. code-block:: bash
 
-        pip install .[dev]
+        poetry install  # Optional, if you have not done it previously.
         make lint
 
     Fix or respond to any findings in the linter.
@@ -27,7 +27,7 @@ Submitting Changes
 
     .. code-block:: bash
 
-        pip install .[test]
+        poetry install  # Optional, if you have not done it previously.
         make check
 
 #. Write a good commit message. If you are unsure of how, `this cbeams article <https://cbea.ms/git-commit/>`_ gives reasonable suggestions. Commit your changes.

@@ -24,28 +24,30 @@ See the [Developer Guide](https://b3yc0d3.github.io/rule34Py/dev/developer-guide
 
 ```python
 from rule34Py import rule34Py
-r34Py = rule34Py()
+client = rule34Py()
+client.api_key = "YOUR_API_KEY"
+client.user_id = "YOUR_USER_ID"
 
 # Get comments of an post.
-r34Py.get_comments(4153825)
+client.get_comments(4153825)
 
 # Get post by its id.
-r34Py.get_post(4153825)
+client.get_post(4153825)
 
 # Get top 100 icame.
-r34Py.icame()
+client.icame()
 
 # Search for posts by tag(s).
-r34Py.search(["neko"], page_id=2, limit=50)
+client.search(["neko"], page_id=2, limit=50)
 
 # Get pool by id.
-r34Py.get_pool(28)
+client.get_pool(28)
 
 # Get a random post.
-random = r34Py.random_post()
+random = client.random_post()
 
 # Get just a random post ID.
-random_id = r34Py.random_post_id()
+random_id = client.random_post_id()
 ```
 
 

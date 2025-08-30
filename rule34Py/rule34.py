@@ -141,8 +141,10 @@ class rule34Py:
         Raises:
             ValueError: API credentials aer not supplied.
         """
+        is_api_request = args[0].startswith(__api_url__) == True
+
         # check if api credentials are set
-        if self.user_id == None and self.api_key == None:
+        if is_api_request and self.user_id == None and self.api_key == None:
             raise ValueError("API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information.")
 
         # headers
@@ -150,7 +152,8 @@ class rule34Py:
         kwargs["headers"].setdefault("User-Agent", self.user_agent)
 
         # api authentication
-        kwargs["params"] = {"api_key": self.api_key, "user_id": self.user_id}
+        if is_api_request:
+            kwargs["params"] = {"api_key": self.api_key, "user_id": self.user_id}
 
         # cookies
         kwargs.setdefault("cookies", {})

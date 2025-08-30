@@ -61,7 +61,10 @@ class rule34Py:
     Example:
         .. code-block:: python
 
-            client = rule34Py(api_key="API_KEY", user_id="USER_ID")
+            client = rule34Py()
+            client.api_key="API_KEY"
+            client.user_id="USER_ID"
+
             post = client.get_post(1234)
     """
 
@@ -77,9 +80,9 @@ class rule34Py:
     #: Defaults to either the value of the ``R34_USER_AGENT`` environment variable; or the ``rule34Py.rule34.DEFAULT_USER_AGENT``, if not asserted.
     #: Can be overridden by the user at runtime to change User-Agents.
     user_agent: str = os.environ.get("R34_USER_AGENT", DEFAULT_USER_AGENT)
-    #: User id required for requests by rule34.xxx <https://api.rule34.xxx/>
+    #: User id required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
     user_id: str = None
-    #: Api key required for requests by rule34.xxx <https://api.rule34.xxx/>
+    #: Api key required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
     api_key: str = None
 
     def __init__(self):

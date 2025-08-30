@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
  - Updated API wrapper to support website’s new authentication system.
  - The underlying website API now **requires authentication** (`api_key` and `user_id`) for all requests.
+ - Updated unit tests
 
 ## [3.0.0] - 2025-06-09
 

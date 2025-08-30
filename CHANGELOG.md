@@ -6,16 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [unreleased] - 2025-08-24
+## [unreleased] - 2025-08-30
 
 ### Added
- - Added a `rule34.autocomplete` method.
+ - Added a `rule34Py.autocomplete` method.
  - Added `AutocompleteTag` class.
+ - Added parameter to `rule34Py.search` method for excluding ai generated content.
+ 	- Added unit test
 
 ### Changed
  - Updated API wrapper to support website’s new authentication system.
  - The underlying website API now **requires authentication** (`api_key` and `user_id`) for all requests.
- - Updated unit tests
+ - Updated unit tests.
 
 ## [3.0.0] - 2025-06-09
 

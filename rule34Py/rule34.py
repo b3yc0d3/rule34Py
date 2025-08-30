@@ -25,6 +25,7 @@ import importlib.metadata
 import os
 import urllib.parse as urlparse
 import warnings
+import json
 
 from bs4 import BeautifulSoup
 from requests_ratelimiter import LimiterAdapter
@@ -146,7 +147,9 @@ class rule34Py:
 
         # check if api credentials are set
         if is_api_request and self.user_id == None and self.api_key == None:
-            raise ValueError("API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information.")
+            raise ValueError(
+                "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+            )
 
         # headers
         kwargs.setdefault("headers", {})
@@ -361,6 +364,7 @@ class rule34Py:
     def search(
         self,
         tags: list[str] = [],
+        exclude_ai: bool = False,
         page_id: Union[int, None] = None,
         limit: int = SEARCH_RESULT_MAX,
     ) -> list[Post]:
@@ -368,6 +372,8 @@ class rule34Py:
 
         Args:
             tags: A list of tags to search for.
+            exclude_id: Exclude ai generated content from the results.
+                Default is False.
             page_id: The search page number to request, or None.
                 If None, search will eventually return all pages.
             limit: The maximum number of post results to return per page.
@@ -385,6 +391,12 @@ class rule34Py:
         """  # noqa: DOC502
         if limit < 0 or limit > SEARCH_RESULT_MAX:
             raise ValueError(f"Search limit must be between 0 and {SEARCH_RESULT_MAX}.")
+
+        # exclude all tags starting with ai if user whishes so
+        if exclude_ai == True:
+            # filter out any ai tag
+            tags = [tag for tag in tags if not tag.lower().startswith("ai")]
+            tags.append("-ai*")
 
         params = [
             ["TAGS", "+".join(tags)],

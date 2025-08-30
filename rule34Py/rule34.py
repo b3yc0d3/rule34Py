@@ -371,7 +371,7 @@ class rule34Py:
 
         Args:
             tags: A list of tags to search for.
-            exclude_id: Exclude ai generated content from the results.
+            exclude_ai: Exclude ai generated content from the results.
                 Default is False.
             page_id: The search page number to request, or None.
                 If None, search will eventually return all pages.

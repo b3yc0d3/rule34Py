@@ -2,7 +2,7 @@
 
 # rule34py
 
-![GPL-3.0](https://img.shields.io/github/license/b3yc0d3/rule34Py) [![](https://img.shields.io/pypi/v/rule34Py)](https://pypi.org/project/rule34Py/) [![](https://img.shields.io/pypi/dm/rule34py?color=blue)](https://pypi.org/project/rule34Py/)
+![Build Status](https://img.shields.io/github/actions/workflow/status/b3yc0d3/rule34Py/cd-master.yml)![GPL-3.0](https://img.shields.io/github/license/b3yc0d3/rule34Py) [![](https://img.shields.io/pypi/v/rule34Py)](https://pypi.org/project/rule34Py/) [![](https://img.shields.io/pypi/dm/rule34py?color=blue)](https://pypi.org/project/rule34Py/)
 
 Python API wrapper for [rule34.xxx](https://rule34.xxx/).
 </div>

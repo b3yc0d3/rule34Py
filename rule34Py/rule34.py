@@ -94,9 +94,7 @@ class rule34Py:
             user_id: User id from rule34.xxx account
 
         The api key and the user id can both be found at <https://rule34.xxx/index.php?page=account&s=options>.
-        
         """
-        
         self.session = requests.session()
         self.session.mount(__base_url__, self._base_site_rate_limiter)
 

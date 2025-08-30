@@ -25,7 +25,6 @@ import importlib.metadata
 import os
 import urllib.parse as urlparse
 import warnings
-import json
 
 from bs4 import BeautifulSoup
 from requests_ratelimiter import LimiterAdapter

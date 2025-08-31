@@ -17,6 +17,7 @@
 """Provides the AutocompleteTag class used for tag suggestions from Rule34 autocomplete."""
 
 from dataclasses import dataclass
+from typing import Union
 
 @dataclass
 class AutocompleteTag:
@@ -41,4 +42,4 @@ class AutocompleteTag:
     #: .. important::
     #:
     #:     Do to switching from the website endpoint to the REST API endpoint, the``type`` is currently always **None**.
-    type: str | None
+    type: Union[str, None]

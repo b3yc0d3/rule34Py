@@ -20,3 +20,4 @@ rule34Py
    post_comment
    rule34
    toptag
+   autocomplete_tag

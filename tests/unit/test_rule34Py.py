@@ -30,7 +30,7 @@ def test_rule34Py_autocomplete(rule34):
         assert hasattr(first, 'type')
         assert isinstance(first.label, str)
         assert isinstance(first.value, str)
-        assert isinstance(first.type, type(Union[str, None]))
+        assert isinstance(first.type, None)
 
     empty_suggestions = rule34.autocomplete("")
     assert isinstance(empty_suggestions, list)

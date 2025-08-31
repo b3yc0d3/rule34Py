@@ -17,10 +17,15 @@
 """Provides the AutocompleteTag class used for tag suggestions from Rule34 autocomplete."""
 
 from dataclasses import dataclass
+from typing import Union
 
 @dataclass
 class AutocompleteTag:
     """Represents a tag suggestion from autocomplete.
+
+        .. important::
+            
+            Do to switching from the website endpoint to the REST API endpoint, the``type`` is currently always **None**.
 
     Parameters:
         label: The full tag label including count (e.g., "hooves (95430)").
@@ -33,4 +38,8 @@ class AutocompleteTag:
     #: The clean tag value without count information.
     value: str
     #: The category of the tag (general/copyright/other).
-    type: str
+    #:
+    #: .. important::
+    #:
+    #:     Do to switching from the website endpoint to the REST API endpoint, the``type`` is currently always **None**.
+    type: Union[str, None]

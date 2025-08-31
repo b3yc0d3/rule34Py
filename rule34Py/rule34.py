@@ -114,19 +114,12 @@ class rule34Py:
         """  # noqa: DOC502
         params = [["q", tag_string]]
         formatted_url = self._parseUrlParams(API_URLS.AUTOCOMPLETE.value, params)
-        response = self._get(
-            formatted_url,
-            headers={
-                "Referer": "https://rule34.xxx/",
-                "Origin": "https://rule34.xxx",
-                "Accept": "*/*",
-            },
-        )
+        response = self._get(formatted_url)
         response.raise_for_status()
 
         raw_data = response.json()
         results = [
-            AutocompleteTag(label=item["label"], value=item["value"], type=item["type"])
+            AutocompleteTag(label=item["label"], value=item["value"], type=None)
             for item in raw_data
         ]
         return results

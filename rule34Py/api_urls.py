@@ -23,7 +23,6 @@ from enum import Enum
 
 __base_url__ = "https://rule34.xxx/"
 __api_url__ = "https://api.rule34.xxx/"
-__autocomplete_url__ = "https://ac.rule34.xxx/"
 
 class API_URLS(str, Enum):
     """rule34.xxx API endpoint URLs.
@@ -49,4 +48,4 @@ class API_URLS(str, Enum):
     #: The HTML toptags URL.
     TOPMAP = f"{__base_url__}index.php?page=toptags"
     #: The tags autocomplete URL
-    AUTOCOMPLETE = f"{__autocomplete_url__}autocomplete.php?q={{q}}"
+    AUTOCOMPLETE = f"{__api_url__}autocomplete.php?q={{q}}"

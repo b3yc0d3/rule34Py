@@ -19,6 +19,7 @@
 https://rule34.xxx/index.php?page=toptags
 """
 
+__all__ = ["TopTag"]
 
 class TopTag:
     """A TopTag entry.

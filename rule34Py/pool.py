@@ -19,6 +19,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
+__all__ = ["PoolHistoryEvent", "Pool"]
 
 @dataclass
 class PoolHistoryEvent():

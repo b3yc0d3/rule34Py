@@ -19,6 +19,7 @@
 https://rule34.xxx/index.php?page=icame
 """
 
+__all__ = ["ICame"]
 
 class ICame:
     """An iCame contestant.

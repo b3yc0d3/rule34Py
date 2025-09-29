@@ -19,6 +19,8 @@
 from dataclasses import dataclass
 from typing import Union
 
+__all__ = ["AutocompleteTag"]
+
 @dataclass
 class AutocompleteTag:
     """Represents a tag suggestion from autocomplete.

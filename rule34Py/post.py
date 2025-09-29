@@ -19,6 +19,7 @@
 
 # TODO: Restructure internal variable names
 
+__all__ = ["Post"]
 
 class Post:
     """A Rule34 Post object.

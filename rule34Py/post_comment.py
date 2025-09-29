@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """A module providing classes representing Rule34 Post comments."""
 
+__all__ = ["PostComment"]
 
 class PostComment:
     """A post comment.

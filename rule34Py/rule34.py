@@ -42,6 +42,7 @@ from rule34Py.post_comment import PostComment
 from rule34Py.toptag import TopTag
 from rule34Py.autocomplete_tag import AutocompleteTag
 
+__all__ = ["rule34Py"]
 
 PROJECT_VERSION = importlib.metadata.version(__package__)
 

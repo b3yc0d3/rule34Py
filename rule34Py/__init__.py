@@ -22,3 +22,7 @@ from rule34Py.icame import ICame
 from rule34Py.post import Post
 from rule34Py.toptag import TopTag
 from rule34Py.pool import Pool, PoolHistoryEvent
+from rule34Py.post_comment import PostComment
+from rule34Py.autocomplete_tag import AutocompleteTag
+
+__all__ = ["rule34Py", "ICame", "Post", "TopTag", "Pool", "PoolHistoryEvent", "PostComment", "AutocompleteTag"]

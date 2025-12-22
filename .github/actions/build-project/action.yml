@@ -15,6 +15,7 @@ runs:
         python-version: ${{ inputs.python-version }}
 
     - name: Install system dependencies for lxml
+      shell: bash
       run: |
         sudo apt-get update
         sudo apt-get install -y \

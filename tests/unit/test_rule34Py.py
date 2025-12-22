@@ -250,3 +250,25 @@ def test_rule34Py_top_tags(rule34):
     assert isinstance(top_tags, list)
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
+
+def test_rule34Py_api_key(rule34):
+    rule34.api_key = None
+    with pytest.raises(ValueError) as execinfo:
+        rule34.top_tags()
+        
+    assert str(execinfo.value) == "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+
+def test_rule34Py_user_id(rule34):
+    rule34.user_id = None
+    with pytest.raises(ValueError) as execinfo:
+        rule34.top_tags()
+        
+    assert str(execinfo.value) == "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+
+def test_rule34Py_credentials(rule34):
+    rule34.api_key = None
+    rule34.user_id = None
+    with pytest.raises(ValueError) as execinfo:
+        rule34.top_tags()
+        
+    assert str(execinfo.value) == "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."

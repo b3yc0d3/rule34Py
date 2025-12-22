@@ -24,7 +24,7 @@ jobs:
       - name: Build the project
         uses: ./.github/actions/build-project
         with:
-          python-version: '3.x'
+          python-version: '3.9'
 
   gh-pages:
     needs: build
@@ -35,7 +35,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./build
-          pattern: build.*.Linux-py3.x
+          pattern: build.*.Linux-py3.9
           merge-multiple: true
 
       - name: Deploy to Github Pages

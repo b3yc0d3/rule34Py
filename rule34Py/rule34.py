@@ -76,6 +76,8 @@ class rule34Py:
     captcha_clearance: Union[str, None] = os.environ.get("R34_CAPTCHA_CLEARANCE", None)
     #: The ``requests.Session`` object used when the client makes HTML requests.
     session: requests.Session = None
+    #: The ``timeout`` option passed to session.get
+    timeout: None | (int | float) | tuple[(int | float), (int | float)] = 2.5 * 60
     #: The ``User-Agent`` HTML header value used when the client makes HTML requests.
     #: Defaults to either the value of the ``R34_USER_AGENT`` environment variable; or the ``rule34Py.rule34.DEFAULT_USER_AGENT``, if not asserted.
     #: Can be overridden by the user at runtime to change User-Agents.
@@ -155,6 +157,9 @@ class rule34Py:
         kwargs.setdefault("cookies", {})
         if self.captcha_clearance is not None:
             kwargs["cookies"]["cf_clearance"] = self.captcha_clearance
+
+        # timeout
+        kwargs["timeout"] = self.timeout
 
         return self.session.get(*args, **kwargs)
 

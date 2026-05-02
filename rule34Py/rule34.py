@@ -1,7 +1,7 @@
 # rule34Py - Python api wrapper for rule34.xxx
 #
 # Copyright (C) 2022 MiningXL <miningxl@gmail.com>
-# Copyright (C) 2022-2025 b3yc0d3 <b3yc0d3@gmail.com>
+# Copyright (C) 2022-2026 b3yc0d3 <b3yc0d3@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ from rule34Py.api_urls import (
     __base_url__,
     API_URLS,
 )
-from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage
+from rule34Py.html import TagMapPage, ICamePage, TopTagsPage, PoolPage, UserFavorites
 from rule34Py.pool import Pool
 from rule34Py.post import Post
 from rule34Py.post_comment import PostComment
@@ -84,6 +84,8 @@ class rule34Py:
     user_id: str = None
     #: Api key required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
     api_key: str = None
+    #: HTTP Requests timeout in seconds. Defaults to 5 seconds. `See more <https://requests.readthedocs.io/en/latest/user/advanced/#timeouts>`_
+    timeout: (float | int) | tuple[(float | int), (float | int)] = 5
 
     def __init__(self):
         """Initialize a new rule34 API client instance.
@@ -138,18 +140,30 @@ class rule34Py:
         is_api_request = args[0].startswith(__api_url__) == True
 
         # check if api credentials are set
-        if is_api_request and self.user_id == None or self.api_key == None or (self.user_id == None and self.api_key == None):
+        if (
+            is_api_request
+            and self.user_id == None
+            or self.api_key == None
+            or (self.user_id == None and self.api_key == None)
+        ):
             raise ValueError(
                 "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
             )
 
         # headers
-        kwargs.setdefault("headers", {})
+        if not "headers" in kwargs:
+            kwargs.setdefault("headers", {})
         kwargs["headers"].setdefault("User-Agent", self.user_agent)
 
         # api authentication
         if is_api_request:
             kwargs["params"] = {"api_key": self.api_key, "user_id": self.user_id}
+        else:
+            kwargs["headers"]["Host"] = "rule34.xxx"
+            kwargs["headers"]["Referer"] = "https://rule34.xxx/index.php?page=account&s=home"
+
+        # timeout
+        kwargs["timeout"] = self.timeout
 
         # cookies
         kwargs.setdefault("cookies", {})
@@ -192,6 +206,81 @@ class rule34Py:
             comments.append(comment)
 
         return comments
+
+    def get_favorites_ids(self, user_id: int, page_id: int = 0) -> list[int]:
+        """Retrieve the IDs of a user's favourite posts.
+
+        Note:
+            This method scrapes the interactive website and is rate-limited.
+            A valid ``captcha_clearance`` cookie must be set on this instance
+            to bypass Cloudflare protection.
+
+            This method is faster than get_favorites as it does not fetch
+            full post data for each result, only the post IDs.
+
+        Args:
+            user_id: The user's rule34.xxx account ID.
+            page_id: The page offset of favorites to retrieve, starting at 0. Defaults to 0. (Optional)
+
+        Returns:
+            List of Post IDs favorited by the user.
+            If the user has no favorites, an empty list will be returned.
+
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+
+        """
+
+        page_id = (50 * page_id) + 50 if page_id >= 1 else 0
+        params = [
+            ["USER_ID", user_id],
+            ["PAGE_ID", page_id],
+        ]
+
+        url = API_URLS.USER_FAVORITES.value
+        formatted_url = self._parseUrlParams(url, params)
+        kwargs = {
+            "headers": {
+                "Host": "rule34.xxx",
+                "Referer": "https://rule34.xxx/index.php?page=account&s=home"
+            }
+        }
+
+        resp = self._get(formatted_url, **kwargs)
+        resp.raise_for_status()
+        return UserFavorites.favorites_from_html(resp.text)
+
+    def get_favorites(self, user_id: int, page_id: int = 0) -> list[Post]:
+        """Retrieves a user's favorites posts.
+
+        Note:
+            This method scrapes the interactive website and is rate-limited.
+            A valid ``captcha_clearance`` cookie must be set on this instance
+            to bypass Cloudflare protection.
+
+            This method is quite slow because it sends a post data request to build post objects for each id it scrapes.
+            Use get_favorites_ids instead if you just need the ids of the posts
+
+        Args:
+            user_id: The user's rule34.xxx account ID.
+            page_id: The page of favorites to retrieve, starting at 0. Defaults to 0. (Optional).
+
+        Returns:
+            List of Posts favorited by the user.
+            If the user has no favorites, an empty list will be returned.
+
+        Raises:
+            requests.HTTPError: The backing HTTP GET operation failed.
+        """
+
+        favorites = []
+        for id in self.get_favorites_ids(user_id, page_id):
+            post = self.get_post(id)
+            if post is None:
+                continue
+            favorites.append(post)
+
+        return favorites
 
     def get_pool(self, pool_id: int) -> Pool:
         """Retrieve a pool of Posts.
@@ -310,8 +399,8 @@ class rule34Py:
         retURL = url
 
         for g in params:
-            key = g[0]
-            value = g[1]
+            key = str(g[0])
+            value = str(g[1])
 
             retURL = retURL.replace("{" + key + "}", value)
 

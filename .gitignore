@@ -15,3 +15,5 @@
 # Ruff
 **/.ruff_cache
 dist/
+
+*debug*

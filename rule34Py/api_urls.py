@@ -34,7 +34,7 @@ class API_URLS(str, Enum):
     #: The XML Post comments endpoint.
     COMMENTS = f"{__api_url__}index.php?page=dapi&s=comment&q=index&post_id={{POST_ID}}"
     #: An HTML User favorites endpoint.
-    USER_FAVORITES = f"{__api_url__}index.php?page=favorites&s=view&id={{USR_ID}}"
+    USER_FAVORITES = f"{__api_url__}index.php?page=favorites&s=view&id={{USER_ID}}&pid={{PAGE_ID}}"
     #: The JSON Post endpoint.
     GET_POST = f"{__api_url__}index.php?page=dapi&s=post&q=index&id={{POST_ID}}&json=1"
     #: The HTML ICAME page URL.

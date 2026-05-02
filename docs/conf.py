@@ -16,6 +16,7 @@ else:
     import tomllib as toml
 
 PROJECT_ROOT = Path(__file__).parent.resolve() / ".."
+add_module_names = False
 
 # Read the pyproject.toml
 with open(PROJECT_ROOT / "pyproject.toml", "rb") as fp_pyproject:
@@ -65,6 +66,7 @@ linkcheck_ignore = [
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_favicon = '_static/favicon.ico'
+html_logo = "_static/logo_text.png"

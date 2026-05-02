@@ -85,7 +85,7 @@ class rule34Py:
     #: Api key required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
     api_key: str = None
     #: HTTP Requests timeout in seconds. Defaults to 5 seconds. `See more <https://requests.readthedocs.io/en/latest/user/advanced/#timeouts>`_
-    timeout: Union[int, float, Tuple[Union[int, float], Union[int, float]]]
+    timeout: Union[int, float, Tuple[Union[int, float], Union[int, float]]] = 5
 
     def __init__(self):
         """Initialize a new rule34 API client instance.

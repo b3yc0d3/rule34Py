@@ -208,6 +208,7 @@ def test_rule34Py_search(rule34):
     with pytest.raises(ValueError):
         rule34.search([], limit=SEARCH_RESULT_MAX + 1)
 
+
 def test_rule34Py_search_exclude_ai(rule34):
     """The client can search for posts by tags, with excluding ai generated content."""
     # search by single tag
@@ -251,24 +252,36 @@ def test_rule34Py_top_tags(rule34):
     assert len(top_tags) == 100
     assert isinstance(top_tags[0], TopTag)
 
+
 def test_rule34Py_api_key(rule34):
     rule34.api_key = None
     with pytest.raises(ValueError) as execinfo:
-        rule34.top_tags()
+        rule34.get_post(00000)
         
     assert str(execinfo.value) == "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+
 
 def test_rule34Py_user_id(rule34):
     rule34.user_id = None
     with pytest.raises(ValueError) as execinfo:
-        rule34.top_tags()
+        rule34.get_post(00000)
         
     assert str(execinfo.value) == "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+
 
 def test_rule34Py_credentials(rule34):
     rule34.api_key = None
     rule34.user_id = None
     with pytest.raises(ValueError) as execinfo:
-        rule34.top_tags()
+        rule34.get_post(00000)
         
     assert str(execinfo.value) == "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
+
+
+def test_rule34Py_get_favorites_ids(rule34):
+    """The get_favorites_id() method returns a list of the users favorites posts as id.
+    """
+    user_favorites_ids = rule34.get_favorites_ids(1069907, 0)
+    assert isinstance(user_favorites_ids, list)
+    assert len(user_favorites_ids) == 50
+    assert isinstance(user_favorites_ids[0], int)

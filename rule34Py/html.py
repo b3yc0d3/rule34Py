@@ -25,6 +25,7 @@ from bs4 import BeautifulSoup
 from rule34Py.icame import ICame
 from rule34Py.pool import Pool, PoolHistoryEvent
 from rule34Py.toptag import TopTag
+from rule34Py.post import Post
 
 
 class ICamePage():
@@ -258,3 +259,37 @@ class TopTagsPage():
             ))
 
         return top_tags
+
+
+class UserFavorites():
+    """The https://rule34.xxx/index.php?page=favorites page.
+
+    This class can be instantiated as an object that automatically parses
+    the useful information from the page's html, or used as a static class
+    to parse the page's html directly.
+
+    Args:
+        html: The Favorites page HTML, as a string.
+    """
+
+    #: The favorites on this page.
+    favorites: list[Post] = []
+
+    def __init__(self, html: str):
+        self.favorites = UserFavorites.favorites_from_html(html)
+
+    @staticmethod
+    def favorites_from_html(html: str) -> list[int]:
+        """Parse the favorites from the favorite page.
+
+        Args:
+            html: The Favorites page HTML, as a string.
+
+        Returns:
+            A list of post ids.
+        """
+        
+        vdoc = BeautifulSoup(html, features="html.parser")
+        img_list = vdoc.select("div#content div.image-list span span.thumb a[id]")
+
+        return [int(img.get("id")[1:]) for img in img_list]

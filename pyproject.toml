@@ -13,9 +13,10 @@ dynamic = [
 ]
 dependencies = [  # project runtime dependencies
 	"beautifulsoup4",
-	"lxml",
+	"lxml (>=6.0.0)",
 	"requests-ratelimiter",
 	"requests",
+	"requests_ratelimiter",
 ]
 keywords = [
 	"adult",

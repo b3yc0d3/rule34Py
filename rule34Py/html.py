@@ -292,4 +292,4 @@ class UserFavorites():
         vdoc = BeautifulSoup(html, features="html.parser")
         img_list = vdoc.select("div#content div.image-list span span.thumb a[id]")
 
-        return [img.get("id")[1:] for img in img_list]
+        return [int(img.get("id")[1:]) for img in img_list]

@@ -11,6 +11,7 @@ ICAME_CHART_LEN = 100  # It's the top-100 chart.
 HISTORY_POOL_ID = 720  # Arbitrary old pool w/ lots of history, that hasn't been updated recently.
 TAGMAP_LOCATION_COUNT = 285  # There are 285 districts on the map
 TOP_TAGS_CHART_LEN = 100  # It's a top-100 chart.
+USER_FAVORITES_LEN = 50
 
 
 # FIXTURES #
@@ -40,6 +41,21 @@ def tagmap_html(rule34):
 @pytest.fixture(scope="module")
 def toptags_html(rule34):
     resp = rule34._get(API_URLS.TOPMAP.value)
+    resp.raise_for_status()
+    return resp.text
+
+
+@pytest.fixture(scope="module")
+def favorites_html(rule34):
+    page_id = 0
+    params = [
+        ["USER_ID", 1069907],
+        ["PAGE_ID", 0],
+    ]
+
+    url = API_URLS.USER_FAVORITES.value
+    formatted_url = rule34._parseUrlParams(url, params)
+    resp = rule34._get(formatted_url)
     resp.raise_for_status()
     return resp.text
 
@@ -138,3 +154,17 @@ def test_TopTagsPage_top_tags_from_html(toptags_html):
     assert isinstance(top_tags, list)
     assert len(top_tags) == TOP_TAGS_CHART_LEN
     assert isinstance(top_tags[0], TopTag)
+
+
+def test_UserFavorites(favorites_html):
+    """The UserFavorites class can be instantiated from html."""
+    user_favorites = UserFavorites(favorites_html)
+    assert len(user_favorites.favorites) == USER_FAVORITES_LEN
+
+
+def text_UserFavorites_favorites_from_html(favorites_html):
+    """UserFavorites.favorites_from_html() parses the favorites list from html."""
+    user_favorites = UserFavorites.favorites_from_html(favorites_html)
+    assert isinstance(user_favorites, list)
+    assert len(user_favorites) == USER_FAVORITES_LEN
+    assert isinstance(user_favorites[0], int)

@@ -137,15 +137,10 @@ class rule34Py:
         Raises:
             ValueError: API credentials aer not supplied.
         """
-        is_api_request = args[0].startswith(__api_url__) == True
+        is_api_request = args[0].startswith(__api_url__)
 
         # check if api credentials are set
-        if (
-            is_api_request
-            and self.user_id == None
-            or self.api_key == None
-            or (self.user_id == None and self.api_key == None)
-        ):
+        if is_api_request and ((self.user_id is None or self.api_key is None) or (self.user_id is None and self.api_key is None)):
             raise ValueError(
                 "API credentials must be supplied, api_key and user_id can not be None!\nSee https://api.rule34.xxx/ for more information."
             )

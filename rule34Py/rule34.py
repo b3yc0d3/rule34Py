@@ -19,7 +19,7 @@
 """A module containing the top-level Rule34 API client class."""
 
 from collections.abc import Iterator
-from typing import Union
+from typing import Union, Tuple
 from urllib.parse import parse_qs
 import importlib.metadata
 import os
@@ -85,7 +85,7 @@ class rule34Py:
     #: Api key required for requests by `rule34.xxx <https://api.rule34.xxx/>`_
     api_key: str = None
     #: HTTP Requests timeout in seconds. Defaults to 5 seconds. `See more <https://requests.readthedocs.io/en/latest/user/advanced/#timeouts>`_
-    timeout: (float | int) | tuple[(float | int), (float | int)] = 5
+    timeout: Union[int, float, Tuple[Union(int, float), Union[int, float]]]
 
     def __init__(self):
         """Initialize a new rule34 API client instance.

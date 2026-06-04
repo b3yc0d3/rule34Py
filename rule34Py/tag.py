@@ -18,6 +18,7 @@
 """A module containing the Tag class."""
 
 from enum import Enum
+from typing import Self
 
 class TagType(Enum):
 	"""
@@ -85,7 +86,7 @@ class Tag:
 	tag: str
 
 	@staticmethod
-	def from_json(json: dict) -> Tag:
+	def from_json(json: dict) -> Self:
 		"""Create Tag class instance from JSON data.
 
 		Args:

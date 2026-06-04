@@ -1,0 +1,5 @@
+Tag
+===============
+
+.. automodule:: rule34Py.tag
+   :members:

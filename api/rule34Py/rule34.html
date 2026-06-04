@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rule34Py.rule34 &mdash; rule34Py 4.0.2 documentation</title>
+  <title>rule34Py.rule34 &mdash; rule34Py 4.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a084f797"></script>
-      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/documentation_options.js?v=d0ae6d56"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -63,6 +63,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="toptag.html">rule34Py.toptag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autocomplete_tag.html">rule34Py.autocomplete_tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tag.html">rule34Py.tag</a></li>
 </ul>
 </li>
 </ul>
@@ -102,20 +103,20 @@
 <p>A module containing the top-level Rule34 API client class.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="rule34Py.rule34.DEFAULT_USER_AGENT">
-<span class="sig-name descname"><span class="pre">DEFAULT_USER_AGENT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Mozilla/5.0</span> <span class="pre">(compatible;</span> <span class="pre">rule34Py/4.0.2)'</span></span><a class="headerlink" href="#rule34Py.rule34.DEFAULT_USER_AGENT" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">DEFAULT_USER_AGENT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Mozilla/5.0</span> <span class="pre">(compatible;</span> <span class="pre">rule34Py/4.1.0)'</span></em><a class="headerlink" href="#rule34Py.rule34.DEFAULT_USER_AGENT" title="Link to this definition"></a></dt>
 <dd><p>The default client user_agent, if one is not specified in the environment.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="rule34Py.rule34.SEARCH_RESULT_MAX">
-<span class="sig-name descname"><span class="pre">SEARCH_RESULT_MAX</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1000</span></span><a class="headerlink" href="#rule34Py.rule34.SEARCH_RESULT_MAX" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">SEARCH_RESULT_MAX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1000</span></em><a class="headerlink" href="#rule34Py.rule34.SEARCH_RESULT_MAX" title="Link to this definition"></a></dt>
 <dd><p>API-defined maximum number of search results per request.
 [<a class="reference external" href="https://rule34.xxx/index.php?page=help&amp;topic=dapi">Rule34 Docs</a>]</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">rule34Py</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rule34Py</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py" title="Link to this definition"></a></dt>
 <dd><p>The rule34.xxx API client.</p>
 <p>This class is the primary broker for interactions with the real Rule34 servers.
 It transparently chooses to interact with either the REST server endpoint, or the PHP interactive site, depending on what methods are executed.</p>
@@ -129,13 +130,13 @@ It transparently chooses to interact with either the REST server endpoint, or th
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.CAPTCHA_COOKIE_KEY">
-<span class="sig-name descname"><span class="pre">CAPTCHA_COOKIE_KEY</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cf_clearance'</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.CAPTCHA_COOKIE_KEY" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">CAPTCHA_COOKIE_KEY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cf_clearance'</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.CAPTCHA_COOKIE_KEY" title="Link to this definition"></a></dt>
 <dd><p>Captcha clearance HTML cookie key</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.api_key">
-<span class="sig-name descname"><span class="pre">api_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.api_key" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.api_key" title="Link to this definition"></a></dt>
 <dd><p>Api key required for requests by <a class="reference external" href="https://api.rule34.xxx/">rule34.xxx</a></p>
 </dd></dl>
 
@@ -153,7 +154,7 @@ ordered by popularity (descending).</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP request failed.</p></li>
+<li><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP request failed.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the response contains invalid data structure.</p></li>
 </ul>
 </dd>
@@ -165,7 +166,7 @@ ordered by popularity (descending).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.captcha_clearance">
-<span class="sig-name descname"><span class="pre">captcha_clearance</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.captcha_clearance" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">captcha_clearance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.captcha_clearance" title="Link to this definition"></a></dt>
 <dd><p>Client captcha clearance token. Defaults to either the value of the <code class="docutils literal notranslate"><span class="pre">R34_CAPTCHA_CLEARANCE</span></code> environment variable; or None, if the environment variable is not asserted.
 Can be overridden at runtime by the user.</p>
 </dd></dl>
@@ -192,7 +193,7 @@ Can be overridden at runtime by the user.</p>
 If the post has no comments, an empty list will be returned.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>post_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p>
@@ -227,7 +228,7 @@ Use get_favorites_ids instead if you just need the ids of the posts</p>
 If the user has no favorites, an empty list will be returned.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="post.html#rule34Py.post.Post" title="rule34Py.post.Post"><em>Post</em></a>]</p>
@@ -259,7 +260,7 @@ full post data for each result, only the post IDs.</p>
 If the user has no favorites, an empty list will be returned.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
@@ -283,7 +284,7 @@ If the user has no favorites, an empty list will be returned.</p>
 <dd class="field-even"><p>A Pool object representing the requested pool.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="pool.html#rule34Py.pool.Pool" title="rule34Py.pool.Pool"><em>Pool</em></a></p>
@@ -303,7 +304,7 @@ If the user has no favorites, an empty list will be returned.</p>
 <dd class="field-even"><p>The Post object matching the post_id; or None, if the post_id is not found.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="post.html#rule34Py.post.Post" title="rule34Py.post.Post"><em>Post</em></a> | None</p>
@@ -324,7 +325,7 @@ If the user has no favorites, an empty list will be returned.</p>
 <dd class="field-odd"><p>The current top 100 iCame objects.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="icame.html#rule34Py.icame.ICame" title="rule34Py.icame.ICame">ICame</a>]</p>
@@ -351,7 +352,7 @@ If <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <dd class="field-even"><p>An iterator representing each Post element of the search results.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" title="(in Python v3.14)"><em>Iterator</em></a>[<a class="reference internal" href="post.html#rule34Py.post.Post" title="rule34Py.post.Post"><em>Post</em></a>]</p>
@@ -373,7 +374,7 @@ If <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <dd class="field-odd"><p>A random Post.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="post.html#rule34Py.post.Post" title="rule34Py.post.Post"><em>Post</em></a></p>
@@ -396,7 +397,7 @@ website responds with, when you use the “random post” function.</p>
 <dd class="field-odd"><p>A random post ID.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
@@ -425,7 +426,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p></li>
+<li><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – An invalid <code class="docutils literal notranslate"><span class="pre">limit</span></code> value was requested.</p></li>
 </ul>
 </dd>
@@ -441,7 +442,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.session">
-<span class="sig-name descname"><span class="pre">session</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.33.1)"><span class="pre">Session</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.session" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">session</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.34.2)"><span class="pre">Session</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.session" title="Link to this definition"></a></dt>
 <dd><p>The <code class="docutils literal notranslate"><span class="pre">requests.Session</span></code> object used when the client makes HTML requests.</p>
 </dd></dl>
 
@@ -470,7 +471,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 3-letter keys are ISO-3 character country codes, 2-letter keys are US-state codes.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
@@ -494,7 +495,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 <dd class="field-even"><p>A list of the current top 100 tags, globally.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="toptag.html#rule34Py.toptag.TopTag" title="rule34Py.toptag.TopTag"><em>TopTag</em></a>]</p>
@@ -504,7 +505,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.timeout">
-<span class="sig-name descname"><span class="pre">timeout</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.timeout" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">timeout</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.timeout" title="Link to this definition"></a></dt>
 <dd><p>HTTP Requests timeout in seconds. Defaults to 5 seconds. <a class="reference external" href="https://requests.readthedocs.io/en/latest/user/advanced/#timeouts">See more</a></p>
 </dd></dl>
 
@@ -517,7 +518,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 <dd class="field-odd"><p>A list of the current top 100 tags, globally.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.33.1)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
+<dd class="field-even"><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.HTTPError" title="(in Requests v2.34.2)"><strong>requests.HTTPError</strong></a> – The backing HTTP GET operation failed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="toptag.html#rule34Py.toptag.TopTag" title="rule34Py.toptag.TopTag"><em>TopTag</em></a>]</p>
@@ -527,7 +528,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">SEARCH_
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.user_agent">
-<span class="sig-name descname"><span class="pre">user_agent</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Mozilla/5.0</span> <span class="pre">(compatible;</span> <span class="pre">rule34Py/4.0.2)'</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.user_agent" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">user_agent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Mozilla/5.0</span> <span class="pre">(compatible;</span> <span class="pre">rule34Py/4.1.0)'</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.user_agent" title="Link to this definition"></a></dt>
 <dd><p>The <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> HTML header value used when the client makes HTML requests.
 Defaults to either the value of the <code class="docutils literal notranslate"><span class="pre">R34_USER_AGENT</span></code> environment variable; or the <code class="docutils literal notranslate"><span class="pre">rule34Py.rule34.DEFAULT_USER_AGENT</span></code>, if not asserted.
 Can be overridden by the user at runtime to change User-Agents.</p>
@@ -535,7 +536,7 @@ Can be overridden by the user at runtime to change User-Agents.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rule34Py.rule34.rule34Py.user_id">
-<span class="sig-name descname"><span class="pre">user_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#rule34Py.rule34.rule34Py.user_id" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">user_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#rule34Py.rule34.rule34Py.user_id" title="Link to this definition"></a></dt>
 <dd><p>User id required for requests by <a class="reference external" href="https://api.rule34.xxx/">rule34.xxx</a></p>
 </dd></dl>
 

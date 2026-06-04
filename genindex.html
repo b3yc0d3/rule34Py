@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; rule34Py 4.0.2 documentation</title>
+  <title>Index &mdash; rule34Py 4.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="shortcut icon" href="_static/favicon.ico"/>
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=a084f797"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/documentation_options.js?v=d0ae6d56"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -104,10 +104,12 @@
 </li>
       <li><a href="api/rule34Py/api_urls.html#rule34Py.api_urls.API_URLS">API_URLS (class in rule34Py.api_urls)</a>
 </li>
-      <li><a href="api/rule34Py/post_comment.html#rule34Py.post_comment.PostComment.author_id">author_id (PostComment property)</a>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType.ARTIST">ARTIST (TagType attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rule34Py/post_comment.html#rule34Py.post_comment.PostComment.author_id">author_id (PostComment property)</a>
+</li>
       <li><a href="api/rule34Py/api_urls.html#rule34Py.api_urls.API_URLS.AUTOCOMPLETE">AUTOCOMPLETE (API_URLS attribute)</a>
 </li>
       <li><a href="api/rule34Py/rule34.html#rule34Py.rule34.rule34Py.autocomplete">autocomplete() (rule34Py method)</a>
@@ -134,6 +136,8 @@
 </li>
       <li><a href="api/rule34Py/post.html#rule34Py.post.Post.change">change (Post property)</a>
 </li>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType.CHARACTER">CHARACTER (TagType attribute)</a>
+</li>
       <li><a href="api/rule34Py/icame.html#rule34Py.icame.ICame.character_name">character_name (ICame property)</a>
 </li>
   </ul></td>
@@ -142,8 +146,14 @@
 </li>
       <li><a href="api/rule34Py/post.html#rule34Py.post.Post.content_type">content_type (Post property)</a>
 </li>
-      <li><a href="api/rule34Py/icame.html#rule34Py.icame.ICame.count">count (ICame property)</a>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType.COPYRIGHT">COPYRIGHT (TagType attribute)</a>
 </li>
+      <li><a href="api/rule34Py/icame.html#rule34Py.icame.ICame.count">count (ICame property)</a>
+
+      <ul>
+        <li><a href="api/rule34Py/tag.html#rule34Py.tag.Tag.count">(Tag property)</a>
+</li>
+      </ul></li>
       <li><a href="api/rule34Py/post_comment.html#rule34Py.post_comment.PostComment.creation">creation (PostComment property)</a>
 </li>
   </ul></td>
@@ -178,11 +188,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/rule34Py/html.html#rule34Py.html.UserFavorites.favorites">favorites (UserFavorites attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/rule34Py/html.html#rule34Py.html.UserFavorites.favorites_from_html">favorites_from_html() (UserFavorites static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/rule34Py/post.html#rule34Py.post.Post.from_json">from_json() (Post static method)</a>
+
+      <ul>
+        <li><a href="api/rule34Py/tag.html#rule34Py.tag.Tag.from_json">(Tag static method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType.from_str">from_str() (TagType static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -258,6 +274,8 @@
 </li>
       <li><a href="api/rule34Py/html.html#rule34Py.html.TagMapPage.map_points_from_html">map_points_from_html() (TagMapPage static method)</a>
 </li>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType.METADATA">METADATA (TagType attribute)</a>
+</li>
       <li>
     module
 
@@ -279,6 +297,8 @@
         <li><a href="api/rule34Py/post_comment.html#module-rule34Py.post_comment">rule34Py.post_comment</a>
 </li>
         <li><a href="api/rule34Py/rule34.html#module-rule34Py.rule34">rule34Py.rule34</a>
+</li>
+        <li><a href="api/rule34Py/tag.html#module-rule34Py.tag">rule34Py.tag</a>
 </li>
         <li><a href="api/rule34Py/toptag.html#module-rule34Py.toptag">rule34Py.toptag</a>
 </li>
@@ -423,6 +443,13 @@
 </li>
       </ul></li>
       <li>
+    rule34Py.tag
+
+      <ul>
+        <li><a href="api/rule34Py/tag.html#module-rule34Py.tag">module</a>
+</li>
+      </ul></li>
+      <li>
     rule34Py.toptag
 
       <ul>
@@ -459,6 +486,12 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.Tag">Tag (class in rule34Py.tag)</a>
+</li>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.Tag.tag">tag (Tag property)</a>
+</li>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType.TAG">TAG (TagType attribute)</a>
+</li>
       <li><a href="api/rule34Py/rule34.html#rule34Py.rule34.rule34Py.tag_map">tag_map() (rule34Py method)</a>
 </li>
       <li><a href="api/rule34Py/icame.html#rule34Py.icame.ICame.tag_url">tag_url (ICame property)</a>
@@ -471,12 +504,14 @@
 </li>
       <li><a href="api/rule34Py/post.html#rule34Py.post.Post.tags">tags (Post property)</a>
 </li>
-      <li><a href="api/rule34Py/post.html#rule34Py.post.Post.thumbnail">thumbnail (Post property)</a>
+      <li><a href="api/rule34Py/tag.html#rule34Py.tag.TagType">TagType (class in rule34Py.tag)</a>
 </li>
-      <li><a href="api/rule34Py/rule34.html#rule34Py.rule34.rule34Py.timeout">timeout (rule34Py attribute)</a>
+      <li><a href="api/rule34Py/post.html#rule34Py.post.Post.thumbnail">thumbnail (Post property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/rule34Py/rule34.html#rule34Py.rule34.rule34Py.timeout">timeout (rule34Py attribute)</a>
+</li>
       <li><a href="api/rule34Py/html.html#rule34Py.html.ICamePage.top_chart">top_chart (ICamePage attribute)</a>
 </li>
       <li><a href="api/rule34Py/html.html#rule34Py.html.ICamePage.top_chart_from_html">top_chart_from_html() (ICamePage static method)</a>
@@ -494,7 +529,11 @@
       <li><a href="api/rule34Py/html.html#rule34Py.html.TopTagsPage">TopTagsPage (class in rule34Py.html)</a>
 </li>
       <li><a href="api/rule34Py/autocomplete_tag.html#rule34Py.autocomplete_tag.AutocompleteTag.type">type (AutocompleteTag attribute)</a>
+
+      <ul>
+        <li><a href="api/rule34Py/tag.html#rule34Py.tag.Tag.type">(Tag property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 

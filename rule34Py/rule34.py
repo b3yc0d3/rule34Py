@@ -311,6 +311,8 @@ class rule34Py:
         """  # noqa: DOC502
         params = [["POST_ID", str(post_id)]]
         formatted_url = self._parseUrlParams(API_URLS.GET_POST.value, params)
+        # Add "fields"
+        formatted_url += "&fields=tag_info"
         response = self._get(formatted_url)
         response.raise_for_status()
 
@@ -483,6 +485,9 @@ class rule34Py:
         if page_id != None:
             url += f"&pid={{PAGE_ID}}"
             params.append(["PAGE_ID", str(page_id)])
+
+        # Add "fields"
+        url += "&fields=tag_info"
 
         formatted_url = self._parseUrlParams(url, params)
         response = self._get(formatted_url)

@@ -105,3 +105,9 @@ mostlyclean :
 	rm -rf $(builddir)
 	find ./ -depth -path '**/rule34Py.egg-info*' -print -delete
 .PHONY : mostlyclean
+
+
+# Setup all stuff
+setup_dev:
+	pip install sphinx_mdinclude sphinx_rtd_theme
+.PHONY: setup_dev

@@ -21,3 +21,4 @@ rule34Py
    rule34
    toptag
    autocomplete_tag
+   tag

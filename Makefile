@@ -5,7 +5,7 @@ VERSION = $(shell $(PYTHON3) scripts/read_pyproject.py project/version)
 # Binaries
 POETRY ?= poetry $(POETRY_ARGS)
 POETRY_ARGS ?=
-PYTHON3 ?= $(POETRY) run python3
+PYTHON3 ?= $(POETRY) run python3 -X utf8
 
 PYTEST = $(POETRY) run pytest $(PYTEST_ARGS)
 PYTEST_ARGS ?=
@@ -105,3 +105,9 @@ mostlyclean :
 	rm -rf $(builddir)
 	find ./ -depth -path '**/rule34Py.egg-info*' -print -delete
 .PHONY : mostlyclean
+
+
+# Setup all stuff
+setup_dev:
+	pip install sphinx_mdinclude sphinx_rtd_theme
+.PHONY: setup_dev

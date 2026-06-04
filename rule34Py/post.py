@@ -1,6 +1,6 @@
 # rule34Py - Python api wrapper for rule34.xxx
 # 
-# Copyright (C) 2022-2025 b3yc0d3 <b3yc0d3@gmail.com>
+# Copyright (C) 2022-2026 b3yc0d3 <b3yc0d3@gmail.com>
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,11 @@
 """A module for representing Rule34 Post objects."""
 
 # TODO: Restructure internal variable names
+
+from typing import List
+import warnings
+
+from rule34Py.tag import Tag
 
 
 class Post:
@@ -61,12 +66,17 @@ class Post:
         sample = json["sample_url"]
         change = json["change"]
         directory = json["directory"]
+
+        pTagsObj = []
+        if "tag_info" in json:
+            for tag in json["tag_info"]:
+                pTagsObj.append(Tag.from_json(tag))
         
         img_type = "video" if pFileUrl.endswith(".mp4") else "gif" if pFileUrl.endswith(".gif") else "image"
             
-        return Post(pId, pHash, pScore, pSize, pFileUrl, preview, sample, pOwner, pTags, img_type, directory, change)
+        return Post(pId, pHash, pScore, pSize, pFileUrl, preview, sample, pOwner, pTags, pTagsObj, img_type, directory, change)
     
-    def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags: list, file_type: str, directory: int, change: int):
+    def __init__(self, id: int, hash: str, score: int, size: list, image: str, preview: str, sample: str, owner: str, tags_str: List[str], tags_obj: List[Tag], file_type: str, directory: int, change: int):
         """Create a new Post object."""
         self._file_type = file_type
         self._video = ""
@@ -84,10 +94,11 @@ class Post:
         self._preview = preview
         self._sample = sample
         self._owner = owner
-        self._tags = tags
+        self._tags_str = tags_str # keep old code working
         self._directory = directory
         self._change = change
         self._rating = None
+        self._tags_obj = tags_obj
         
 
     @property
@@ -184,13 +195,18 @@ class Post:
         return self._owner
 
     @property
-    def tags(self) -> list:
+    def tags(self) -> List[Tag]:
         """The Post's tags.
+
+        Warning:
+            This property no longer returns a list of strings, instead it now returns
+            a list of :py:class:`Tag` objects.
 
         Returns:
             A List of the Post's tags.
         """
-        return self._tags
+
+        return self._tags_obj
 
     @property
     def content_type(self) -> str:

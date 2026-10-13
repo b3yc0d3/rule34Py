@@ -285,3 +285,30 @@ def test_rule34Py_get_favorites_ids(rule34):
     assert isinstance(user_favorites_ids, list)
     assert len(user_favorites_ids) == 50
     assert isinstance(user_favorites_ids[0], int)
+
+
+def test_rule34Py_get_favorites_ids_pagination(rule34, monkeypatch):
+    """page_id is a 0-based page index; the site paginates favorites 50 per page.
+
+    The second page of favorites (page_id=1) must be requested with ``pid=50``,
+    not ``pid=100``, otherwise the second page is skipped when looping over favorites.
+    """
+    captured_urls = []
+
+    class _StubResponse:
+        text = ""
+
+        def raise_for_status(self):
+            pass
+
+    def stub_get(url, **kwargs):
+        captured_urls.append(url)
+        return _StubResponse()
+
+    monkeypatch.setattr(rule34, "_get", stub_get)
+
+    favorites = rule34.get_favorites_ids(1069907, page_id=1)
+    assert favorites == []
+    assert len(captured_urls) == 1
+    assert "pid=50" in captured_urls[0]
+    assert "pid=100" not in captured_urls[0]

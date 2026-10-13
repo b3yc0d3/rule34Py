@@ -226,7 +226,8 @@ class rule34Py:
 
         """
 
-        page_id = (50 * page_id) + 50 if page_id >= 1 else 0
+        # The website paginates favorites 50 per page, offset by `page_id`.
+        page_id = 50 * page_id
         params = [
             ["USER_ID", user_id],
             ["PAGE_ID", page_id],
